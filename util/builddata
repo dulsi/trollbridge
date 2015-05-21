@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 
-TROLL_DATA=/proj/troll/data
-TROLL_UTIL=/proj/troll/util
+TROLL_DATA=../data
+TROLL_UTIL=../util
 TROLL_TMP=/tmp/troll
 alphabet="abcdefghijklmnopqrstuvwxyz"
 
