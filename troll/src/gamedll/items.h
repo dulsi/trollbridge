@@ -15,23 +15,23 @@
 class TrollActivatibleItem: public TrollItem
 {
  public:
-  static TrollThing *createAnhk(TrollScreen *scr, IUShort x, IUShort y,
+  static TrollThing *createAnhk(TrollScreen *scr, IShort x, IShort y,
     IUShort secrt = 0);
-  static TrollThing *createEgg(TrollScreen *scr, IUShort x, IUShort y,
+  static TrollThing *createEgg(TrollScreen *scr, IShort x, IShort y,
     IUShort secrt = 0);
-  static TrollThing *createEnchantedSword(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
-  static TrollThing *createShield(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
-  static TrollThing *createSoldShield(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
-  static TrollThing *createSword(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
+  static TrollThing *createEnchantedSword(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
+  static TrollThing *createShield(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
+  static TrollThing *createSoldShield(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
+  static TrollThing *createSword(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
 
   void pickUp(TrollCharacter *troll);
 
  protected:
-  TrollActivatibleItem(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  TrollActivatibleItem(TrollScreen *scr, IShort xStart, IShort yStart,
     IUShort secrt, IUShort cst, TrollCarriedItem *actItem);
 
   TrollCarriedItem *activateItem;
@@ -61,7 +61,7 @@ class TrollEnchantedSwordItem: public TrollSwordItem
 class TrollSwordThrust: public TrollProjectile
 {
  public:
-  TrollSwordThrust(TrollScreen *screen, IUShort xStart, IUShort yStart,
+  TrollSwordThrust(TrollScreen *screen, IShort xStart, IShort yStart,
     IUShort dir,IUShort dmg);
   void react();
   void takeHit(TrollThing *hitBy);
@@ -73,7 +73,7 @@ class TrollSwordThrust: public TrollProjectile
 class TrollSwordProjectile: public TrollProjectile
 {
  public:
-  TrollSwordProjectile(TrollScreen *screen, IUShort xStart, IUShort yStart,
+  TrollSwordProjectile(TrollScreen *screen, IShort xStart, IShort yStart,
     IUShort dir, IUShort dmg, TrollEnchantedSwordItem *swrd);
   ~TrollSwordProjectile();
   void die();
@@ -101,7 +101,7 @@ class TrollAnhkItem: public TrollCarriedItem
 class TrollAnhkProjectile: public TrollProjectile
 {
  public:
-  TrollAnhkProjectile(TrollScreen *screen, IUShort xStart, IUShort yStart);
+  TrollAnhkProjectile(TrollScreen *screen, IShort xStart, IShort yStart);
   ~TrollAnhkProjectile();
   void draw(IScreen drawscreen);
   void react();
@@ -118,14 +118,14 @@ class TrollShieldItem: public TrollCarriedItem
 class TrollShieldProjectile: public TrollProjectile
 {
  public:
-  TrollShieldProjectile(TrollScreen *screen, IUShort xStart, IUShort yStart,
+  TrollShieldProjectile(TrollScreen *screen, IShort xStart, IShort yStart,
     IUShort dir, IUByte shft, TrollCharacter *trll);
   void react();
   void takeHit(TrollThing *hitBy);
 
  protected:
   TrollCharacter *troll;
-  IUShort trollX, trollY;
+  IShort trollX, trollY;
   IUShort trollFacing, trollFrame;
 };
 
@@ -140,7 +140,7 @@ class TrollLimitedItem: public TrollCarriedItem
 {
  public:
   TrollLimitedItem(IUShort num, IUShort slt, IUShort str);
-  void draw(IScreen drawscreen, IUShort x, IUShort y);
+  void draw(IScreen drawscreen, IShort x, IShort y);
   IUShort getNumber();
   void read(BinaryReadFile &f);
   void setNumber(IUShort num);
@@ -153,16 +153,16 @@ class TrollLimitedItem: public TrollCarriedItem
 class TrollLimitedActivatibleItem: public TrollActivatibleItem
 {
  public:
-  static TrollThing *createKey(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
-  static TrollThing *createSoldKey(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
+  static TrollThing *createKey(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
+  static TrollThing *createSoldKey(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
 
   void pickUp(TrollCharacter *troll);
 
  protected:
-  TrollLimitedActivatibleItem(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt, IUShort cst, TrollCarriedItem *actItem);
+  TrollLimitedActivatibleItem(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt, IUShort cst, TrollCarriedItem *actItem);
 };
 
 class TrollKeyItem: public TrollLimitedItem
@@ -177,7 +177,7 @@ class TrollKeyItem: public TrollLimitedItem
 class TrollKeyProjectile: public TrollProjectile
 {
  public:
-  TrollKeyProjectile(TrollScreen *screen, IUShort xStart, IUShort yStart,
+  TrollKeyProjectile(TrollScreen *screen, IShort xStart, IShort yStart,
     IUShort dir, TrollCharacter *trll, IUShort slt);
   void decreaseNumber();
   void react();
@@ -195,7 +195,7 @@ class TrollTimedItem: public TrollItem
   void react();
 
  protected:
-  TrollTimedItem(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  TrollTimedItem(TrollScreen *scr, IShort xStart, IShort yStart,
     IUShort secrt = 0, IUShort cst = 0);
 
   IUShort life;
@@ -204,15 +204,15 @@ class TrollTimedItem: public TrollItem
 class TrollGold: public TrollTimedItem
 {
  public:
-  static TrollThing *createGoldCoin(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
-  static TrollThing *create3GoldCoins(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
+  static TrollThing *createGoldCoin(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
+  static TrollThing *create3GoldCoins(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
 
   void pickUp(TrollCharacter *troll);
 
  protected:
-  TrollGold(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  TrollGold(TrollScreen *scr, IShort xStart, IShort yStart,
     IUShort secrt, IUShort amt);
 
   IUShort amount;
@@ -221,16 +221,16 @@ class TrollGold: public TrollTimedItem
 class TrollHitPoint: public TrollTimedItem
 {
  public:
-  static TrollThing *createHitPoint(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
-  static TrollThing *createSoldHitPoint(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
+  static TrollThing *createHitPoint(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
+  static TrollThing *createSoldHitPoint(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
 
   void pickUp(TrollCharacter *troll);
   void react();
 
  protected:
-  TrollHitPoint(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  TrollHitPoint(TrollScreen *scr, IShort xStart, IShort yStart,
     IUShort secrt, IUShort cst, IUShort amt);
 
   IUShort amount;
@@ -240,13 +240,13 @@ class TrollHitPoint: public TrollTimedItem
 class TrollLevelMap: public TrollItem
 {
  public:
-  static TrollThing *createLevelMap(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0);
+  static TrollThing *createLevelMap(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0);
 
   void pickUp(TrollCharacter *troll);
 
  protected:
-  TrollLevelMap(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  TrollLevelMap(TrollScreen *scr, IShort xStart, IShort yStart,
     IUShort secrt);
 };
 

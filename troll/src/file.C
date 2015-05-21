@@ -22,6 +22,10 @@ void SwapBytes(IUByte *value, int size)
  value[size - 1] = first;
 }
 
+FileException::FileException()
+{
+}
+
 FileList::FileList(const char *pattern)
 {
  if (glob(pattern, 0, NULL, &results))
@@ -79,17 +83,29 @@ void BinaryReadFile::open(const char *filename)
 
 void BinaryReadFile::readByte(IByte &a)
 {
- fread(&a, 1, 1, file);
+ size_t ans = fread(&a, 1, 1, file);
+ if (ans != 1)
+ {
+  throw FileException();
+ }
 }
 
 void BinaryReadFile::readByteArray(const int size, IByte *a)
 {
- fread(a, 1, size, file);
+ size_t ans = fread(a, 1, size, file);
+ if (ans != size)
+ {
+  throw FileException();
+ }
 }
 
 void BinaryReadFile::readShort(IShort &a)
 {
- fread(&a, 2, 1, file);
+ size_t ans = fread(&a, 2, 1, file);
+ if (ans != 1)
+ {
+  throw FileException();
+ }
  if (swap)
  {
   SwapBytes((IUByte *)&a, 2);
@@ -98,7 +114,11 @@ void BinaryReadFile::readShort(IShort &a)
 
 void BinaryReadFile::readShortArray(const int size, IShort *a)
 {
- fread(a, 2, size, file);
+ size_t ans = fread(a, 2, size, file);
+ if (ans != size)
+ {
+  throw FileException();
+ }
  if (swap)
  {
   for (int i = 0; i < size; i++)
@@ -110,7 +130,11 @@ void BinaryReadFile::readShortArray(const int size, IShort *a)
 
 void BinaryReadFile::readLong(ILong &a)
 {
- fread(&a, 4, 1, file);
+ size_t ans = fread(&a, 4, 1, file);
+ if (ans != 1)
+ {
+  throw FileException();
+ }
  if (swap)
  {
   SwapBytes((IUByte *)&a, 4);
@@ -119,7 +143,11 @@ void BinaryReadFile::readLong(ILong &a)
 
 void BinaryReadFile::readLongArray(const int size, ILong *a)
 {
- fread(a, 4, size, file);
+ size_t ans = fread(a, 4, size, file);
+ if (ans != size)
+ {
+  throw FileException();
+ }
  if (swap)
  {
   for (int i = 0; i < size; i++)
@@ -131,17 +159,29 @@ void BinaryReadFile::readLongArray(const int size, ILong *a)
 
 void BinaryReadFile::readUByte(IUByte &a)
 {
- fread(&a, 1, 1, file);
+ size_t ans = fread(&a, 1, 1, file);
+ if (ans != 1)
+ {
+  throw FileException();
+ }
 }
 
 void BinaryReadFile::readUByteArray(const int size, IUByte *a)
 {
- fread(a, 1, size, file);
+ size_t ans = fread(a, 1, size, file);
+ if (ans != size)
+ {
+  throw FileException();
+ }
 }
 
 void BinaryReadFile::readUShort(IUShort &a)
 {
- fread(&a, 2, 1, file);
+ size_t ans = fread(&a, 2, 1, file);
+ if (ans != 1)
+ {
+  throw FileException();
+ }
  if (swap)
  {
   SwapBytes((IUByte *)&a, 2);
@@ -150,7 +190,11 @@ void BinaryReadFile::readUShort(IUShort &a)
 
 void BinaryReadFile::readUShortArray(const int size, IUShort *a)
 {
- fread(a, 2, size, file);
+ size_t ans = fread(a, 2, size, file);
+ if (ans != size)
+ {
+  throw FileException();
+ }
  if (swap)
  {
   for (int i = 0; i < size; i++)
@@ -162,7 +206,11 @@ void BinaryReadFile::readUShortArray(const int size, IUShort *a)
 
 void BinaryReadFile::readULong(IULong &a)
 {
- fread(&a, 4, 1, file);
+ size_t ans = fread(&a, 4, 1, file);
+ if (ans != 1)
+ {
+  throw FileException();
+ }
  if (swap)
  {
   SwapBytes((IUByte *)&a, 4);
@@ -171,7 +219,11 @@ void BinaryReadFile::readULong(IULong &a)
 
 void BinaryReadFile::readULongArray(const int size, IULong *a)
 {
- fread(a, 4, size, file);
+ size_t ans = fread(a, 4, size, file);
+ if (ans != size)
+ {
+  throw FileException();
+ }
  if (swap)
  {
   for (int i = 0; i < size; i++)
@@ -183,6 +235,7 @@ void BinaryReadFile::readULongArray(const int size, IULong *a)
 
 void BinaryReadFile::seek(IULong where)
 {
+ clearerr(file);
  fseek(file, where, SEEK_SET);
 }
 

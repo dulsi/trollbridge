@@ -7,6 +7,8 @@
   04/05/00  Dennis      Created.
 \*-------------------------------------------------------------------------*/
 
+#include <unistd.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

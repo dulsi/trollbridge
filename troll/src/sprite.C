@@ -35,7 +35,7 @@ Sprite::~Sprite()
  free(pictures);
 }
 
-void Sprite::draw(IScreen drawscreen, IUShort x, IUShort y, IUShort frame,
+void Sprite::draw(IScreen drawscreen, IShort x, IShort y, IUShort frame,
     IUShort facing, IUByte shift) const
 {
  IShort i, j, k, l, where;
@@ -116,28 +116,29 @@ IUShort Sprite::getYSize() const
  return ysize;
 }
 
-SpriteHandler::SpriteHandler(char *filename)
+SpriteHandler::SpriteHandler()
+ : sprites(NULL), num(0)
 {
- int i;
- BinaryReadFile f(filename);
+}
 
- f.readUShort(num);
- sprites = (Sprite **)malloc(num * sizeof(Sprite *));
- for (i = 0; i < num; i++)
- {
-  sprites[i] = new Sprite(f);
- }
+SpriteHandler::SpriteHandler(const char *filename)
+ : sprites(NULL), num(0)
+{
+ load(filename);
 }
 
 SpriteHandler::~SpriteHandler()
 {
  int i;
 
- for (i = 0; i < num; i++)
+ if (sprites)
  {
-  delete sprites[i];
+  for (i = 0; i < num; i++)
+  {
+   delete sprites[i];
+  }
+  free(sprites);
  }
- free(sprites);
 }
 
 IUShort SpriteHandler::getNumber() const
@@ -154,6 +155,19 @@ const Sprite *SpriteHandler::getSprite(IUShort n) const
  else
  {
   return((Sprite *)0);
+ }
+}
+
+void SpriteHandler::load(const char *filename)
+{
+ int i;
+ BinaryReadFile f(filename);
+
+ f.readUShort(num);
+ sprites = (Sprite **)malloc(num * sizeof(Sprite *));
+ for (i = 0; i < num; i++)
+ {
+  sprites[i] = new Sprite(f);
  }
 }
 

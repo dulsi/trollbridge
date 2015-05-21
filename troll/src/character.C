@@ -19,11 +19,15 @@
     Parameters:
       gm           (In)  Game world the player is in
       nm           (In)  Name of the character
+      startFile    (In)  Starting map file name
+      ctrl         (In)  Nintendo controller
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollCharacter::TrollCharacter(TrollGame *gm, char *nm, nes_controller *ctrl)
+TrollCharacter::TrollCharacter(TrollGame *gm, char *nm, const char *startFile,
+  nes_controller *ctrl)
   :TrollThing((TrollScreen *)0)
 {
  int i;
+ char *filename;
 
  // Initialize all attributes
  game = gm;
@@ -35,8 +39,10 @@ TrollCharacter::TrollCharacter(TrollGame *gm, char *nm, nes_controller *ctrl)
  control = ctrl;
 
  // check for save file
- char *filename = (char *)IMalloc(strlen(name) + 5);
- strcpy(filename, name);
+ const char *savePath = game->getSavePath();
+ filename = (char *)IMalloc(strlen(savePath) + strlen(name) + 5);
+ strcpy(filename, savePath);
+ strcat(filename, name);
  strcat(filename, ".trs");
  FILE *f = fopen(filename, "rb");
  IFree(filename);
@@ -64,7 +70,7 @@ TrollCharacter::TrollCharacter(TrollGame *gm, char *nm, nes_controller *ctrl)
  }
 
  // Load the level and find the appropriate screen
- game->loadLevel("surface.trb");
+ game->loadLevel(startFile);
  reset();
 }
 
@@ -365,7 +371,7 @@ IUShort TrollCharacter::getTotalHp()
 
     Returns: The character's x position
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-IUShort TrollCharacter::getX() const
+IShort TrollCharacter::getX() const
 {
  return(x);
 }
@@ -375,7 +381,7 @@ IUShort TrollCharacter::getX() const
 
     Returns: The character's y position (includes y buffer zone)
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-IUShort TrollCharacter::getY() const
+IShort TrollCharacter::getY() const
 {
  return(y);
 }
@@ -422,13 +428,16 @@ void TrollCharacter::load()
  IUShort itemNum;
  TrollCarriedItem *item;
  IUByte *mapInfoNew;
+ const char *savePath = game->getSavePath();
 
  // This should be dynamically allocated based on need.  As is it will crash
  // if level names are longer than 49 characters.
  char levelName[50];
 
- filename = (char *)IMalloc(strlen(name) + strlen(TROLL_SAVE_EXT) + 1);
- strcpy(filename, name);
+ filename = (char *)IMalloc(strlen(savePath) + strlen(name) +
+   strlen(TROLL_SAVE_EXT) + 1);
+ strcpy(filename, savePath);
+ strcat(filename, name);
  strcat(filename, TROLL_SAVE_EXT);
 
  BinaryReadFile f(filename);
@@ -599,9 +608,12 @@ void TrollCharacter::save()
  char *filename;
  int i;
  IUShort num;
+ const char *savePath = game->getSavePath();
 
- filename = (char *)IMalloc(strlen(name) + strlen(TROLL_SAVE_EXT) + 1);
- strcpy(filename, name);
+ filename = (char *)IMalloc(strlen(savePath) + strlen(name) +
+   strlen(TROLL_SAVE_EXT) + 1);
+ strcpy(filename, savePath);
+ strcat(filename, name);
  strcat(filename, TROLL_SAVE_EXT);
 
  BinaryWriteFile f(filename);

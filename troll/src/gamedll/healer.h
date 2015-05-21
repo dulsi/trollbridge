@@ -15,14 +15,14 @@
 class TrollHealer: public TrollMonster
 {
  public:
-  static TrollThing *createHealer(TrollScreen *scr, IUShort sx, IUShort sy,
+  static TrollThing *createHealer(TrollScreen *scr, IShort sx, IShort sy,
     IUShort secrt = 0);
 
   void draw(IScreen drawscreen);
   void react();
 
  protected:
-  TrollHealer(TrollScreen *scr, IUShort sx, IUShort sy, IUShort secrt);
+  TrollHealer(TrollScreen *scr, IShort sx, IShort sy, IUShort secrt);
 
   IUShort state;
 };

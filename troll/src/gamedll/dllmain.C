@@ -18,6 +18,7 @@
 #include "healer.h"
 #include "jumper.h"
 #include "octoid.h"
+#include "turtle.h"
 
 // This function must be extern "C" so that C++ doesn't rename the function.
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -55,6 +56,7 @@ extern "C" int TrollDllInit(TrollGame *game)
  game->addMonsterType(19, TrollJumper::createGreenJumper);
  game->addMonsterType(20, TrollJumper::createRedJumper);
  game->addMonsterType(21, TrollOctoid::createBlueOctoid);
+ game->addMonsterType(22, TrollTurtle::createTurtle);
  // add items
  game->addItemType(0, TrollActivatibleItem::createSword);
  game->addItemType(1, TrollLimitedActivatibleItem::createKey);

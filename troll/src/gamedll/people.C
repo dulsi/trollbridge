@@ -29,8 +29,8 @@ char *TrollMerchant::saying[TROLL_MERCHANT_SAYINGS][2] =
 
     Returns: A Gray Troll
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollPerson::createGrayTroll(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollPerson::createGrayTroll(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return
    new TrollPerson(scr, xStart, yStart, secrt, TROLL_SPRITE_GRAYTROLL, 0);
@@ -54,7 +54,7 @@ void TrollPerson::react()
       sprt         (In)  Sprite of the person
       shft         (In)  Color Shift of the person
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollPerson::TrollPerson(TrollScreen *scr, IUShort xStart, IUShort yStart,
+TrollPerson::TrollPerson(TrollScreen *scr, IShort xStart, IShort yStart,
   IUShort secrt, IUShort sprt, IUShort shft) : TrollMonster(scr, secrt)
 {
  if ((xStart == TROLL_XYRANDOM) && (yStart == TROLL_XYRANDOM))
@@ -84,8 +84,8 @@ TrollPerson::TrollPerson(TrollScreen *scr, IUShort xStart, IUShort yStart,
 
     Returns: A Merchant
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollMerchant::createMerchant(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollMerchant::createMerchant(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return new TrollMerchant(scr, xStart, yStart, secrt);
 }
@@ -150,8 +150,8 @@ void TrollMerchant::react()
       yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollMerchant::TrollMerchant(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt)
+TrollMerchant::TrollMerchant(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt)
  : TrollPerson(scr, xStart, yStart, secrt, TROLL_SPRITE_MERCHANT, 0)
 {
  say = IRandom(TROLL_MERCHANT_SAYINGS);

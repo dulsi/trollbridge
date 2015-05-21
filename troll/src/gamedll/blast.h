@@ -15,7 +15,7 @@
 class TrollBlast: public TrollProjectile
 {
  public:
-  TrollBlast(TrollScreen *screen, IUShort xStart, IUShort yStart,
+  TrollBlast(TrollScreen *screen, IShort xStart, IShort yStart,
     IUShort dmg, IShort xSpd, IShort ySpd, IUByte shft);
   void react();
   void takeHit(TrollThing *hitBy);
@@ -36,7 +36,7 @@ class TrollStandardProjectile: public TrollProjectile
 class TrollSpear: public TrollStandardProjectile
 {
  public:
-  TrollSpear(TrollScreen *screen, IUShort xStart, IUShort yStart,
+  TrollSpear(TrollScreen *screen, IShort xStart, IShort yStart,
     IUShort dmg, IUShort dir, IUByte shft);
   void react();
 };

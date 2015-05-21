@@ -9,34 +9,35 @@
 
 <hr>
 
-Unfortunately there is very little documention on the utilities for
+Unfortunately there is very little documentation on the utilities for
 Troll Bridge.  Most were designed to be functional and not pretty or
 user-friendly.<p>
+
+<b>builddata:</b>  If you check the data directory included with Troll
+Bridge, you will notice all the images are stored in ".txt" and the level
+data is not stored in the ".trb" format used by Troll Bridge.  Instead
+many of these other utilities are used to build the game data.  Since such
+a task is tedious and repetitive this script was developed to automate
+it.  It has some variables at the beginning which will need to be modified
+depending on where you put Troll Bridge.  It builds the troll bridge
+palette, the sprite file, and any level in the levels directory.  It takes
+no command line arguments but does read information for building the
+sprite file from standard input.  Included in the source distribution is
+"sprite.lst" which is the information to build the Troll Bridge sprite
+file.<p>
 
 <b>createmap:</b>  Createmap is used to combine a collection of screens
 into a single level file.  It takes a single argument, the map file.  The
 map file is a text file that tells what the screen files are.  For an
 example look in the files included with Troll Bridge.<p>
 
-<b>createspr:</b>  If you check the data directory included with Troll
-Bridge, you will notice all the images are stored in ".txt" and the level
-data is not stored in the ".trb" format used by Troll Bridge.  Instead
-many of these other utilities are used to build the game data.  Since such
-a task is tedious and repedative this script was developed to automate
-it.  It has some variables at the beginning which will need to be modified
-depending on where you put Troll Bridge.  It builds the troll bridge
-palette, the sprite file, and any level in the levels directory.  It takes
-no command line arguments but does read information for building the
-sprite file from standard in.  Included in the source distribution is
-"sprite.lst" which is the information to build the Troll Bridge sprite
-file.<p>
-
 <b>pcx2text:</b>  A simple text picture format was made where color
 entries are given names so that they automatically change when the
 palette is modified.  This utility mostly converts a pcx file to the
-text picture format.  Unfortunately it make no attempt to convert the
-color entries into the appropriate name so instead you must edit them
-afterwords.  The input file is the first argument.  The second
+text picture format.  A text palette can be specified on the command or
+with an environment variable.  If exact color matches are found, the
+color name will be substituted otherwise the color values will be used in
+the output.  The input file is the first argument.  The second
 argument is the output file or the program simply uses the input filename
 with a ".txt" extension.<p>
 
@@ -52,7 +53,7 @@ facing, a number indicating frame and a ".pcx" extension.  For example
 "thinga0.pcx" and "thingb0.pcx".<p>
 
 <b>text2pal:</b>  Over time the palette of Troll Bridge has required
-change.  To facillitate such changes a text format of the palette was
+change.  To facilitate such changes a text format of the palette was
 created.  It included names for the colors so that a picture could
 specify colors by name and automatically change when the palette
 entries were moved.  The text palette consists of the red, green, and
@@ -67,7 +68,7 @@ extension.  Otherwise the second argument specifies the output file.<p>
 format to a pcx.  It is currently hard coded to read "../data/trollpal.txt"
 for a palette.  The first argument is the input text file.  If a second
 argument is included it is used as the output file.  When no output file
-is specified it uses the iput file with a ".pcx" extension.<p>
+is specified it uses the input filename with a ".pcx" extension.<p>
 
 </body>
 </html>

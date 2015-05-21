@@ -10,8 +10,8 @@
 #include "items.h"
 #include "explosion.h"
 
-TrollExplosion::TrollExplosion(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort shft)
+TrollExplosion::TrollExplosion(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort shft)
  : TrollMonster(scr)
 {
  x = xStart;

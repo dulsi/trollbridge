@@ -8,7 +8,8 @@
 
 The file formats are not considered final at this time.  Every effort will
 be made to inform developers of changes to the file formats and if
-possible tools will be provided to aid in the conversion.<p>
+possible tools will be provided to aid in the conversion.  Unless
+otherwise specified variables are unsigned.<p>
 
 <b>File Format: .pal</b><br>
 The ".pal" files store a 256 color palette.<p>
@@ -294,10 +295,10 @@ currently implemented are:<p>
 <td>itemType: short</td>
 </tr>
 <tr>
-<td>x: short</td>
+<td>x: signed short</td>
 </tr>
 <tr>
-<td>y: short</td>
+<td>y: signed short</td>
 </tr>
 <tr>
 <td>secretNum: short</td>
@@ -396,10 +397,10 @@ currently implemented are:<p>
 </tr>
 <tr>
 <td rowspan=2 valign=top>Arguments:</td>
-<td>message1: string</td>
+<td>message1: string (max 27 characters)</td>
 </tr>
 <tr>
-<td>message2: string</td>
+<td>message2: string (max 27 characters)</td>
 </tr>
 <tr>
 <td>Description:</td>
@@ -423,10 +424,10 @@ currently implemented are:<p>
 <td>monsterType: short</td>
 </tr>
 <tr>
-<td>x: short</td>
+<td>x: signed short</td>
 </tr>
 <tr>
-<td>y: short</td>
+<td>y: signed short</td>
 </tr>
 <tr>
 <td>secretNum: short</td>
@@ -509,6 +510,12 @@ it contains.
 <td>Colors for each map square</td>
 </tr>
 </table><p>
+
+<b>File Format: .def</b><br>
+The current world definition file is a simple text file.  Each item is
+on a seperate line.  The file defines the shared library, pallete file,
+sprite file, starting trb file, and title screen.  Expect this format
+to change in future version.<p>
 
 <b>File Format: .pcx</b><br>
 Identical Software's Graphics Library supports the ".pcx" format but it

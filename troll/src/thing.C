@@ -29,14 +29,25 @@ void TrollThing::draw(IScreen drawscreen)
  pic->draw(drawscreen, x, y, frame, facing, shift);
 }
 
-IUShort TrollThing::getDirection()
+IUShort TrollThing::getDirection() const
 {
  return(direction);
 }
 
-bool TrollThing::isDead()
+void TrollThing::getLocation(IShort &xLoc, IShort &yLoc) const
+{
+ xLoc = x;
+ yLoc = y;
+}
+
+bool TrollThing::isDead() const
 {
  return(dead);
+}
+
+void TrollThing::setDead(IUByte value)
+{
+ dead = value;
 }
 
 bool TrollThing::checkCollision(const TrollThing *a, const TrollThing *b)

@@ -20,8 +20,8 @@
 
     Returns: A Healer
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollHealer::createHealer(TrollScreen *scr, IUShort sx,
-  IUShort sy, IUShort secrt = 0)
+TrollThing *TrollHealer::createHealer(TrollScreen *scr, IShort sx,
+  IShort sy, IUShort secrt = 0)
 {
  return new TrollHealer(scr, sx, sy, secrt);
 }
@@ -34,8 +34,10 @@ TrollThing *TrollHealer::createHealer(TrollScreen *scr, IUShort sx,
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 void TrollHealer::draw(IScreen drawscreen)
 {
- IUShort tx = screen->getCharacter()->getX();
- IUShort ty = screen->getCharacter()->getY();
+ IShort tx;
+ IShort ty;
+
+ screen->getCharacter()->getLocation(tx, ty);
  if ((tx >= 115) && (tx <= 165) && (ty >= 125) && (ty <= 136))
  {
   IUShort fr;
@@ -66,8 +68,10 @@ void TrollHealer::draw(IScreen drawscreen)
 void TrollHealer::react()
 {
  TrollCharacter *troll = const_cast<TrollCharacter *>(screen->getCharacter());
- IUShort tx = troll->getX();
- IUShort ty = troll->getY();
+ IShort tx;
+ IShort ty;
+
+ troll->getLocation(tx, ty);
  if ((tx >= 115) && (tx <= 165) && (ty >= 125) && (ty <= 136) &&
    (state % 8 == 0))
  {
@@ -84,7 +88,7 @@ void TrollHealer::react()
       sy           (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollHealer::TrollHealer(TrollScreen *scr, IUShort sx, IUShort sy,
+TrollHealer::TrollHealer(TrollScreen *scr, IShort sx, IShort sy,
   IUShort secrt)
   : TrollMonster(scr, secrt)
 {

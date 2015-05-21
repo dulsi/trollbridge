@@ -39,8 +39,8 @@ TrollEggItem TrollEgg(5);
 
     Returns: An anhk
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollActivatibleItem::createAnhk(TrollScreen *scr, IUShort x,
-  IUShort y, IUShort secrt = 0)
+TrollThing *TrollActivatibleItem::createAnhk(TrollScreen *scr, IShort x,
+  IShort y, IUShort secrt = 0)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollAnhk);
 }
@@ -57,7 +57,7 @@ TrollThing *TrollActivatibleItem::createAnhk(TrollScreen *scr, IUShort x,
     Returns: A sword
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createEnchantedSword(TrollScreen *scr,
-  IUShort x, IUShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt = 0)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollEnchantedSword);
 }
@@ -74,7 +74,7 @@ TrollThing *TrollActivatibleItem::createEnchantedSword(TrollScreen *scr,
     Returns: An egg
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createEgg(TrollScreen *scr,
-  IUShort x, IUShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt = 0)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollEgg);
 }
@@ -90,8 +90,8 @@ TrollThing *TrollActivatibleItem::createEgg(TrollScreen *scr,
 
     Returns: A shield
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollActivatibleItem::createShield(TrollScreen *scr, IUShort x,
-  IUShort y, IUShort secrt = 0)
+TrollThing *TrollActivatibleItem::createShield(TrollScreen *scr, IShort x,
+  IShort y, IUShort secrt = 0)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollShield);
 }
@@ -108,7 +108,7 @@ TrollThing *TrollActivatibleItem::createShield(TrollScreen *scr, IUShort x,
     Returns: A shield for sale
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createSoldShield(TrollScreen *scr,
-  IUShort x, IUShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt = 0)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 70, &TrollShield);
 }
@@ -124,8 +124,8 @@ TrollThing *TrollActivatibleItem::createSoldShield(TrollScreen *scr,
 
     Returns: A sword
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollActivatibleItem::createSword(TrollScreen *scr, IUShort x,
-  IUShort y, IUShort secrt = 0)
+TrollThing *TrollActivatibleItem::createSword(TrollScreen *scr, IShort x,
+  IShort y, IUShort secrt = 0)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollNormalSword);
 }
@@ -156,8 +156,8 @@ void TrollActivatibleItem::pickUp(TrollCharacter *troll)
       secrt        (In)  Secret number to set when dead
       actItem      (In)  The activation item
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollActivatibleItem::TrollActivatibleItem(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt, IUShort cst, TrollCarriedItem *actItem)
+TrollActivatibleItem::TrollActivatibleItem(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt, IUShort cst, TrollCarriedItem *actItem)
   :TrollItem(scr, xStart, yStart, secrt, cst)
 {
  activateItem = actItem;
@@ -193,10 +193,9 @@ TrollSwordItem::TrollSwordItem(IUShort num, IUShort str, IUShort dmg)
 void TrollSwordItem::activate(TrollCharacter *troll, TrollScreen *screen)
 {
  TrollSwordThrust *sword;
- IUShort xPos, yPos;
+ IShort xPos, yPos;
 
- xPos = troll->getX();
- yPos = troll->getY();
+ troll->getLocation(xPos, yPos);
  switch (troll->getDirection())
  {
   case TROLL_UP:
@@ -268,14 +267,13 @@ void TrollEnchantedSwordItem::activate(TrollCharacter *troll,
   TrollScreen *screen)
 {
  TrollSwordProjectile *sword;
- IUShort xPos, yPos;
+ IShort xPos, yPos;
 
  TrollSwordItem::activate(troll, screen);
  sword = (TrollSwordProjectile *)0;
  if ((troll->getHp() == troll->getTotalHp()) && (!activeFlag))
  {
-  xPos = troll->getX();
-  yPos = troll->getY();
+  troll->getLocation(xPos, yPos);
   switch (troll->getDirection())
   {
    case TROLL_UP:
@@ -343,8 +341,8 @@ void TrollEnchantedSwordItem::clearActiveFlag()
       dir          (In)  Direction of attack
       dmg          (In)  Damage of the attack
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollSwordThrust::TrollSwordThrust(TrollScreen *screen, IUShort xStart,
-  IUShort yStart, IUShort dir, IUShort dmg)
+TrollSwordThrust::TrollSwordThrust(TrollScreen *screen, IShort xStart,
+  IShort yStart, IUShort dir, IUShort dmg)
  : TrollProjectile(screen, dmg)
 {
  switch (dir)
@@ -428,7 +426,7 @@ void TrollSwordThrust::takeHit(TrollThing *hitBy)
       swrd         (In)  Sword that fired the projectile
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollSwordProjectile::TrollSwordProjectile(TrollScreen *screen,
-  IUShort xStart, IUShort yStart, IUShort dir, IUShort dmg,
+  IShort xStart, IShort yStart, IUShort dir, IUShort dmg,
   TrollEnchantedSwordItem *swrd)
  : TrollProjectile(screen, dmg)
 {
@@ -582,7 +580,7 @@ bool TrollAnhkItem::checkActiveAnhk(TrollScreen *screen)
 
 TrollAnhkProjectile *TrollAnhkItem::anhk = NULL;
 
-TrollAnhkProjectile::TrollAnhkProjectile(TrollScreen *screen, IUShort xStart, IUShort yStart)
+TrollAnhkProjectile::TrollAnhkProjectile(TrollScreen *screen, IShort xStart, IShort yStart)
  : TrollProjectile(screen, 0)
 {
  sprite = 0;
@@ -635,10 +633,9 @@ TrollShieldItem::TrollShieldItem(IUShort num, IUShort str)
 void TrollShieldItem::activate(TrollCharacter *troll, TrollScreen *screen)
 {
  TrollShieldProjectile *shield;
- IUShort xPos, yPos;
+ IShort xPos, yPos;
 
- xPos = troll->getX();
- yPos = troll->getY();
+ troll->getLocation(xPos, yPos);
  switch (troll->getDirection())
  {
   case TROLL_UP:
@@ -679,7 +676,7 @@ void TrollShieldItem::activate(TrollCharacter *troll, TrollScreen *screen)
 }
 
 TrollShieldProjectile::TrollShieldProjectile(TrollScreen *screen,
-  IUShort xStart, IUShort yStart, IUShort dir, IUByte shft,
+  IShort xStart, IShort yStart, IUShort dir, IUByte shft,
   TrollCharacter *trll)
  : TrollProjectile(screen, 0)
 {
@@ -691,8 +688,7 @@ TrollShieldProjectile::TrollShieldProjectile(TrollScreen *screen,
  shift = shft;
  frame = 0;
  troll = trll;
- trollX = trll->getX();
- trollY = trll->getY();
+ trll->getLocation(trollX, trollY);
  trollFacing = trll->getFacing();
  trollFrame = trll->getFrame();
 }
@@ -746,7 +742,7 @@ TrollLimitedItem::TrollLimitedItem(IUShort num, IUShort slt, IUShort str)
  number = 0;
 }
 
-void TrollLimitedItem::draw(IScreen drawscreen, IUShort x, IUShort y)
+void TrollLimitedItem::draw(IScreen drawscreen, IShort x, IShort y)
 {
  char text[10];
 
@@ -777,13 +773,13 @@ void TrollLimitedItem::write(BinaryWriteFile &f)
 }
 
 TrollThing *TrollLimitedActivatibleItem::createKey(TrollScreen *scr,
-  IUShort x, IUShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt = 0)
 {
  return new TrollLimitedActivatibleItem(scr, x, y, secrt, 0, &TrollKey);
 }
 
 TrollThing *TrollLimitedActivatibleItem::createSoldKey(TrollScreen *scr,
-  IUShort x, IUShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt = 0)
 {
  return new TrollLimitedActivatibleItem(scr, x, y, secrt, 60, &TrollKey);
 }
@@ -808,7 +804,7 @@ void TrollLimitedActivatibleItem::pickUp(TrollCharacter *troll)
 }
 
 TrollLimitedActivatibleItem::TrollLimitedActivatibleItem(TrollScreen *scr,
-  IUShort xStart, IUShort yStart, IUShort secrt, IUShort cst,
+  IShort xStart, IShort yStart, IUShort secrt, IUShort cst,
   TrollCarriedItem *actItem)
   : TrollActivatibleItem(scr, xStart, yStart, secrt, cst, actItem)
 {
@@ -824,10 +820,9 @@ TrollKeyItem::TrollKeyItem()
 void TrollKeyItem::activate(TrollCharacter *troll, TrollScreen *screen)
 {
  TrollKeyProjectile *key;
- IUShort xPos, yPos;
+ IShort xPos, yPos;
 
- xPos = troll->getX();
- yPos = troll->getY();
+ troll->getLocation(xPos, yPos);
  switch (troll->getDirection())
  {
   case TROLL_UP:
@@ -883,7 +878,7 @@ void TrollKeyItem::activate(TrollCharacter *troll, TrollScreen *screen)
       slt          (In)  Slot number of key item
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollKeyProjectile::TrollKeyProjectile(TrollScreen *screen,
-  IUShort xStart, IUShort yStart, IUShort dir, TrollCharacter *trll,
+  IShort xStart, IShort yStart, IUShort dir, TrollCharacter *trll,
   IUShort slt)
   :TrollProjectile(screen, 0)
 {
@@ -962,8 +957,8 @@ void TrollTimedItem::react()
       y            (In)  Y location
       secrt        (In)  Secret number to set when dead
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollTimedItem::TrollTimedItem(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0, IUShort cst = 0)
+TrollTimedItem::TrollTimedItem(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0, IUShort cst = 0)
   : TrollItem(scr, xStart, yStart, secrt, cst)
 {
  life = TROLL_ITEM_LIFESPAN;
@@ -980,7 +975,7 @@ TrollTimedItem::TrollTimedItem(TrollScreen *scr, IUShort xStart,
 
     Returns: A gold coin
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollGold::createGoldCoin(TrollScreen *scr, IUShort x, IUShort y,
+TrollThing *TrollGold::createGoldCoin(TrollScreen *scr, IShort x, IShort y,
   IUShort secrt = 0)
 {
  return new TrollGold(scr, x, y, secrt, 1);
@@ -997,8 +992,8 @@ TrollThing *TrollGold::createGoldCoin(TrollScreen *scr, IUShort x, IUShort y,
 
     Returns: 3 gold coins
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollGold::create3GoldCoins(TrollScreen *scr, IUShort x,
-    IUShort y, IUShort secrt = 0)
+TrollThing *TrollGold::create3GoldCoins(TrollScreen *scr, IShort x,
+    IShort y, IUShort secrt = 0)
 {
  return new TrollGold(scr, x, y, secrt, 3);
 }
@@ -1025,7 +1020,7 @@ void TrollGold::pickUp(TrollCharacter *troll)
       secrt        (In)  Secret number to set when dead
       amt          (In)  Amount of gold coins
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollGold::TrollGold(TrollScreen *scr, IUShort xStart, IUShort yStart,
+TrollGold::TrollGold(TrollScreen *scr, IShort xStart, IShort yStart,
   IUShort secrt, IUShort amt)
  : TrollTimedItem(scr, xStart, yStart, secrt)
 {
@@ -1054,8 +1049,8 @@ TrollGold::TrollGold(TrollScreen *scr, IUShort xStart, IUShort yStart,
 
     Returns: A hit point
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollHitPoint::createHitPoint(TrollScreen *scr, IUShort x,
-  IUShort y, IUShort secrt = 0)
+TrollThing *TrollHitPoint::createHitPoint(TrollScreen *scr, IShort x,
+  IShort y, IUShort secrt = 0)
 {
  return new TrollHitPoint(scr, x, y, secrt, 0, 1);
 }
@@ -1071,8 +1066,8 @@ TrollThing *TrollHitPoint::createHitPoint(TrollScreen *scr, IUShort x,
 
     Returns: A hit point for sale
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollHitPoint::createSoldHitPoint(TrollScreen *scr, IUShort x,
-  IUShort y, IUShort secrt = 0)
+TrollThing *TrollHitPoint::createSoldHitPoint(TrollScreen *scr, IShort x,
+  IShort y, IUShort secrt = 0)
 {
  return new TrollHitPoint(scr, x, y, secrt, 20, 1);
 }
@@ -1117,7 +1112,7 @@ void TrollHitPoint::react()
       secrt        (In)  Secret number to set when dead
       amt          (In)  Amount of hit points
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollHitPoint::TrollHitPoint(TrollScreen *scr, IUShort xStart, IUShort yStart,
+TrollHitPoint::TrollHitPoint(TrollScreen *scr, IShort xStart, IShort yStart,
   IUShort secrt, IUShort cst, IUShort amt)
  : TrollTimedItem(scr, xStart, yStart, secrt, cst)
 {
@@ -1140,8 +1135,8 @@ TrollHitPoint::TrollHitPoint(TrollScreen *scr, IUShort xStart, IUShort yStart,
 
     Returns: A level map
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollLevelMap::createLevelMap(TrollScreen *scr, IUShort x,
-  IUShort y, IUShort secrt = 0)
+TrollThing *TrollLevelMap::createLevelMap(TrollScreen *scr, IShort x,
+  IShort y, IUShort secrt = 0)
 {
  return new TrollLevelMap(scr, x, y, secrt);
 }
@@ -1177,7 +1172,7 @@ void TrollLevelMap::pickUp(TrollCharacter *troll)
       y            (In)  Y location
       secrt        (In)  Secret number to set when dead
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollLevelMap::TrollLevelMap(TrollScreen *scr, IUShort xStart, IUShort yStart,
+TrollLevelMap::TrollLevelMap(TrollScreen *scr, IShort xStart, IShort yStart,
   IUShort secrt)
  : TrollItem(scr, xStart, yStart, secrt)
 {

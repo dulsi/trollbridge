@@ -15,14 +15,14 @@
 class TrollOctoid : public TrollStandardMonster
 {
  public:
-  static TrollThing *createBlueOctoid(TrollScreen *scr, IUShort sx,
-    IUShort sy, IUShort secrt = 0);
+  static TrollThing *createBlueOctoid(TrollScreen *scr, IShort sx,
+    IShort sy, IUShort secrt = 0);
 
   void die();
   void react();
 
  protected:
-  TrollOctoid(TrollScreen *scr, IUShort sx, IUShort sy, IUShort secrt,
+  TrollOctoid(TrollScreen *scr, IShort sx, IShort sy, IUShort secrt,
     IUShort shft, IUShort spd);
 
   IUShort speed;

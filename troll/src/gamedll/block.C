@@ -22,8 +22,8 @@
 
     Returns: A movable block
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollBlock::createBlock(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollBlock::createBlock(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return
    new TrollBlock(scr, secrt, TROLL_CALCULATE_X_POS(5),
@@ -37,11 +37,11 @@ void TrollBlock::react()
 {
  if (!moving)
  {
-  IUShort tx, ty, tfacing, tframe;
+  IShort tx, ty;
+  IUShort tfacing, tframe;
   const TrollCharacter *troll = screen->getCharacter();
 
-  tx = troll->getX();
-  ty = troll->getY();
+  troll->getLocation(tx, ty);
   tfacing = troll->getFacing();
   tframe = troll->getFrame();
   if ((tframe != lastFrame) &&
@@ -123,8 +123,8 @@ void TrollBlock::takeHit(TrollThing *hitBy)
       xStart       (In)  Starting x location
       yStart       (In)  Starting y location
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollBlock::TrollBlock(TrollScreen *scr, IUShort secrt, IUShort xStart,
-  IUShort yStart) : TrollMonster(scr, secrt)
+TrollBlock::TrollBlock(TrollScreen *scr, IUShort secrt, IShort xStart,
+  IShort yStart) : TrollMonster(scr, secrt)
 {
  scr->getBackground(xStart / TROLL_SQUARE_X,
    (yStart - TROLL_BUFFER_Y) / TROLL_SQUARE_Y, sprite, shift);

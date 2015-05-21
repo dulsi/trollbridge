@@ -14,28 +14,28 @@
 class TrollPerson: public TrollMonster
 {
  public:
-  static TrollThing *createGrayTroll(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createGrayTroll(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
 
   void react();
 
  protected:
-  TrollPerson(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  TrollPerson(TrollScreen *scr, IShort xStart, IShort yStart,
     IUShort secrt, IUShort sprt, IUShort shft);
 };
 
 class TrollMerchant: public TrollPerson
 {
  public:
-  static TrollThing *createMerchant(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createMerchant(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
 
   ~TrollMerchant();
   void draw(IScreen drawscreen);
   void react();
 
  protected:
-  TrollMerchant(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  TrollMerchant(TrollScreen *scr, IShort xStart, IShort yStart,
     IUShort secrt);
 
   IUShort time;

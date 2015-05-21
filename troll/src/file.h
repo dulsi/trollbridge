@@ -22,6 +22,12 @@
   error.
 */
 
+class FileException
+{
+ public:
+  FileException();
+};
+
 class FileList
 {
  public:

@@ -37,7 +37,7 @@ TrollUndead::TrollUndead(TrollScreen *scr, IUShort secrt, IUShort dmg)
 }
 
 TrollThing *TrollSkeletalTroll::createSkeletalTroll(TrollScreen *scr,
-  IUShort xStart, IUShort yStart, IUShort secrt = 0)
+  IShort xStart, IShort yStart, IUShort secrt = 0)
 {
  return new TrollSkeletalTroll(scr, xStart, yStart, secrt);
 }
@@ -264,8 +264,8 @@ void TrollSkeletalTroll::runAway()
  }
 }
 
-TrollSkeletalTroll::TrollSkeletalTroll(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt)
+TrollSkeletalTroll::TrollSkeletalTroll(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt)
  : TrollUndead(scr, secrt, 1)
 {
  if ((xStart == TROLL_XYRANDOM) && (yStart == TROLL_XYRANDOM))
@@ -288,7 +288,7 @@ TrollSkeletalTroll::TrollSkeletalTroll(TrollScreen *scr, IUShort xStart,
 }
 
 TrollThing *TrollSkeletalTrollWithItem::createSkeletalTrollWithKey(
-  TrollScreen *scr, IUShort xStart, IUShort yStart, IUShort secrt = 0)
+  TrollScreen *scr, IShort xStart, IShort yStart, IUShort secrt = 0)
 {
  return new TrollSkeletalTrollWithItem(scr, xStart, yStart, secrt,
    TrollLimitedActivatibleItem::createKey, TROLL_SPRITE_KEY, 0);
@@ -312,7 +312,7 @@ void TrollSkeletalTrollWithItem::draw(IScreen drawscreen)
 }
 
 TrollSkeletalTrollWithItem::TrollSkeletalTrollWithItem(TrollScreen *scr,
-  IUShort xStart, IUShort yStart, IUShort secrt, TrollItemConstructor icon,
+  IShort xStart, IShort yStart, IUShort secrt, TrollItemConstructor icon,
   IUShort isprt, IUShort ishft)
  : TrollSkeletalTroll(scr, xStart, yStart, secrt)
 {

@@ -15,7 +15,7 @@
 class TrollExplosion : public TrollMonster
 {
  public:
-  TrollExplosion(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  TrollExplosion(TrollScreen *scr, IShort xStart, IShort yStart,
     IUShort shft);
 
   void die();

@@ -1,11 +1,8 @@
 #include <igrbasics.h>
-#include <stdio.h>
+#include <igrpalette.h>
 #include <unistd.h>
-#include "iextra.h"
-#include "file.h"
 
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname);
-void IPalettePalSave(IPalette pal, const char *filename);
 
 int main(int argc, char *argv[])
 {
@@ -27,7 +24,7 @@ void ParseCommandLine(int argc, char *argv[], char *inname, char *outname)
  char opt;
  int i;
 
- while ((opt=getopt(argc,argv,"h?"))!=EOF) {
+ while ((opt=getopt(argc,argv,"h?")) != -1) {
   switch (opt) {
    case 'h':
    case '?':
@@ -67,21 +64,6 @@ text2pal inname[.txt] [outname[.pal]]\n\
  {
   strcpy(outname, inname);
   strcpy(outname + strlen(outname) - 3, "pal");
- }
-}
-
-void IPalettePalSave(IPalette pal, const char *filename)
-{
- IColor r, g, b;
- int i;
- BinaryWriteFile writeFile(filename);
-
- for (i = 0; i < 256; i++)
- {
-  IPaletteGet(pal, i, &r, &g, &b);
-  writeFile.writeByte(r);
-  writeFile.writeByte(g);
-  writeFile.writeByte(b);
  }
 }
 

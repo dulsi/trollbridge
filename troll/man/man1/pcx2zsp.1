@@ -1,0 +1,28 @@
+.\" Process this file with
+.\" groff -man -Tascii pcx2zsp.1
+.\"
+.TH PCX2ZSP 1 "DECEMBER 2000" "Troll Bridge" "Developer Manual"
+.SH NAME
+pcx2zsp \- combines a collection of pcx files into a zelda sprite file
+.SH SYNOPSIS
+.B pcx2zsp 
+.I filename[.zsp]
+.I facings
+.I frames
+.SH DESCRIPTION
+.B pcx2zsp
+reads a collection of pcx files and creates a zelda sprite file.  All
+the pcx files must be the same size and 8-bit color.  There is a maximum
+of 26 facings and 10 frames.  The pcx files are name the same as the zsp
+file except with two additional characters to signify the facing and
+frame.  Letters are used for facings while numbers denote frame.
+.PP
+For example, if you wanted to convert foo to a zsp with 4 facings and 2
+frames.  The pcx files must be named fooa0.pcx, fooa1.pcx, foob0.pcx,
+foob1.pcx, fooc0.pcx, fooc1.pcx, food0.pcx, and food1.pcx.  The command
+would be 'pcx2zsp foo 4 2'.
+.SH AUTHOR
+Dennis Payne <dulsi@identicalsoftware.com>
+.SH "SEE ALSO"
+.BR zsp (5)
+

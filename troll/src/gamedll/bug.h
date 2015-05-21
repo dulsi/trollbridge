@@ -15,15 +15,15 @@
 class TrollBug : public TrollStandardMonster
 {
  public:
-  static TrollThing *createBlueBug(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
-  static TrollThing *createRedBug(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createBlueBug(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
+  static TrollThing *createRedBug(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
 
   void react();
 
  protected:
-  TrollBug(TrollScreen *scr, IUShort xStart, IUShort yStart, IUShort secrt,
+  TrollBug(TrollScreen *scr, IShort xStart, IShort yStart, IUShort secrt,
     IUShort shft);
 
   void changeSpeed();

@@ -13,14 +13,14 @@
 #define TROLL_BUG_RUNSLOW 1
 #define TROLL_BUG_RUNFAST 2
 
-TrollThing *TrollBug::createBlueBug(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollBug::createBlueBug(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return new TrollBug(scr, xStart, yStart, secrt, 0);
 }
 
-TrollThing *TrollBug::createRedBug(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollBug::createRedBug(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return new TrollBug(scr, xStart, yStart, secrt, 10);
 }
@@ -103,7 +103,7 @@ void TrollBug::react()
  }*/
 }
 
-TrollBug::TrollBug(TrollScreen *scr, IUShort xStart, IUShort yStart,
+TrollBug::TrollBug(TrollScreen *scr, IShort xStart, IShort yStart,
   IUShort secrt, IUShort shft)
  : TrollStandardMonster(scr, secrt, 1)
 {

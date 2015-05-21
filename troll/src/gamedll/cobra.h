@@ -15,15 +15,15 @@
 class TrollCobra : public TrollStandardMonster
 {
  public:
-  static TrollThing *createGreenCobra(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createGreenCobra(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
 
   void die();
   void react();
   void takeHit(TrollThing *hitBy);
 
  protected:
-  TrollCobra(TrollScreen *scr, IUShort xStart, IUShort yStart, IUShort secrt,
+  TrollCobra(TrollScreen *scr, IShort xStart, IShort yStart, IUShort secrt,
     IUShort shft);
 
   IUShort time;

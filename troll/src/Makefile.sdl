@@ -11,15 +11,17 @@ LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS)
 
 DLL_DIR = gamedll
 
-TROLL_OBJ = character.o file.o game.o main.o nescont.o screen.o sprite.o \
-	thing.o monster.o item.o carrieditem.o projectile.o secret.o exit.o
+TROLL_OBJ = definition.o character.o file.o game.o main.o nescont.o \
+	screen.o sprite.o thing.o monster.o item.o carrieditem.o \
+	projectile.o secret.o exit.o
 TROLL_EXE = troll
 
 DLL_OBJ = $(DLL_DIR)/dllmain.o $(DLL_DIR)/items.o $(DLL_DIR)/people.o \
 	$(DLL_DIR)/door.o $(DLL_DIR)/scorpion.o $(DLL_DIR)/bug.o \
 	$(DLL_DIR)/block.o $(DLL_DIR)/undead.o $(DLL_DIR)/closedoor.o \
 	$(DLL_DIR)/cobra.o $(DLL_DIR)/blast.o $(DLL_DIR)/explosion.o \
-	$(DLL_DIR)/healer.o $(DLL_DIR)/jumper.o $(DLL_DIR)/octoid.o
+	$(DLL_DIR)/healer.o $(DLL_DIR)/jumper.o $(DLL_DIR)/octoid.o \
+	$(DLL_DIR)/turtle.o
 TROLL_DLL = troll.so
 
 all: $(TROLL_EXE) $(TROLL_DLL)

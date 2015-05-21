@@ -15,14 +15,14 @@
 class TrollBlock: public TrollMonster
 {
  public:
-  static TrollThing *createBlock(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createBlock(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
 
   void react();
   void takeHit(TrollThing *hitBy);
 
  private:
-  TrollBlock(TrollScreen *scr, IUShort secrt, IUShort xStart, IUShort yStart);
+  TrollBlock(TrollScreen *scr, IUShort secrt, IShort xStart, IShort yStart);
 
   IUShort pushTime;
   IUShort lastFrame;

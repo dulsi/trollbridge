@@ -11,8 +11,12 @@
 #include <itimer.h>
 #include <igrgeometry.h>
 #include <igrimage.h>
+#include <igrpalette.h>
 #include <igrtext.h>
 #include <ikbbuffer.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <getopt.h>
 #include "troll.h"
 
 #ifndef __MSDOS__
@@ -29,11 +33,93 @@
 TrollGame::TrollGame(int argc, char **argv)
 {
  int x,y;
+ char *file;
+ char *defName = "troll.def";
+ char opt;
+ IPalette pal;
+ static struct option long_options[] =
+ {
+  {"def", 1, 0, 'd'},
+  {0, 0, 0, 0}
+ };
+
+ while ((opt = getopt_long(argc, argv, "h?d:", long_options, NULL)) != EOF)
+ {
+  switch (opt)
+  {
+   case 'h':
+   case '?':
+    printf("\
+Starts a game of Troll Bridge\n\
+\n\
+troll [options]\n\
+\n\
+  Options:\n\
+    -d, --def=FILENAME   World definition file (defaults to \"troll.def\")\n\
+");
+    exit(0);
+    break;
+   case 'd':
+    defName = strdup(optarg);
+    if (strchr(defName, '/') != NULL)
+    {
+     printf("Definition files must be stored in %s\n", DATA_DIR);
+     exit(-1);
+    }
+    break;
+   default:
+    break;
+  }
+ }
+
+ char *home = getenv("HOME");
+ if (home)
+ {
+  int len = strlen(home);
+  savePath = (char *)IMalloc(len + 12);
+  strcpy(savePath, home);
+  if (savePath[len - 1] != '/')
+  {
+   strcat(savePath, "/");
+  }
+ }
+ else
+ {
+  savePath = (char *)IMalloc(12);
+  savePath[0] = 0;
+ }
+#ifdef __MSDOS__
+ strcat(savePath, "troll.dot");
+#else
+ strcat(savePath, ".troll");
+#endif
+ int err = mkdir(savePath, 0700);
+ if ((-1 == err) && (EEXIST != errno))
+ {
+  fprintf(stderr, "Error creating directory %s\n", savePath);
+  exit(2);
+ }
+ strcat(savePath, "/");
 
  // Run at 30 frames per second
  ITimerStart(30);
+
+ file = buildFullPath(DATA_DIR, defName);
+ definition = new TrollDefinition(file);
+ delete[] file;
+ file = buildFullPath(DATA_DIR, definition->getPaletteFile());
+ pal = IPalettePalLoad(file);
+ delete[] file;
+ IPaletteSet(pal, 255, 255, 255, 255);
+ IPaletteCopy(IPaletteMain, pal);
+ IPaletteDestroy(pal);
+ file = buildFullPath(DATA_DIR, definition->getSpriteFile());
+ TrollSpriteHandler.load(file);
+ delete[] file;
  // Load monster and items from dynamically linked library
- loadLibrary("./troll.so");
+ file = buildFullPath(LIBRARY_DIR, definition->getDllFile());
+ loadLibrary(file);
+ delete[] file;
  // Initialize variables to nothing
  extraScreen = NULL;
  for (x = 0; x < TROLL_LEVEL_X; x++)
@@ -45,7 +131,9 @@ TrollGame::TrollGame(int argc, char **argv)
  }
  troll = NULL;
  control = new nes_controller();
- titlePic = IImagePCXLoad("trolltitle.pcx");
+ file = buildFullPath(DATA_DIR, definition->getTitleFile());
+ titlePic = IImagePCXLoad(file);
+ delete[] file;
  levelName = NULL;
 }
 
@@ -55,6 +143,8 @@ TrollGame::TrollGame(int argc, char **argv)
 TrollGame::~TrollGame()
 {
  IImageDestroy(titlePic);
+ delete definition;
+ delete[] savePath;
  ITimerEnd();
 }
 
@@ -69,7 +159,7 @@ void TrollGame::run()
  while (titleScreen(name))
  {
   // load character
-  troll = new TrollCharacter(this, name, control);
+  troll = new TrollCharacter(this, name, definition->getStartFile(), control);
 
   // loop until the character dies
   while (!troll->isDead())
@@ -190,6 +280,16 @@ IUByte TrollGame::getMapInfo(IUShort x, IUShort y)
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollGame::getSavePath - Gets the save path.
+
+    Returns: The save path
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+const char *TrollGame::getSavePath()
+{
+ return(savePath);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   TrollGame::getScreen - Gets the screen specified by x and y position.
 
     Parameters:
@@ -253,11 +353,16 @@ void TrollGame::loadLevel(const char *filename)
 {
  int x, y;
  IULong *header;
- BinaryReadFile levelFile(filename);
+ char *file;
 
+ file = buildFullPath(DATA_DIR, filename);
+
+ BinaryReadFile levelFile(file);
+
+ delete[] file;
  if (levelName)
  {
-  delete [] levelName;
+  delete[] levelName;
  }
  levelName = new char[strlen(filename) + 1];
  strcpy(levelName, filename);
@@ -301,6 +406,25 @@ void TrollGame::loadLevel(const char *filename)
  }
  // Delete the header
  delete header;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollGame::buildFullPath - Builds a complete file path.
+
+    Returns: Complete file path (caller must delete when finished).
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+char *TrollGame::buildFullPath(const char *path, const char *file)
+{
+ char *fullPath;
+ int pathLen = strlen(path);
+
+ fullPath = new char[pathLen + strlen(file) + 2];
+ strcpy(fullPath, path);
+ if ('/' != fullPath[pathLen - 1])
+ {
+  strcat(fullPath, "/");
+ }
+ strcat(fullPath, file);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -506,7 +630,7 @@ void TrollGame::selectName(char *name)
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
-  TrollGame::titleScreen - Displays a simply little title screen until
+  TrollGame::titleScreen - Displays a simple little title screen until
     start is pressed.
 
     Parameters:
@@ -523,6 +647,7 @@ bool TrollGame::titleScreen(char *name)
  signed char d, oldD;
  unsigned char start;
  int i;
+ int len = strlen(savePath);
 
  // Most of the data from the nes controller is ignored.
  signed char ignore_1;
@@ -546,7 +671,9 @@ bool TrollGame::titleScreen(char *name)
  IPaletteCopy(pal, IPaletteMain);
 
  // Intialize everything
- FileList files("*"TROLL_SAVE_EXT);
+ char *file = buildFullPath(savePath, "*"TROLL_SAVE_EXT);
+ FileList files(file);
+ delete[] file;
  top = 0;
  where = 0;
  bufScreen = IScreenCreate();
@@ -583,7 +710,8 @@ bool TrollGame::titleScreen(char *name)
    else if (top + i <= files.length())
    {
     memset(name, 0, 9);
-    strncpy(name, files[top + i - 1], strlen(files[top + i - 1]) - 4);
+    strncpy(name, files[top + i - 1] + len,
+      strlen(files[top + i - 1] + len) - 4);
     ITextDraw(bufScreen, 65, i * 16 + 54, 255, (unsigned char *)name);
    }
   }
@@ -651,7 +779,8 @@ bool TrollGame::titleScreen(char *name)
    else if (top + where <= files.length())
    {
     memset(name, 0, 9);
-    strncpy(name, files[top + where - 1], strlen(files[top + where - 1]) - 4);
+    strncpy(name, files[top + where - 1] + len,
+      strlen(files[top + where - 1] + len) - 4);
     return true;
    }
    return false;

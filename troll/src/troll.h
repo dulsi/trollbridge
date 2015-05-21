@@ -48,9 +48,28 @@ class TrollCarriedItem;
 class TrollCharacter;
 
 typedef TrollThing *(*TrollMonsterConstructor)
-  (TrollScreen *scr, IUShort x, IUShort y, IUShort secrt = 0);
+  (TrollScreen *scr, IShort x, IShort y, IUShort secrt = 0);
 typedef TrollThing *(*TrollItemConstructor)
-  (TrollScreen *scr, IUShort x, IUShort y, IUShort secrt = 0);
+  (TrollScreen *scr, IShort x, IShort y, IUShort secrt = 0);
+
+class TrollDefinition
+{
+ public:
+  TrollDefinition(const char *filename);
+  ~TrollDefinition();
+  const char *getDllFile();
+  const char *getPaletteFile();
+  const char *getSpriteFile();
+  const char *getStartFile();
+  const char *getTitleFile();
+
+ private:
+  char *dllFile;
+  char *paletteFile;
+  char *spriteFile;
+  char *startFile;
+  char *titleFile;
+};
 
 class TrollGame
 {
@@ -69,6 +88,7 @@ class TrollGame
   TrollCarriedItem *getCarriedItem(IUShort num);
   const char *getLevelName();
   IUByte getMapInfo(IUShort x, IUShort y);
+  const char *getSavePath();
   TrollScreen *getScreen(IUShort x, IUShort y);
   IUShort getXScreen();
   IUShort getXStart();
@@ -77,11 +97,13 @@ class TrollGame
   void loadLevel(const char *filename);
 
  protected:
+  char *buildFullPath(const char *path, const char *file);
   void loadLibrary(const char *filename);
   void selectName(char *name);
   bool titleScreen(char *name);
   void turnCleanUp();
 
+  TrollDefinition *definition;
   TrollMonsterConstructor monsterTypes[TROLL_MONSTER_TYPES];
   TrollItemConstructor itemTypes[TROLL_ITEM_TYPES];
   TrollCarriedItem *carriedItems[TROLL_CARRIED_ITEMS];
@@ -91,6 +113,7 @@ class TrollGame
   nes_controller *control;
   IImage titlePic;
   char *levelName;
+  char *savePath;
   IUShort xScreen, yScreen;
   IUShort xStart, yStart;
 
@@ -219,9 +242,11 @@ class TrollThing
   virtual ~TrollThing();
   virtual void die();
   virtual void draw(IScreen drawscreen);
-  IUShort getDirection();
-  bool isDead();
+  IUShort getDirection() const;
+  void getLocation(IShort &xLoc, IShort &yLoc) const;
+  bool isDead() const;
   virtual void react() = 0;
+  void setDead(IUByte value);
   virtual void takeHit(TrollThing *hitby) = 0;
 
   static bool checkCollision(const TrollThing *a, const TrollThing *b);
@@ -243,6 +268,12 @@ class TrollMonster: public TrollThing
 {
  public:
   virtual IShort getDamage();
+  void push(IShort xOffset, IShort yOffset);
+  void setDirection(IUShort dir);
+  void setFacing(IUShort face);
+  void setFrame(IUShort frame);
+  void setLocation(IShort xNew, IShort yNew);
+  void setSprite(IUShort sprt, IUShort face);
   void takeHit(TrollThing *hitBy);
 
  protected:
@@ -321,7 +352,8 @@ class TrollCarriedItem
 class TrollCharacter: public TrollThing
 {
  public:
-  TrollCharacter(TrollGame *gm, char *nm, nes_controller *ctrl);
+  TrollCharacter(TrollGame *gm, char *nm, const char *startFile,
+    nes_controller *ctrl);
   ~TrollCharacter();
   void addCarriedItem(TrollCarriedItem *item);
   void addHp(IUShort num);
@@ -337,8 +369,8 @@ class TrollCharacter: public TrollThing
   IUShort getHp();
   TrollScreen *getScreen();
   IUShort getTotalHp();
-  IUShort getX() const;
-  IUShort getY() const;
+  IShort getX() const;
+  IShort getY() const;
   bool isInvincible();
   bool isSecretSet(IUShort num);
   void load();

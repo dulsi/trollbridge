@@ -15,20 +15,20 @@
 class TrollDoor: public TrollMonster
 {
  public:
-  static TrollThing *createDoor(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
-  static TrollThing *createSouthDoor(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
-  static TrollThing *createWestDoor(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
-  static TrollThing *createEastDoor(TrollScreen *scr, IUShort xStart,
-    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createDoor(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
+  static TrollThing *createSouthDoor(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
+  static TrollThing *createWestDoor(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
+  static TrollThing *createEastDoor(TrollScreen *scr, IShort xStart,
+    IShort yStart, IUShort secrt = 0);
 
   void react();
   void takeHit(TrollThing *hitBy);
 
  private:
-  TrollDoor(TrollScreen *scr, IUShort secrt, IUShort xStart, IUShort yStart);
+  TrollDoor(TrollScreen *scr, IUShort secrt, IShort xStart, IShort yStart);
 };
 
 #endif

@@ -16,7 +16,7 @@ class Sprite
  public:
   Sprite(BinaryReadFile &spritefile);
   ~Sprite();
-  void draw(IScreen drawscreen, IUShort x, IUShort y, IUShort frame,
+  void draw(IScreen drawscreen, IShort x, IShort y, IUShort frame,
     IUShort facing, IUByte shift) const;
   IUShort getFacings() const;
   IUShort getFrames() const;
@@ -33,10 +33,12 @@ class Sprite
 class SpriteHandler
 {
  public:
-  SpriteHandler(char *filename);
+  SpriteHandler();
+  SpriteHandler(const char *filename);
   ~SpriteHandler();
   IUShort getNumber() const;
   const Sprite *getSprite(IUShort n) const;
+  void load(const char *filename);
 
  private:
   IUShort num;

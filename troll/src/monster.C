@@ -15,6 +15,41 @@ IShort TrollMonster::getDamage()
  return 0;
 }
 
+void TrollMonster::push(IShort xOffset, IShort yOffset)
+{
+ x += xOffset;
+ y += yOffset;
+}
+
+void TrollMonster::setDirection(IUShort dir)
+{
+ direction = dir;
+}
+
+void TrollMonster::setFacing(IUShort face)
+{
+ facing = face;
+ frame = 0;
+}
+
+void TrollMonster::setFrame(IUShort fr)
+{
+ frame = fr;
+}
+
+void TrollMonster::setLocation(IShort xNew, IShort yNew)
+{
+ x = xNew;
+ y = yNew;
+}
+
+void TrollMonster::setSprite(IUShort sprt, IUShort face)
+{
+ facing = face;
+ sprite = sprt;
+ frame = 0;
+}
+
 void TrollMonster::takeHit(TrollThing *hitBy)
 {
 }

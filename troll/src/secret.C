@@ -130,7 +130,7 @@ void TrollSecret::execute(IUByte *script)
     case 0x02: // create item
      screen->addItem(
        (game->createItem(*((IUShort *)(ip + 1))))(screen,
-         *((IUShort *)(ip + 3)),*((IUShort *)(ip + 5)),*((IUShort *)(ip + 7))));
+         *((IShort *)(ip + 3)),*((IShort *)(ip + 5)),*((IUShort *)(ip + 7))));
      ip += 8;
      break;
     case 0x03: // set background
@@ -156,7 +156,7 @@ void TrollSecret::execute(IUByte *script)
     case 0x06: // create monster with position
      screen->addMonster(
        (game->createMonster(*((IUShort *)(ip + 1))))(screen,
-         *((IUShort *)(ip + 3)), *((IUShort *)(ip + 5)),
+         *((IShort *)(ip + 3)), *((IShort *)(ip + 5)),
          *((IUShort *)(ip + 7))));
      ip += 8;
      break;

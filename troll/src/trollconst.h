@@ -7,6 +7,14 @@
   04/17/98  Dennis      Created.
 \*-------------------------------------------------------------------------*/
 
+#ifndef LIBRARY_DIR
+#define LIBRARY_DIR "."
+#endif
+
+#ifndef DATA_DIR
+#define DATA_DIR "."
+#endif
+
 /* Size of the levels */
 #define TROLL_LEVEL_Y 8
 #define TROLL_LEVEL_X 16
@@ -22,7 +30,7 @@
 #define TROLL_SQUARE_X 20
 
 /* Sizes of various fixed sized arrays for class TrollGame */
-#define TROLL_MONSTER_TYPES 22
+#define TROLL_MONSTER_TYPES 23
 #define TROLL_ITEM_TYPES    13
 #define TROLL_CARRIED_ITEMS 6
 
@@ -55,7 +63,9 @@
 #define TROLL_FLYBACK_TIME    6
 
 /* Randomly generate X and / or Y position */
-#define TROLL_XYRANDOM 65000
+#define TROLL_XYRANDOM 32001
+/* Offscreen X and / or Y position */
+#define TROLL_XYOFFSCREEN 32000
 
 /* Troll sprite picture */
 #define TROLL_SPRITE 0 /*28*/

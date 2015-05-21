@@ -16,8 +16,8 @@
 #define TROLL_OCTOID_WAIT     5
 #define TROLL_OCTOID_SICKNESS 6
 
-TrollThing *TrollOctoid::createBlueOctoid(TrollScreen *scr, IUShort sx,
-  IUShort sy, IUShort secrt = 0)
+TrollThing *TrollOctoid::createBlueOctoid(TrollScreen *scr, IShort sx,
+  IShort sy, IUShort secrt = 0)
 {
  return new TrollOctoid(scr, sx, sy, secrt, 0, 3);
 }
@@ -149,7 +149,7 @@ void TrollOctoid::react()
  }
 }
 
-TrollOctoid::TrollOctoid(TrollScreen *scr, IUShort sx, IUShort sy,
+TrollOctoid::TrollOctoid(TrollScreen *scr, IShort sx, IShort sy,
   IUShort secrt, IUShort shft, IUShort spd)
  : TrollStandardMonster(scr, secrt, 1)
 {

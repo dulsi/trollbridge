@@ -25,7 +25,7 @@
       ySpd         (In)  Y speed
       shft         (In)  Color shift
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollBlast::TrollBlast(TrollScreen *screen, IUShort xStart, IUShort yStart,
+TrollBlast::TrollBlast(TrollScreen *screen, IShort xStart, IShort yStart,
   IUShort dmg, IShort xSpd, IShort ySpd, IUByte shft)
  : TrollProjectile(screen, dmg)
 {
@@ -137,7 +137,7 @@ void TrollStandardProjectile::takeHit(TrollThing *hitBy)
       dir          (In)  Direction
       shft         (In)  Color shift
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollSpear::TrollSpear(TrollScreen *screen, IUShort xStart, IUShort yStart,
+TrollSpear::TrollSpear(TrollScreen *screen, IShort xStart, IShort yStart,
   IUShort dmg, IUShort dir, IUByte shft)
  : TrollStandardProjectile(screen, dmg)
 {

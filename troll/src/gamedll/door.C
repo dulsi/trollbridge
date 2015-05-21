@@ -21,8 +21,8 @@
 
     Returns: A door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollDoor::createDoor(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollDoor::createDoor(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return
    new TrollDoor(scr, secrt, xStart, yStart);
@@ -39,8 +39,8 @@ TrollThing *TrollDoor::createDoor(TrollScreen *scr, IUShort xStart,
 
     Returns: A door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollDoor::createSouthDoor(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollDoor::createSouthDoor(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return
    new TrollDoor(scr, secrt, 140, TROLL_CALCULATE_Y_POS(TROLL_SCREEN_Y - 1));
@@ -57,8 +57,8 @@ TrollThing *TrollDoor::createSouthDoor(TrollScreen *scr, IUShort xStart,
 
     Returns: A door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollDoor::createWestDoor(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollDoor::createWestDoor(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return new TrollDoor(scr, secrt, TROLL_CALCULATE_X_POS(0),
    TROLL_CALCULATE_Y_POS(5));
@@ -75,8 +75,8 @@ TrollThing *TrollDoor::createWestDoor(TrollScreen *scr, IUShort xStart,
 
     Returns: A door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollDoor::createEastDoor(TrollScreen *scr, IUShort xStart,
-  IUShort yStart, IUShort secrt = 0)
+TrollThing *TrollDoor::createEastDoor(TrollScreen *scr, IShort xStart,
+  IShort yStart, IUShort secrt = 0)
 {
  return new TrollDoor(scr, secrt, TROLL_CALCULATE_X_POS(TROLL_SCREEN_X - 1),
    TROLL_CALCULATE_Y_POS(5));
@@ -116,8 +116,8 @@ void TrollDoor::takeHit(TrollThing *hitBy)
       xStart       (In)  Starting x location
       yStart       (In)  Starting y location
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollDoor::TrollDoor(TrollScreen *scr, IUShort secrt, IUShort xStart,
-  IUShort yStart) : TrollMonster(scr, secrt)
+TrollDoor::TrollDoor(TrollScreen *scr, IUShort secrt, IShort xStart,
+  IShort yStart) : TrollMonster(scr, secrt)
 {
  if ((xStart == TROLL_XYRANDOM) && (yStart == TROLL_XYRANDOM))
  {

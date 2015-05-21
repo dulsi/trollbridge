@@ -16,14 +16,14 @@
 #define TROLL_JUMPER_WAIT     12
 #define TROLL_JUMPER_SICKNESS 13
 
-TrollThing *TrollJumper::createGreenJumper(TrollScreen *scr, IUShort sx,
-  IUShort sy, IUShort secrt = 0)
+TrollThing *TrollJumper::createGreenJumper(TrollScreen *scr, IShort sx,
+  IShort sy, IUShort secrt = 0)
 {
  return new TrollJumper(scr, sx, sy, secrt, 5);
 }
 
-TrollThing *TrollJumper::createRedJumper(TrollScreen *scr, IUShort sx,
-  IUShort sy, IUShort secrt = 0)
+TrollThing *TrollJumper::createRedJumper(TrollScreen *scr, IShort sx,
+  IShort sy, IUShort secrt = 0)
 {
  return new TrollJumper(scr, sx, sy, secrt, 10);
 }
@@ -196,7 +196,7 @@ void TrollJumper::react()
  }
 }
 
-TrollJumper::TrollJumper(TrollScreen *scr, IUShort sx, IUShort sy,
+TrollJumper::TrollJumper(TrollScreen *scr, IShort sx, IShort sy,
   IUShort secrt, IUShort shft)
  : TrollStandardMonster(scr, secrt, 1)
 {
