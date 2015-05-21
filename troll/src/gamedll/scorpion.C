@@ -16,15 +16,15 @@
 #define TROLL_SCORPION_SICKNESS 6
 
 TrollThing *TrollScorpion::createBlueScorpion(TrollScreen *scr,
-  IUShort secrt = 0)
+  IUShort sx, IUShort sy, IUShort secrt = 0)
 {
- return new TrollScorpion(scr, secrt, 0, 3);
+ return new TrollScorpion(scr, sx, sy, secrt, 0, 3);
 }
 
 TrollThing *TrollScorpion::createRedScorpion(TrollScreen *scr,
-  IUShort secrt = 0)
+  IUShort sx, IUShort sy, IUShort secrt = 0)
 {
- return new TrollScorpion(scr, secrt, 10, 2);
+ return new TrollScorpion(scr, sx, sy, secrt, 10, 2);
 }
 
 void TrollScorpion::die()
@@ -147,11 +147,19 @@ void TrollScorpion::react()
  }
 }
 
-TrollScorpion::TrollScorpion(TrollScreen *scr, IUShort secrt, IUShort shft,
-  IUShort spd)
+TrollScorpion::TrollScorpion(TrollScreen *scr, IUShort sx, IUShort sy,
+  IUShort secrt, IUShort shft, IUShort spd)
  : TrollStandardMonster(scr, secrt, 1)
 {
- findOpen();
+ if ((sx == TROLL_XYRANDOM) && (sy == TROLL_XYRANDOM))
+ {
+  findOpen();
+ }
+ else
+ {
+  x = sx;
+  y = sy;
+ }
  sprite = TROLL_SPRITE_SCORPION;
  shift = shft;
  facing = direction = IRandom(4);

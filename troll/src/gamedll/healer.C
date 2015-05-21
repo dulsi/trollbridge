@@ -14,13 +14,16 @@
 
     Parameters:
       scr          (In)  Screen the Healer is on
+      sx           (In)  Starting X position
+      sy           (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 
     Returns: A Healer
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollHealer::createHealer(TrollScreen *scr, IUShort secrt = 0)
+TrollThing *TrollHealer::createHealer(TrollScreen *scr, IUShort sx,
+  IUShort sy, IUShort secrt = 0)
 {
- return new TrollHealer(scr, secrt);
+ return new TrollHealer(scr, sx, sy, secrt);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -77,17 +80,28 @@ void TrollHealer::react()
 
     Parameters:
       scr          (In)  Screen the healer is on
+      sx           (In)  Starting X position
+      sy           (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollHealer::TrollHealer(TrollScreen *scr, IUShort secrt)
+TrollHealer::TrollHealer(TrollScreen *scr, IUShort sx, IUShort sy,
+  IUShort secrt)
   : TrollMonster(scr, secrt)
 {
+ if ((sx == TROLL_XYRANDOM) && (sy == TROLL_XYRANDOM))
+ {
+  x = 140;
+  y = 88;
+ }
+ else
+ {
+  x = sx;
+  y = sy;
+ }
  sprite = 0;
  shift = 0;
  facing = 0;
  frame = 0;
- x = 140;
- y = 88;
  state = 0;
 }
 

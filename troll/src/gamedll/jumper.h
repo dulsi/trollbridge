@@ -15,14 +15,17 @@
 class TrollJumper : public TrollStandardMonster
 {
  public:
-  static TrollThing *createGreenJumper(TrollScreen *scr, IUShort secrt = 0);
-  static TrollThing *createRedJumper(TrollScreen *scr, IUShort secrt = 0);
+  static TrollThing *createGreenJumper(TrollScreen *scr, IUShort sx,
+    IUShort sy, IUShort secrt = 0);
+  static TrollThing *createRedJumper(TrollScreen *scr, IUShort sx,
+    IUShort sy, IUShort secrt = 0);
 
   void die();
   void react();
 
  protected:
-  TrollJumper(TrollScreen *scr, IUShort secrt, IUShort shft);
+  TrollJumper(TrollScreen *scr, IUShort sx, IUShort sy, IUShort secrt,
+    IUShort shft);
 
   IUShort time;
   IUShort state;

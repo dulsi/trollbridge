@@ -48,7 +48,7 @@ class TrollCarriedItem;
 class TrollCharacter;
 
 typedef TrollThing *(*TrollMonsterConstructor)
-  (TrollScreen *scr, IUShort secrt = 0);
+  (TrollScreen *scr, IUShort x, IUShort y, IUShort secrt = 0);
 typedef TrollThing *(*TrollItemConstructor)
   (TrollScreen *scr, IUShort x, IUShort y, IUShort secrt = 0);
 

@@ -14,12 +14,14 @@
 
     Parameters:
       scr          (In)  Screen the door is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 
     Returns: A closing door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollClosingDoor::createNorthDoor(TrollScreen *scr,
-  IUShort secrt = 0)
+  IUShort xStart, IUShort yStart, IUShort secrt = 0)
 {
  return new TrollClosingDoor(scr, secrt, 140, TROLL_CALCULATE_Y_POS(0),
    TROLL_DOWN);
@@ -30,12 +32,14 @@ TrollThing *TrollClosingDoor::createNorthDoor(TrollScreen *scr,
 
     Parameters:
       scr          (In)  Screen the door is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 
     Returns: A closing door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollClosingDoor::createSouthDoor(TrollScreen *scr,
-  IUShort secrt = 0)
+  IUShort xStart, IUShort yStart, IUShort secrt = 0)
 {
  return new TrollClosingDoor(scr, secrt, 140,
    TROLL_CALCULATE_Y_POS(TROLL_SCREEN_Y - 1), TROLL_UP);
@@ -46,12 +50,14 @@ TrollThing *TrollClosingDoor::createSouthDoor(TrollScreen *scr,
 
     Parameters:
       scr          (In)  Screen the door is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 
     Returns: A closing door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollClosingDoor::createWestDoor(TrollScreen *scr,
-  IUShort secrt = 0)
+  IUShort xStart, IUShort yStart, IUShort secrt = 0)
 {
  return new TrollClosingDoor(scr, secrt, TROLL_CALCULATE_X_POS(0),
    TROLL_CALCULATE_Y_POS(5), TROLL_RIGHT);
@@ -62,12 +68,14 @@ TrollThing *TrollClosingDoor::createWestDoor(TrollScreen *scr,
 
     Parameters:
       scr          (In)  Screen the door is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 
     Returns: A closing door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollClosingDoor::createEastDoor(TrollScreen *scr,
-  IUShort secrt = 0)
+  IUShort xStart, IUShort yStart, IUShort secrt = 0)
 {
  return new TrollClosingDoor(scr, secrt,
    TROLL_CALCULATE_X_POS(TROLL_SCREEN_X - 1), TROLL_CALCULATE_Y_POS(5),

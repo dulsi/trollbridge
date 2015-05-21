@@ -26,14 +26,16 @@ class TrollUndead : public TrollStandardMonster
 class TrollSkeletalTroll : public TrollUndead
 {
  public:
-  static TrollThing *createSkeletalTroll(TrollScreen *scr, IUShort secrt = 0);
+  static TrollThing *createSkeletalTroll(TrollScreen *scr, IUShort xStart,
+    IUShort yStart, IUShort secrt = 0);
 
   void attack();
   void die();
   void runAway();
 
  protected:
-  TrollSkeletalTroll(TrollScreen *scr, IUShort secrt);
+  TrollSkeletalTroll(TrollScreen *scr, IUShort xStart, IUShort yStart,
+    IUShort secrt);
 
   IUShort state;
   IUShort time;
@@ -43,14 +45,15 @@ class TrollSkeletalTrollWithItem: public TrollSkeletalTroll
 {
  public:
   static TrollThing *createSkeletalTrollWithKey(TrollScreen *scr,
-    IUShort secrt = 0);
+    IUShort xStart, IUShort yStart, IUShort secrt = 0);
 
   void die();
   void draw(IScreen drawscreen);
 
  protected:
-  TrollSkeletalTrollWithItem(TrollScreen *scr, IUShort secrt,
-    TrollItemConstructor icon, IUShort isprt, IUShort ishft);
+  TrollSkeletalTrollWithItem(TrollScreen *scr, IUShort xStart,
+    IUShort yStart, IUShort secrt, TrollItemConstructor icon,
+    IUShort isprt, IUShort ishft);
 
   TrollItemConstructor itemConstructor;
   IUShort itemSprite;

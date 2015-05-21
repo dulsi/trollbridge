@@ -16,11 +16,14 @@
 
     Parameters:
       scr          (In)  Screen the door is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 
     Returns: A movable block
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollBlock::createBlock(TrollScreen *scr, IUShort secrt = 0)
+TrollThing *TrollBlock::createBlock(TrollScreen *scr, IUShort xStart,
+  IUShort yStart, IUShort secrt = 0)
 {
  return
    new TrollBlock(scr, secrt, TROLL_CALCULATE_X_POS(5),

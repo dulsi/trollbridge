@@ -1,5 +1,5 @@
 /********************************************************************
-  <mergemap.c> -- merges a map file
+  <createmap.c> -- Creates a map file
 
   Programmer -- Dennis Payne
 
@@ -15,15 +15,17 @@
 #include <istdlib.h>
 #include <igrbasics.h>
 #include <trollconst.h>
-#include "unistd.h"
+#include <unistd.h>
+#include <getopt.h>
+#include "iextra.h"
 
 #define BUFFER_SIZE 1024
 
 static unsigned char IFAR *buffer;
 
-void ParseCommandLine(int argc,char *argv[],char *filename);
-char **TextPalFileRead(char *filename);
-char IFAR * IFAR *MapFileRead(char *filename, char **colornames);
+void ParseCommandLine(int argc,char *argv[],char *filename, IPalette *pal,
+  IPaletteName *palnm);
+char IFAR * IFAR *MapFileRead(char *filename, IPaletteName colornames);
 void TrbFileWrite(char *filename, char IFAR * IFAR * screenfile);
 
 IUShort xScreen;
@@ -37,100 +39,104 @@ main(int argc,char *argv[])
  char basename[255];
  char filename[255];
  char IFAR * IFAR * screenfile;
- char **colornames;
+ IPalette pal = NULL;
+ IPaletteName colornames = NULL;
 
  for (int x = 0; x < TROLL_LEVEL_X; x++)
   for (int y = 0; y < TROLL_LEVEL_Y; y++)
    mapInfo[x][y] = 0;
- ParseCommandLine(argc, argv, basename);
+ ParseCommandLine(argc, argv, basename, &pal, &colornames);
  strcpy(filename, basename);
  strcat(filename,".map");
- colornames = TextPalFileRead("/proj/troll/data/trollpal.txt");
  screenfile = MapFileRead(filename, colornames);
  strcpy(filename, basename);
  strcat(filename,".trb");
  TrbFileWrite(filename, screenfile);
 }
 
-void ParseCommandLine(int argc,char *argv[],char *filename)
+void ParseCommandLine(int argc,char *argv[],char *filename, IPalette *pal,
+  IPaletteName *palnm)
 {
  char opt;
  int i;
+ char *defpal;
+ static struct option long_options[] =
+ {
+  {"pal", 1, 0, 'p'},
+  {0, 0, 0, 0}
+ };
 
- while ((opt=getopt(argc,argv,"h?"))!=EOF) {
-  switch (opt) {
+ while ((opt=getopt_long(argc,argv,"h?p:", long_options, NULL))!=EOF)
+ {
+  switch (opt)
+  {
    case 'h':
    case '?':
     printf("\
 Creates a map file\n\
 \n\
-createmap filename[.map]\n\
+createmap [options] filename[.map]\n\
+\n\
+  Options:\n\
+    -p, --pal=TEXTPALETTE  Text palette for color names\n\
 \n\
   filename[.map]  Name of map file\n\
+\n\
+  Environment:\n\
+    TEXT_PALETTE           Default text palette\n\
 ");
     exit(0);
+    break;
+   case 'p':
+    if (*pal)
+    {
+     printf("Only one palette may be specified.\n");
+     exit(5);
+    }
+    if (optarg)
+    {
+     IPaletteTextLoad(pal, palnm, optarg);
+     if (!(*pal))
+     {
+      printf("Error reading text palette file: %s\n", optarg);
+      exit(6);
+     }
+    }
     break;
    default:
     break;
   }
  }
- if (argc-optind!=1) {
+ if (!(*pal))
+ { /* Check environment variable for default text palette */
+  if ((defpal = getenv("TEXT_PALETTE")) == NULL)
+  {
+   printf("Error no palette specified.\n");
+   exit(7);
+  }
+  IPaletteTextLoad(pal, palnm, defpal);
+  if (!(*pal))
+  {
+   printf("Error reading text palette file: %s\n", optarg);
+   exit(6);
+  }
+ }
+ if (argc-optind != 1)
+ {
   printf("Incorrect number of parameters\n");
   exit(4);
  }
  strcpy(filename,argv[optind]);
- if (((i=strlen(filename))>4) && (strcmp(filename+i-4,".map")==0))
-  filename[i-4]=0;
+ if (((i = strlen(filename)) > 4) && (strcmp(filename + i - 4,".map") == 0))
+  filename[i - 4] = 0;
 }
 
-char **TextPalFileRead(char *filename)
-{
- ILong i, k;
- char **colorNames;
- FILE *readFile;
- int r, g, b;
- char line[255];
- char tmpName[255];
- IPalette pal;
-
- readFile = fopen(filename, "r");
- if (readFile == NULL)
- {
-  readFile = fopen("trollpal.txt", "r");
-  if (readFile == NULL)
-  {
-   return NULL;
-  }
- }
- pal = IPaletteCreate();
- colorNames = (char **)IMalloc(sizeof(char *) * 255);
- for (i = 0; !feof(readFile);)
- {
-  fgets(line, 255, readFile);
-  if ((line[0]) && (line[0] != '#') && (line[0] != '\n'))
-  {
-   sscanf(line, "%d%d%d%s", &r, &g, &b, tmpName);
-   IPaletteSet(pal, i, r / 4, g / 4, b / 4);
-   colorNames[i] = strdup(tmpName);
-   i++;
-  }
- }
- for ( ; i < 255; i++)
- {
-  IPaletteSet(pal, i, 0, 0, 0);
-  colorNames[i] = NULL;
- }
- fclose(readFile);
- IPaletteDestroy(pal);
- return colorNames;
-}
-
-char IFAR * IFAR *MapFileRead(char *filename, char **colornames)
+char IFAR * IFAR *MapFileRead(char *filename, IPaletteName colornames)
 {
  FILE *mapfile;
  char basename[255];
  char IFAR * IFAR *screenfile;
- int i, k, j;
+ int i, k;
 
  if ((mapfile = fopen(filename, "r")) == NULL)
  {
@@ -153,18 +159,7 @@ char IFAR * IFAR *MapFileRead(char *filename, char **colornames)
   for (k = 0; k < TROLL_LEVEL_X; k++)
   {
    fscanf(mapfile, "%s", basename);
-   for (j = 0; j < 256; j++)
-   {
-    if (!colornames[j])
-    {
-     j = 256;
-    }
-    else if (strcmp(colornames[j], basename) == 0)
-    {
-     mapInfo[k][i] = j;
-     j = 256;
-    }
-   }
+   mapInfo[k][i] = IPaletteNameFind(colornames, basename);
   }
  }
  /* Read and throw out column numbers */

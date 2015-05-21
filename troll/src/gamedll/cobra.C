@@ -19,10 +19,10 @@
 #define TROLL_COBRA_STATE_FIRE3    20
 #define TROLL_COBRA_STATE_REPEAT   21
 
-TrollThing *TrollCobra::createGreenCobra(TrollScreen *scr,
-  IUShort secrt = 0)
+TrollThing *TrollCobra::createGreenCobra(TrollScreen *scr, IUShort xStart,
+  IUShort yStart, IUShort secrt = 0)
 {
- return new TrollCobra(scr, secrt, 5);
+ return new TrollCobra(scr, xStart, yStart, secrt, 5);
 }
 
 void TrollCobra::die()
@@ -110,11 +110,20 @@ void TrollCobra::takeHit(TrollThing *hitBy)
  }
 }
 
-TrollCobra::TrollCobra(TrollScreen *scr, IUShort secrt, IUShort shft)
+TrollCobra::TrollCobra(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  IUShort secrt, IUShort shft)
  : TrollStandardMonster(scr, secrt, 2)
 {
- x = TROLL_CALCULATE_X_POS(7);
- y = TROLL_CALCULATE_Y_POS(2);
+ if ((xStart == TROLL_XYRANDOM) && (yStart == TROLL_XYRANDOM))
+ {
+  x = TROLL_CALCULATE_X_POS(7);
+  y = TROLL_CALCULATE_Y_POS(2);
+ }
+ else
+ {
+  x = xStart;
+  y = yStart;
+ }
  sprite = TROLL_SPRITE_COBRA;
  shift = shft;
  direction = TROLL_DOWN;

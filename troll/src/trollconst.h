@@ -54,6 +54,9 @@
 #define TROLL_INVINCIBLE_TIME 15
 #define TROLL_FLYBACK_TIME    6
 
+/* Randomly generate X and / or Y position */
+#define TROLL_XYRANDOM 65000
+
 /* Troll sprite picture */
 #define TROLL_SPRITE 28
 #define TROLL_SPRITE_SCROLLBAR 25

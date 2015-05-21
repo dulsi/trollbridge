@@ -33,7 +33,7 @@ extern "C" int TrollDllInit(TrollGame *game)
 {
  // add monster types
  game->addMonsterType(0, TrollPerson::createGrayTroll);
- game->addMonsterType(1, TrollDoor::createNorthDoor);
+ game->addMonsterType(1, TrollDoor::createDoor);
  game->addMonsterType(2, TrollDoor::createSouthDoor);
  game->addMonsterType(3, TrollDoor::createWestDoor);
  game->addMonsterType(4, TrollDoor::createEastDoor);

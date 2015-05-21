@@ -15,14 +15,17 @@
 class TrollScorpion : public TrollStandardMonster
 {
  public:
-  static TrollThing *createBlueScorpion(TrollScreen *scr, IUShort secrt = 0);
-  static TrollThing *createRedScorpion(TrollScreen *scr, IUShort secrt = 0);
+  static TrollThing *createBlueScorpion(TrollScreen *scr, IUShort sx,
+    IUShort sy, IUShort secrt = 0);
+  static TrollThing *createRedScorpion(TrollScreen *scr, IUShort sx,
+    IUShort sy, IUShort secrt = 0);
 
   void die();
   void react();
 
  protected:
-  TrollScorpion(TrollScreen *scr, IUShort secrt, IUShort shft, IUShort spd);
+  TrollScorpion(TrollScreen *scr, IUShort sx, IUShort sy, IUShort secrt,
+    IUShort shft, IUShort spd);
 
   IUShort speed;
   IUShort time;

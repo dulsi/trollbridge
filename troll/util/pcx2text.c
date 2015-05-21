@@ -1,43 +1,82 @@
 #include <igrimage.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <getopt.h>
+#include "iextra.h"
 
-void ParseCommandLine(int argc, char *argv[], char *inname, char *outname);
-void IImageTxtSave(IImage img, const char *filename);
+void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
+  IPalette *pal, IPaletteName *palnm);
 
 int main(int argc, char *argv[])
 {
  char inname[255];
  char outname[255];
- IImage img;
+ IImage img = NULL;
+ IPalette pal = NULL;
+ IPaletteName palnm = NULL;
 
- ParseCommandLine(argc, argv, inname, outname);
+ ParseCommandLine(argc, argv, inname, outname, &pal, &palnm);
  img = IImagePCXLoad(inname);
- IImageTxtSave(img, outname);
+ IImageTextSave(img, outname, pal, palnm);
+ IPaletteDestroy(pal);
+ IPaletteNameDestroy(palnm);
+ IImageDestroy(img);
 }
 
-void ParseCommandLine(int argc, char *argv[], char *inname, char *outname)
+void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
+  IPalette *pal, IPaletteName *palnm)
 {
  char opt;
  int i;
+ static struct option long_options[] =
+ {
+  {"pal", 1, 0, 'p'},
+  {0, 0, 0, 0}
+ };
 
- while ((opt=getopt(argc,argv,"h?"))!=EOF) {
-  switch (opt) {
+ while ((opt = getopt_long(argc, argv,"h?p:", long_options, NULL))!=EOF)
+ {
+  switch (opt)
+  {
    case 'h':
    case '?':
     printf("\
 Converts a pcx file into a text file\n\
 \n\
-pcx2text inname[.pcx] [outname[.txt]]\n\
+pcx2text [options] inname[.pcx] [outname[.txt]]\n\
+\n\
+  Options:\n\
+    -p, --pal=TEXTPALETTE    Text palette for color names\n\
 \n\
   inname[.pcx]     Name of input file\n\
   [outname[.txt]]  Name of output file (defaults to input file name)\n\
 ");
     exit(0);
     break;
+   case 'p':
+    if (*pal)
+    {
+     printf("Only one palette may be specified.\n");
+     exit(5);
+    }
+    if (optarg)
+    {
+     IPaletteTextLoad(pal, palnm, optarg);
+     if (!(*pal))
+     {
+      printf("Error reading text palette file: %s\n", optarg);
+      exit(6);
+     }
+    }
+    break;
    default:
     break;
   }
+ }
+ if (!(*pal))
+ { /* Create a blank palette and palette name */
+  *pal = IPaletteCreate();
+  *palnm = IPaletteNameCreate();
  }
  if ((argc - optind < 1) || (argc - optind > 2))
  {
@@ -62,49 +101,5 @@ pcx2text inname[.pcx] [outname[.txt]]\n\
   strcpy(outname, inname);
   strcpy(outname + strlen(outname) - 3, "txt");
  }
-}
-
-void IImageTxtSave(IImage img, const char *filename)
-{
- ILong i, k;
- IPixel IFAR *curPixel;
- IColor r, g, b;
- FILE *writeFile;
- IUByte usedColor[255];
-
- memset(usedColor, 0, 255);
- writeFile = fopen(filename, "w");
- if (writeFile == NULL)
- {
-  return ;
- }
- fprintf(writeFile, "[XSize]  %d\n", img->x);
- fprintf(writeFile, "[YSize]  %d\n\n[Picture]\n", img->y);
- for (i = (img->x * img->y), curPixel = img->pic, k = 0; i > 0;
-   i--, curPixel++, k++)
- {
-  if (k == 14)
-  {
-   fprintf(writeFile, "\n");
-   k = 0;
-  }
-  fprintf(writeFile, "  %3d", *curPixel);
-  if (*curPixel != 255)
-  {
-   usedColor[*curPixel] = 1;
-  }
- }
- if (k != 14)
-  fprintf(writeFile, "\n");
- fprintf(writeFile, "\n[Palette]\n");
- for (i = 0; i < 255; i++)
- {
-  if (usedColor[i])
-  {
-   IPaletteGet(IImagePaletteGet(img), i, &r, &g, &b);
-   fprintf(writeFile, "%3d =  %3d  %3d  %3d\n", i, r, g, b);
-  }
- }
- fclose(writeFile);
 }
 

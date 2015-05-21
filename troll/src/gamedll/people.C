@@ -23,13 +23,17 @@ char *TrollMerchant::saying[TROLL_MERCHANT_SAYINGS][2] =
 
     Parameters:
       scr          (In)  Screen the Gray Troll is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 
     Returns: A Gray Troll
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollPerson::createGrayTroll(TrollScreen *scr, IUShort secrt = 0)
+TrollThing *TrollPerson::createGrayTroll(TrollScreen *scr, IUShort xStart,
+  IUShort yStart, IUShort secrt = 0)
 {
- return new TrollPerson(scr, secrt, TROLL_SPRITE_GRAYTROLL, 0);
+ return
+   new TrollPerson(scr, xStart, yStart, secrt, TROLL_SPRITE_GRAYTROLL, 0);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -44,19 +48,29 @@ void TrollPerson::react()
 
     Parameters:
       scr          (In)  Screen the person is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
       sprt         (In)  Sprite of the person
       shft         (In)  Color Shift of the person
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollPerson::TrollPerson(TrollScreen *scr, IUShort secrt, IUShort sprt,
-  IUShort shft) : TrollMonster(scr, secrt)
+TrollPerson::TrollPerson(TrollScreen *scr, IUShort xStart, IUShort yStart,
+  IUShort secrt, IUShort sprt, IUShort shft) : TrollMonster(scr, secrt)
 {
+ if ((xStart == TROLL_XYRANDOM) && (yStart == TROLL_XYRANDOM))
+ {
+  x = 140;
+  y = 88;
+ }
+ else
+ {
+  x = xStart;
+  y = yStart;
+ }
  sprite = sprt;
  shift = shft;
  facing = 0;
  frame = 0;
- x = 140;
- y = 88;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -64,13 +78,16 @@ TrollPerson::TrollPerson(TrollScreen *scr, IUShort secrt, IUShort sprt,
 
     Parameters:
       scr          (In)  Screen the Merchant is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 
     Returns: A Merchant
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollThing *TrollMerchant::createMerchant(TrollScreen *scr, IUShort secrt = 0)
+TrollThing *TrollMerchant::createMerchant(TrollScreen *scr, IUShort xStart,
+  IUShort yStart, IUShort secrt = 0)
 {
- return new TrollMerchant(scr, secrt);
+ return new TrollMerchant(scr, xStart, yStart, secrt);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -129,10 +146,13 @@ void TrollMerchant::react()
 
     Parameters:
       scr          (In)  Screen the merchant is on
+      xStart       (In)  Starting X position
+      yStart       (In)  Starting Y position
       secrt        (In)  Secret number to set when dead
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-TrollMerchant::TrollMerchant(TrollScreen *scr, IUShort secrt)
- : TrollPerson(scr, secrt, TROLL_SPRITE_MERCHANT, 0)
+TrollMerchant::TrollMerchant(TrollScreen *scr, IUShort xStart,
+  IUShort yStart, IUShort secrt)
+ : TrollPerson(scr, xStart, yStart, secrt, TROLL_SPRITE_MERCHANT, 0)
 {
  say = IRandom(TROLL_MERCHANT_SAYINGS);
  text[0] = new char[strlen(saying[say][0]) + 1];

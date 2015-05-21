@@ -15,17 +15,22 @@
 class TrollBug : public TrollStandardMonster
 {
  public:
-  static TrollThing *createBlueBug(TrollScreen *scr, IUShort secrt = 0);
-  static TrollThing *createRedBug(TrollScreen *scr, IUShort secrt = 0);
+  static TrollThing *createBlueBug(TrollScreen *scr, IUShort xStart,
+    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createRedBug(TrollScreen *scr, IUShort xStart,
+    IUShort yStart, IUShort secrt = 0);
 
   void react();
 
  protected:
-  TrollBug(TrollScreen *scr, IUShort secrt, IUShort shft);
+  TrollBug(TrollScreen *scr, IUShort xStart, IUShort yStart, IUShort secrt,
+    IUShort shft);
 
   void changeSpeed();
 
   IShort xSpeed, ySpeed;
+  IUShort state;
+  IUShort time;
 };
 
 #endif

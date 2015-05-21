@@ -6,6 +6,9 @@ TROLL_UTIL=/proj/troll/util
 TROLL_TMP=/tmp/troll
 alphabet="abcdefghijklmnopqrstuvwxyz"
 
+TEXT_PALETTE=$TROLL_DATA/trollpal.txt
+export TEXT_PALETTE
+
 mkdir $TROLL_TMP
 
 # Generate palette file

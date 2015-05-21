@@ -179,10 +179,6 @@ void initpal()
  IPaletteDestroy(pal);
 }
 
-// Macros to calculate draw position from the square position
-#define TROLL_CALCULATE_X_POS(x) ((x) * TROLL_SQUARE_X)
-#define TROLL_CALCULATE_Y_POS(y) ((y) * TROLL_SQUARE_Y + TROLL_BUFFER_Y)
-
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   setupBackgroundScreen - Loads all the images of the
     backgound onto one of the virtual screens.
@@ -869,7 +865,7 @@ struct secretFunctions
  IUShort *argTypes;
 };
 
-#define SECRET_FUNCTION_NUM 5
+#define SECRET_FUNCTION_NUM 6
 
 #define TROLL_ARG_END    0
 #define TROLL_ARG_BYTE   1
@@ -904,6 +900,12 @@ IUShort SetTextArguments[] =
  TROLL_ARG_STRING, TROLL_ARG_STRING, TROLL_ARG_END
 };
 
+IUShort CreateMonsterXYArguments[] =
+{
+ TROLL_ARG_SHORT, TROLL_ARG_SHORT, TROLL_ARG_SHORT, TROLL_ARG_SHORT,
+ TROLL_ARG_END
+};
+
 struct secretFunctions SecretFunctions[SECRET_FUNCTION_NUM] =
 {
  {0x01, "CreateMonster", CreateMonsterArguments},
@@ -911,6 +913,7 @@ struct secretFunctions SecretFunctions[SECRET_FUNCTION_NUM] =
  {0x03, "SetBackground", SetBackgroundArguments},
  {0x04, "CreateExit", CreateExitArguments},
  {0x05, "SetText", SetTextArguments},
+ {0x06, "CreateMonsterXY", CreateMonsterXYArguments},
 };
 
 void SecretScriptWrite(FILE *f, IUByte *script)
@@ -991,6 +994,7 @@ void ImportSecrets(char *filename)
  int type;
  FILE *f;
  char s[256];
+ char *tmp;
  IUShort zzz;
  IUShort curSecretNum = 0;
  IUShort ttlSecretNum = 0;
@@ -1065,54 +1069,58 @@ void ImportSecrets(char *filename)
      for (k = 0; isspace(s[k]); k++) ;
      if (s[k])
      {
-      for (j = 0; j < SECRET_FUNCTION_NUM; j++)
+      if (tmp = strchr(s, '('))
       {
-       if (strncmp(SecretFunctions[j].name, s+k, strlen(SecretFunctions[j].name)) == 0)
+       m = tmp - s - k;
+       for (j = 0; j < SECRET_FUNCTION_NUM; j++)
        {
-        break;
-       }
-      }
-      if (j < SECRET_FUNCTION_NUM)
-      {
-       k += strlen(SecretFunctions[j].name) + 1;
-       (*script)[*scriptSize] = SecretFunctions[j].code;
-       (*scriptSize)++;
-       for (m = 0; SecretFunctions[j].argTypes[m] != TROLL_ARG_END; m++)
-       {
-        switch (SecretFunctions[j].argTypes[m])
+        if (strncmp(SecretFunctions[j].name, s+k, m) == 0)
         {
-         case TROLL_ARG_SHORT:
-          for (; isspace(s[k]); k++) ;
-          zzz = atoi(s+k);
-          memcpy((*script) + (*scriptSize), &zzz, sizeof(IUShort));
-          *scriptSize += 2;
-          for (; (s[k] != ',') && (s[k] != ')'); k++) ;
-          k++;
-          break;
-         case TROLL_ARG_BYTE:
-          IUByte zzz2;
-          for (; isspace(s[k]); k++) ;
-          zzz2 = atoi(s+k);
-          memcpy((*script) + (*scriptSize), &zzz2, sizeof(IUByte));
-          *scriptSize += 1;
-          for (; (s[k] != ',') && (s[k] != ')'); k++) ;
-          k++;
-          break;
-         case TROLL_ARG_STRING:
-          for (; isspace(s[k]); k++) ;
-          if (s[k] != '\"')
-           return;
-          k++;
-          for (zzz = k; s[zzz] != '\"'; zzz++)
-           if (s[zzz] == 0) return;
-          memcpy((*script) + (*scriptSize), s + k, zzz - k);
-          *scriptSize += zzz - k + 1;
-          *((*script) + (*scriptSize) - 1) = 0;
-          for (k = zzz + 1; (s[k] != ',') && (s[k] != ')'); k++) ;
-          k++;
-          break;
-         default:
-          break;
+         break;
+        }
+       }
+       if (j < SECRET_FUNCTION_NUM)
+       {
+        k += strlen(SecretFunctions[j].name) + 1;
+        (*script)[*scriptSize] = SecretFunctions[j].code;
+        (*scriptSize)++;
+        for (m = 0; SecretFunctions[j].argTypes[m] != TROLL_ARG_END; m++)
+        {
+         switch (SecretFunctions[j].argTypes[m])
+         {
+          case TROLL_ARG_SHORT:
+           for (; isspace(s[k]); k++) ;
+           zzz = atoi(s+k);
+           memcpy((*script) + (*scriptSize), &zzz, sizeof(IUShort));
+           *scriptSize += 2;
+           for (; (s[k] != ',') && (s[k] != ')'); k++) ;
+           k++;
+           break;
+          case TROLL_ARG_BYTE:
+           IUByte zzz2;
+           for (; isspace(s[k]); k++) ;
+           zzz2 = atoi(s+k);
+           memcpy((*script) + (*scriptSize), &zzz2, sizeof(IUByte));
+           *scriptSize += 1;
+           for (; (s[k] != ',') && (s[k] != ')'); k++) ;
+           k++;
+           break;
+          case TROLL_ARG_STRING:
+           for (; isspace(s[k]); k++) ;
+           if (s[k] != '\"')
+            return;
+           k++;
+           for (zzz = k; s[zzz] != '\"'; zzz++)
+            if (s[zzz] == 0) return;
+           memcpy((*script) + (*scriptSize), s + k, zzz - k);
+           *scriptSize += zzz - k + 1;
+           *((*script) + (*scriptSize) - 1) = 0;
+           for (k = zzz + 1; (s[k] != ',') && (s[k] != ')'); k++) ;
+           k++;
+           break;
+          default:
+           break;
+         }
         }
        }
       }
@@ -1123,7 +1131,6 @@ void ImportSecrets(char *filename)
   fclose(f);
   editScreen->secretsNum = ttlSecretNum;
   editScreen->secrets = secrets;
-//  printf("s - %d\n",ttlSecretNum);
  }
 }
 

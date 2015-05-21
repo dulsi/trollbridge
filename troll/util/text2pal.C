@@ -1,10 +1,10 @@
 #include <igrbasics.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "iextra.h"
 #include "file.h"
 
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname);
-IPalette IPaletteTextLoad(const char *filename);
 void IPalettePalSave(IPalette pal, const char *filename);
 
 int main(int argc, char *argv[])
@@ -12,10 +12,14 @@ int main(int argc, char *argv[])
  char inname[255];
  char outname[255];
  IPalette pal;
+ IPaletteName palnm;
 
  ParseCommandLine(argc, argv, inname, outname);
- pal = IPaletteTextLoad(inname);
- IPalettePalSave(pal, outname);
+ IPaletteTextLoad(&pal, &palnm, inname);
+ if (pal)
+ {
+  IPalettePalSave(pal, outname);
+ }
 }
 
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname)
@@ -64,36 +68,6 @@ text2pal inname[.txt] [outname[.pal]]\n\
   strcpy(outname, inname);
   strcpy(outname + strlen(outname) - 3, "pal");
  }
-}
-
-IPalette IPaletteTextLoad(const char *filename)
-{
- FILE *readFile;
- int r, g, b, i;
- char line[255];
- IPalette pal;
- 
- readFile = fopen(filename, "r");
- if (readFile == NULL)
- {
-  return NULL;
- }
- pal = IPaletteCreate();
- for (i = 0; !feof(readFile);)
- {
-  fgets(line, 255, readFile);
-  if ((line[0]) && (line[0] != '#') && (line[0] != '\n'))
-  {
-   sscanf(line, "%d%d%d", &r, &g, &b);
-   IPaletteSet(pal, i, r / 4, g / 4, b / 4);
-   i++;
-  }
- }
- for ( ; i < 256; i++)
- {
-  IPaletteSet(pal, i, 0, 0, 0);
- }
- return pal;
 }
 
 void IPalettePalSave(IPalette pal, const char *filename)

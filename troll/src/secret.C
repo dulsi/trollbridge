@@ -124,7 +124,7 @@ void TrollSecret::execute(IUByte *script)
     case 0x01: // create monster
      screen->addMonster(
        (game->createMonster(*((IUShort *)(ip + 1))))(screen,
-         *((IUShort *)(ip + 3))));
+         TROLL_XYRANDOM, TROLL_XYRANDOM, *((IUShort *)(ip + 3))));
      ip += 4;
      break;
     case 0x02: // create item
@@ -152,6 +152,14 @@ void TrollSecret::execute(IUByte *script)
      i = strlen((char *)(ip + 1)) + 1;
      screen->setText((char *)(ip + 1), (char *)(ip + i + 1));
      ip += i + strlen((char *)(ip + i + 1)) + 1;
+     break;
+    case 0x06: // create monster with position
+     screen->addMonster(
+       (game->createMonster(*((IUShort *)(ip + 1))))(screen,
+         *((IUShort *)(ip + 3)), *((IUShort *)(ip + 5)),
+         *((IUShort *)(ip + 7))));
+     ip += 8;
+     break;
     default: // unknown instruction
      break;
    }

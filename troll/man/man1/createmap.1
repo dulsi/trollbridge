@@ -1,0 +1,42 @@
+.\" Process this file with
+.\" groff -man -Tascii foo.1
+.\"
+.TH CREATEMAP 1 "APRIL 2000" "Troll Bridge" "Developer Manual"
+.SH NAME
+createmap \- combines a collection of screens into a TRB file
+.SH SYNOPSIS
+.B createmap [-p, --pal
+.I textpalette
+.B ]
+.I filename[.map]
+.SH DESCRIPTION
+.B createmap
+reads a
+.BR map (5)
+file and creates a
+.BR trb (5)
+file by combining the
+.BR scr (5)
+files.  If a scr file is used for multiple screens the combined file will
+contain only a single copy.
+.SH OPTIONS
+.IP "-p, --pal textpalette"
+Use the specified
+.I textpalette
+for color indexes.  This overrides any
+.B TEXT_PALETTE
+environment variable.
+.SH ENVIRONMENT
+.IP TEXT_PALETTE
+The default text palette file if set.  Overridden by the
+.B -p
+option.
+.SH AUTHOR
+Dennis Payne <dulsi@identicalsoftware.com>
+.SH "SEE ALSO"
+.BR map (5),
+.BR scr (5),
+.BR screenedit (1),
+.BR text2pal (1),
+.BR trb (5)
+

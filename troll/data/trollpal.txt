@@ -1,5 +1,6 @@
+GIMP Palette
   0    0    0      Black
-
+#
 # Monster colors
 # Blue color scheme
   4    4  181      DarkBlue
@@ -25,18 +26,18 @@
 152  152  152      MediumGray
   0    0    0      Black
 208  208  208      LightGray
-
+#
 # Player colors
   0  136   69      TrollGreen
 100    0  146      TrollPurple
   0    0    0      TrollBlack
 208  208  208      TrollGray
 104  104  104      TrollDarkGray
-
+#
 248  191   17      Penguin
 216  196    0      DarkGold
 254  230    0      LightGold
-
+#
 # Background colors
 252  236  152      Blank
  15   94    4      TreeGreen1
@@ -59,4 +60,4 @@
 202  116   22      Pyramid2
 237  153   58      Pyramid3
 254  188   93      Pyramid4
-
+#

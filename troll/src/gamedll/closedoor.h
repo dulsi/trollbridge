@@ -15,10 +15,14 @@
 class TrollClosingDoor: public TrollMonster
 {
  public:
-  static TrollThing *createNorthDoor(TrollScreen *scr, IUShort secrt = 0);
-  static TrollThing *createSouthDoor(TrollScreen *scr, IUShort secrt = 0);
-  static TrollThing *createWestDoor(TrollScreen *scr, IUShort secrt = 0);
-  static TrollThing *createEastDoor(TrollScreen *scr, IUShort secrt = 0);
+  static TrollThing *createNorthDoor(TrollScreen *scr, IUShort xStart,
+    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createSouthDoor(TrollScreen *scr, IUShort xStart,
+    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createWestDoor(TrollScreen *scr, IUShort xStart,
+    IUShort yStart, IUShort secrt = 0);
+  static TrollThing *createEastDoor(TrollScreen *scr, IUShort xStart,
+    IUShort yStart, IUShort secrt = 0);
 
   void react();
 

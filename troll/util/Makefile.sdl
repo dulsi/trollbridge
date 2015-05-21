@@ -1,12 +1,16 @@
-IDENTICALINC_DIR = ../../identical/src/include
-IDENTICALLIB_DIR = ../../identical/lib
+IDENTICALINC_DIR = /proj/identical/src/include
+IDENTICALLIB_DIR = /proj/identical/lib
+
+SDL_CFLAGS := $(shell sdl-config --cflags)
+SDL_LDFLAGS := $(shell sdl-config --libs)
 
 TROLLINC_DIR = ../src
 TROLLOBJ_DIR = ../src
 
-CXX = gxx
-CXXFLAGS = -frtti -I$(TROLLINC_DIR) -I$(IDENTICALINC_DIR) -DALLEGRO -Idos
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical -lalleg
+CXX = g++
+CXXFLAGS = -g -frtti -I$(TROLLINC_DIR) -I$(IDENTICALINC_DIR) -DSDLLIB $(SDL_CFLAGS)
+DLLFLAGS = -fPIC
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS)
 
 CREATEMAP_OBJ = createmap.o iextra.o
 CREATEMAP_EXE = createmap
@@ -45,7 +49,7 @@ $(PCX2ZSP_EXE): $(PCX2ZSP_OBJ)
 	$(CXX) -o $(PCX2ZSP_EXE) $(PCX2ZSP_OBJ) $(LIBS)
 
 $(SCREENEDIT_EXE): $(SCREENEDIT_OBJ)
-	$(CXX) -o $(SCREENEDIT_EXE) $(SCREENEDIT_OBJ) $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $(SCREENEDIT_EXE) $(SCREENEDIT_OBJ) $(LIBS)
 
 %.o: %.C
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
@@ -53,8 +57,9 @@ $(SCREENEDIT_EXE): $(SCREENEDIT_OBJ)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-	del *.o $(CREATEMAP_EXE) $(PCX2TEXT_EXE) $(PCX2ZSP_EXE)
-	del $(TEXT2PAL_OBJ) $(TEXT2PAL_EXE) $(SCREENEDIT_EXE)
+	rm -f *.o $(TEXT2PAL_EXE) $(CREATEMAP_EXE)
+	rm -f $(TEXT2PCX_EXE) $(PCX2TEXT_EXE) $(PCX2ZSP_EXE)
+	rm -f $(SCREENEDIT_EXE)
 
 # dependencies
 createmap.o: iextra.h

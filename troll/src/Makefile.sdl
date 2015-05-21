@@ -1,13 +1,13 @@
 IDENTICALINC_DIR=/proj/identical/src/include
 IDENTICALLIB_DIR=/proj/identical/lib
 
-CXX = g++
-DEFS = -g -frtti -DSDLLIB
-HDRS = -I$(IDENTICALINC_DIR)
-DLLFLAGS = -fPIC -I.
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl
+SDL_CFLAGS := $(shell sdl-config --cflags)
+SDL_LDFLAGS := $(shell sdl-config --libs)
 
-include /proj/identical/GNUmake
+CXX = g++
+CXXFLAGS = -g -frtti -DSDLLIB -I$(IDENTICALINC_DIR) $(SDL_CFLAGS)
+DLLFLAGS = -fPIC -I.
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS)
 
 DLL_DIR = gamedll
 
@@ -20,21 +20,21 @@ DLL_OBJ = $(DLL_DIR)/dllmain.o $(DLL_DIR)/items.o $(DLL_DIR)/people.o \
 	$(DLL_DIR)/block.o $(DLL_DIR)/undead.o $(DLL_DIR)/closedoor.o \
 	$(DLL_DIR)/cobra.o $(DLL_DIR)/blast.o $(DLL_DIR)/explosion.o \
 	$(DLL_DIR)/healer.o $(DLL_DIR)/jumper.o $(DLL_DIR)/octoid.o
-TROLL_DLL = troll.dll
+TROLL_DLL = troll.so
 
 all: $(TROLL_EXE) $(TROLL_DLL)
 
 $(TROLL_EXE): $(TROLL_OBJ)
-	$(CXX) -Wl,-E -o $(TROLL_EXE) $(TROLL_OBJ) $(LDFLAGS)
+	$(CXX) -Wl,-E -o $(TROLL_EXE) $(TROLL_OBJ) $(LIBS)
 
 $(TROLL_DLL): $(DLL_OBJ)
 	$(CXX) -shared -o $(TROLL_DLL) $(DLL_OBJ)
 
 $(DLL_DIR)/%.o: $(DLL_DIR)/%.C
-	$(CXX) $(DLLFLAGS) $(CPPFLAGS) -c -o $@ $<
+	$(CXX) $(DLLFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 %.o: %.C
-	$(CXX) $(CPPFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 #clean:
 #	rm -f $(TROLL_OBJ) $(DLL_OBJ) $(TROLL_EXE) $(TROLL_DLL)

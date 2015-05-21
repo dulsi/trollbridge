@@ -33,7 +33,7 @@ TrollGame::TrollGame(int argc, char **argv)
  // Run at 30 frames per second
  ITimerStart(30);
  // Load monster and items from dynamically linked library
- loadLibrary("./troll.dll");
+ loadLibrary("./troll.so");
  // Initialize variables to nothing
  extraScreen = NULL;
  for (x = 0; x < TROLL_LEVEL_X; x++)

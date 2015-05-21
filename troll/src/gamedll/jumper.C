@@ -16,16 +16,16 @@
 #define TROLL_JUMPER_WAIT     12
 #define TROLL_JUMPER_SICKNESS 13
 
-TrollThing *TrollJumper::createGreenJumper(TrollScreen *scr,
-  IUShort secrt = 0)
+TrollThing *TrollJumper::createGreenJumper(TrollScreen *scr, IUShort sx,
+  IUShort sy, IUShort secrt = 0)
 {
- return new TrollJumper(scr, secrt, 5);
+ return new TrollJumper(scr, sx, sy, secrt, 5);
 }
 
-TrollThing *TrollJumper::createRedJumper(TrollScreen *scr,
-  IUShort secrt = 0)
+TrollThing *TrollJumper::createRedJumper(TrollScreen *scr, IUShort sx,
+  IUShort sy, IUShort secrt = 0)
 {
- return new TrollJumper(scr, secrt, 10);
+ return new TrollJumper(scr, sx, sy, secrt, 10);
 }
 
 void TrollJumper::die()
@@ -196,10 +196,19 @@ void TrollJumper::react()
  }
 }
 
-TrollJumper::TrollJumper(TrollScreen *scr, IUShort secrt, IUShort shft)
+TrollJumper::TrollJumper(TrollScreen *scr, IUShort sx, IUShort sy,
+  IUShort secrt, IUShort shft)
  : TrollStandardMonster(scr, secrt, 1)
 {
- findOpen();
+ if ((sx == TROLL_XYRANDOM) && (sy == TROLL_XYRANDOM))
+ {
+  findOpen();
+ }
+ else
+ {
+  x = sx;
+  y = sy;
+ }
  sprite = TROLL_SPRITE_TOAD;
  shift = shft;
  facing = 0;
