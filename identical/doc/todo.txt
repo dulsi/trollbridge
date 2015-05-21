@@ -1,0 +1,31 @@
+To Do List
+
+* Currently only Medium, Compact, Large and Huge memory models work (MSDOS)
+* IImagePCXLoad() and IImagePCXSave() do not work in Medium memory model
+     (MSDOS)
+* IImagePCXLoad() and IImagePCXSave() won't function properly on big endian
+     machines
+* Implement control and alt keys properly and ctrl-alt-del (MSDOS)
+* Keypad functions are not implemented (instead of a buffer has a list of
+     currently pressed keys including shift, control and alt)
+* More examples and documentation
+* Installation procedure
+* Extend TIM functionality
+* Fix MSDOS gcc/allegro port to not do two extra copies of the screen
+* Check IKeyBuffer character codes (SDL)
+
+Future...
+
+* Non shared memory version for X Windows
+* More geometry fetures (especialy a filled polygon draw)
+* Load and save palette
+* Defines for the various key codes returned by IKeybufferGet()
+* Joystick and mouse support
+* Add assembly version of ILineDraw()
+* More image formats (in particular png)
+* Multi frame sprites
+* Port to Borland/Turbo Pascal
+* Port to Windows (very low on list)
+* Port to Mac (possibly lower than Windows port)
+* C++ Class Library
+

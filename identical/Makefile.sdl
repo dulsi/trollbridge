@@ -1,0 +1,44 @@
+SDL_CFLAGS := $(shell sdl-config --cflags)
+
+CC = gcc
+CFLAGS = -O -DSDLLIB -Isrc/include $(SDL_CFLAGS)
+AR = ar
+ARFLAGS = rc
+
+OBJ_DIR = obj/
+SDL_DIR = sdl/
+
+COM_OBJ = igrgeometry.o igrimage.o igrtext.o igrtim.o igrpalette.o
+SPEC_OBJ = igrbasics.o ikbbuffer.o itimer.o
+
+SDL_OBJ = $(addprefix $(OBJ_DIR)$(SDL_DIR)c_, $(COM_OBJ)) \
+	$(addprefix $(OBJ_DIR)$(SDL_DIR), $(SPEC_OBJ))
+SDL_LIB = lib/libidentical-sdl.a
+TARGET = $(SDL_LIB)
+
+all: $(SDL_LIB)
+
+$(SDL_LIB): $(SDL_OBJ)
+	$(AR) $(ARFLAGS) $(SDL_LIB) $(SDL_OBJ)
+
+$(OBJ_DIR)$(SDL_DIR)c_%.o: src/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_DIR)$(SDL_DIR)%.o: src/$(SDL_DIR)%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+#clean:
+#	rm -f $(SDL_OBJ) $(SDL_LIB)
+
+# dependencies
+obj/linux-sdl/igrbasics.o: src/include/istdlib.h src/include/igrbasics.h
+obj/linux-sdl/ikbbuffer.o: src/include/ikbbuffer.h
+obj/linux-sdl/itimer.o: src/include/istdlib.h src/include/itimer.h
+obj/linux-sdl/c_igrgeometry.o: \
+	src/include/istdlib.h src/include/igrbasics.h \
+	src/include/igrgeometry.h
+obj/linux-sdl/c_igrimage.o: \
+	src/include/istdlib.h src/include/igrbasics.h src/include/igrimage.h
+obj/linux-sdl/c_igrtext.o: src/include/istdlib.h \
+	src/include/igrbasics.h src/include/igrtext.h
+

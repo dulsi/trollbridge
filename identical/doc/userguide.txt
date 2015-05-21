@@ -1,0 +1,412 @@
+                    Identical Software's Graphics Library
+
+                                 Version 0.6
+
+Introduction
+     At the beginning of 1997, Identical Software was facing an aging
+graphics library.  The library had been designed to provide a low overhead
+interface to the 320 by 200, 256 color mode of IBM compatibles.  New
+functionality was added to the library as time went on with little thought
+to consistency of the application programmers' interface (API).  Eventually
+the library was ported to other systems to ease cross platform development.
+In order to support the porting to other operating systems the API had to
+be patched in several places.  By 1997, the library no longer provided the
+low overhead originally needed, maintaining the system had become incredibly
+costly, and several of its promises went unreliezed.
+     Rather than continue patching the library, Identical Software began
+development of a new library.  Much of the development time was spent
+developing a consistent interface that could be implemented efficiently on
+several platforms.  Mistakes made in the older library were examined and
+avoided in the new product.  Interfaces to input devices were added as well.
+The result was a fast platform independent library for graphics.
+
+Naming Conventions
+     Functions in the Identical Software's Graphics Library have a consistent
+naming convention to facilitate it use.  All functions begin with a capital I
+followed by the object and action.  Capitalization is used to distinguish
+words.  For example, starting the graphics mode is IGraphicsStart().
+Functions in sample applications follow a similar style but begin with ITest.
+
+Parameters
+     Parameter passing is a week area of C because of its lack of
+pass-by-reference.  This failure of the language was considered in designing
+the API.  Except for IPaletteGet(), no pointers need be passed to functions.
+In general get, capture, and create actions return the requested object.
+Functions with both input and output parameters have output parameters listed
+first.
+
+Error Checking
+     For the most part the library does little to no error checking.  This is
+done for performance reasons.  Serious errors such as failing to initialize
+graphics mode may cause the program to abort.  The library was built to
+fill the particular needs of Identical Software.  Source code is provided to
+allow customization and optimization needed by other programmers without
+starting from scratch.
+
+Copyright
+     Identical Software's Graphics Library is being released to the public
+domain.  You may use the library however you wish.
+
+-- Dennis Payne <payned@rpi.edu>
+
+
+Chapter One: Graphics Basics (igrbasics.h)
+
+Getting There and Back
+     Before doing anything else, the programmer needs to start the graphics
+mode.  IGraphicsStart() initializes a 320 by 200 drawing screen with 256
+colors.  The function take a string as an argument.  This parameter is used
+on windowing systems as the name displayed in the title bar.  After
+completing execution the program should call IGraphicsEnd to restore the
+system to its original state.  Typically a program would have the following
+form:
+
+#include <igrbasics.h>
+ .
+ .
+ .
+int main(int argc, char *argv[])
+{
+ IGraphicsStart("Typical Program");
+  .
+  .
+  .
+ IGraphicsEnd();
+ return 0;
+}
+
+Pixels
+     Switching to graphics mode serves no purpose if pictures cannot be
+drawn to the screen.  The simplest drawing function is IPixelDraw().  A pixel
+is a single point on the screen.  It's value determines the color displayed
+at that point.  For example to place color 255 at (10, 15), the call would
+look like:
+
+IPixelDraw(IScreenMain, 10, 15, 255);
+
+The first argument is the screen to draw on its importance will be explained
+later.  The upper left corner of the display is (0, 0).  While the lower
+right is (319, 199).  Pixel colors range from 0 to 255.  On some systems
+IScreenMain is not continually redisplayed so a call to IGraphicsRefresh()
+should follow any modification to IScreenMain.
+     To save a image on the screen the pixels compose the image must be
+retrieved from the screen.  IPixelCapture() returns a pixel's value from the
+screen.  So to retrieve the value just placed:
+
+IPixel p;
+ .
+ .
+ .
+p = IPixelCapture(IScreenMain, 10, 15);
+
+The IPixel type is simply a value from 0 to 255.
+     All other geometric structures and images are simply collections of
+pixels.  Geometry and image functions can easily be built from the two
+pixel functions.
+
+Virtual Screen
+     Manipulating video memory directly has several drawbacks.  The obvious
+being that users will be able to see the construction on each screen.  This
+can cause images to appear to flicker as they are drawn and erased.  Another
+problem is that video memory is much slower than system memory.  A common
+solution to the problem is a virtual screen.  Virtual screens allow the
+screen to be setup without the user's knowledge and displayed quickly by
+copying the entire area to video memory in one step.
+     A variety of functions are provided for to support the use of virtual
+screen.  In fact all drawing and capture function work on virtual screens as
+well as the real screen.  The function that directly concern virtual screen
+are:
+
+IScreen IScreenCreate();
+void IScreenClear(IScreen screen);
+void IScreenCopy(IScreen screendst, IScreen screensrc);
+void IScreenDestroy(IScreen scr);
+
+     IScreenCreate() setups a virtual screen and must be called be using any
+virtual screen.  Newly created virtuals are not guaranteed to be clear.
+IScreenClear() sets an entire virtual screen to color zero.  IScreenCopy()
+can be used to copy between screens.  When finished using a virtual screen
+the programmer should remember to destroy the screen with IScreenDestroy() so
+that the memory associated with it can be re-used.
+     IScreenMain is a special global IScreen created during IGraphicsStart().
+Instead of being a virtual screen the memory corresponds to the real video
+memory.  A virtual screen can quickly be displayed by copying the screen to
+IScreenMain with IScreenCopy().  On some systems IScreenMain is not
+continually redisplayed so a call to IGraphicsRefresh() should follow any
+modification to IScreenMain.
+
+Palette
+     The graphics mode provided by Identical Software's Graphics Library has
+a 256 color palette.  Each palette entry has three values associated with it,
+red, green, and blue.  By modifying these values the user can setup any color
+he wishes.  As with screens, modifications to the palette often appear better
+when performed all at once.  To facilitate this the palette routines are
+organized similar to the virtual screen routines.  Create, copy and destroy
+functions mimic the facilities provided for virtual screens.  Two other
+functions are provided for palettes, IPaletteSet() and IPaletteGet().
+     IPalette set allows the modification of individual entries in the
+palette.  For example to create a solid red for entry two:
+
+IPaletteSet(IPaletteMain, 2, 255, 0, 0);
+
+As with virtual screens, a special global IPalette is created during
+IGraphicsStart() called IPaletteMain.  Unlike IScreenMain changes done to
+IPaletteMain are always immediately visible by the user without need for
+IGraphicsRefresh() or another similar function.  No set palette is
+guaranteed on initialization of the graphics and will depend on the system.
+     IPaletteGet() can be used to retrieve the values of a particular
+entry.  This function breaks the parameter passing convention mentioned in
+the introduction by having the output arguments last.  To get the color entry
+two:
+
+IColor r, g, b;
+ .
+ .
+ .
+IPaletteGet(IPaletteMain, 2, &r, &g, &b);
+
+If this was done directly after setting the solid red in the IPaletteSet()
+example, r would be 63 not 255.  Although the red, green, and blue values
+have a range from 0 to 255, all values after 63 are treated as 63.
+
+Example Program: basicexm.c
+     The virtual screen and palette functions are best illustrated in larger
+examples.  The program basicexm.c in the examples subdirectory demonstrates
+some of the basic routines.
+
+
+Chapter Two: Buffered Keyboard (ikbbuffer.h)
+
+     Keyboard input varies greatly from system to system.  Although the
+'a' key always returns 'a', many useful keys such as the up arrow don't
+have a standard returned value.  The buffered keyboard routines of Identical
+Software's Graphics Library attempts to solve this problem.
+     Before using buffered keyboard input, the programmer must start the
+buffered keyboard system by calling IKeybufferStart().  This should be done
+after graphics have been initialized and it may not work on all platforms
+outside of graphics mode.  As with graphics mode, the buffered keyboard
+input must be shutdown before exiting the application.  With these additions
+the typical program looks like:
+
+#include <igrbasics.h>
+#include <ikbbuffer.h>
+ .
+ .
+ .
+int main(int argc, char *argv[])
+{
+ IGraphicsStart("Typical Buffered Keyboard");
+ IKeybufferStart();
+  .
+  .
+  .
+ IKeybufferEnd();
+ IGraphicsEnd();
+ return 0;
+}
+
+     Two functions allow queries on the buffered keyboard system,
+IKeybufferGet() and IKeybufferPress().  IKeybufferGet() halts execution of
+the program until some keyboard input is available and returns the key
+pressed.  The values returned for various keys on the 101-keyboard are shown
+in a table at the end of the chapter.  Three keys modify the values returned,
+shift, control, and alt.  Alt has the highest precedence followed by control
+then shift.  Since the buffer to store key presses is a fixed size unless
+IKeybufferGet() is called regularly some key presses may be lost when the
+buffer is full.
+     To determine is data is available without halting the program a call to
+IKeybufferPress() can be made.  IKeybufferPress() returns immediately with
+either one or zero.  One means that a keypress is available.  Zero means no
+keys are pressed.
+
+Useless Keys
+     At present time some common keyboard functionality is not available
+through the buffered keyboard system.  Both the Caps Lock and Num Lock keys
+have no effect on the values returned for pressed keys.  Print Screen and
+Scroll Lock perform no function as well.  Pause will perform no function on
+most systems but will have unusual results under MS-DOS.  Ctrl-C will halt
+the program's execution on some system and should probably not be used in
+programs targeted for multiple platforms.
+
+                         Keycode Table
+
+Key           Normal         Shift          Control        Alt
+Esc           0x1B           0x1B           0x1B           0x1B
+F1            0xAF           0xC7           0xDE
+F2            0xB0           0xC8           0xDF
+F3            0xB1           0xC9           0xE0
+F4            0xB2           0xCA           0xE1
+F5            0xB3           0xCB           0xE2
+F6            0xB4           0xCC           0xE3
+F7            0xB5           0xCD           0xE4
+F8            0xB6           0xCE           0xE5
+F9            0xB7           0xCF           0xE6
+F10           0xB8           0xD0           0xE7
+F11           0xB9           0xD1           0xE8
+F12           0xBA           0xD2           0xE9
+` ~           `              ~
+1 !           1              !              0x7F           0x8B
+2 @           2              @              0x80           0x8C
+3 #           3              #              0x81           0x8D
+4 $           4              $              0x82           0x8E
+5 %           5              %              0x83           0x8F
+6 ^           6              ^              0x84           0x90
+7 &           7              &              0x85           0x91
+8 *           8              *              0x86           0x92
+9 (           9              (              0x87           0x93
+0 )           0              )              0x88           0x94
+- _           -              _              0x89
+= +           =              +              0x1F
+\ |           \              |
+Backspace     0x08           0x08           0x08           0x08
+Tab           0x09           0x09           0x09           0x09
+q             q              Q              0x11           0x95
+w             w              W              0x17           0x96
+e             e              E              0x05           0x97
+r             r              R              0x12           0x98
+t             t              T              0x14           0x99
+y             y              Y              0x19           0x9A
+u             u              U              0x15           0x9B
+i             i              I              0x09           0x9C
+o             o              O              0x0F           0x9D
+p             p              P              0x10           0x9E
+[ {           [              {              0x1E
+] }           ]              }              0x1D
+a             a              A              0x01           0x9F
+s             s              S              0x13           0xA0
+d             d              D              0x04           0xA1
+f             f              F              0x06           0xA2
+g             g              G              0x07           0xA3
+h             h              H              0x08           0xA4
+j             j              J              0x0A           0xA5
+k             k              K              0x0B           0xA6
+l             l              L              0x0C           0xA7
+; :           ;              :              0x8A
+' "           '              "              0x1C
+Enter         0x0D           0x0D           0x0D           0x0D
+z             z              Z              0x1A           0xA8
+x             x              X              0x18           0xA9
+c             c              C              0x03           0xAA
+v             v              V              0x16           0xAB
+b             b              B              0x02           0xAC
+n             n              N              0x0E           0xAD
+m             m              M              0x0D           0xAE
+, <           ,              <
+. >           .              >
+/ ?           /              ?
+Space         0x20           0x20           0x20           0x20
+Insert        0xC5           0xDC           0xF3
+Home          0xBC           0xD3           0xEA           0xF5
+Page Up       0xBE           0xD5           0xEC           0xF7
+Delete        0xC6           0xDD           0xF4
+End           0xC2           0xD9           0xF0           0xFB
+Page Down     0xC4           0xDB           0xF2           0xFD
+Up Arrow      0xBD           0xD4           0xEB           0xF6
+Left Arrow    0xBF           0xD6           0xED           0xF8
+Down Arrow    0xC3           0xDA           0xF1           0xFC
+Right Arrow   0xC1           0xD8           0xEF           0xFA
+Center        0xC0           0xD7           0xEE           0xF9
+
+     Note: The KeyBuffer routines do not function under the SDL port at
+this time.
+
+
+Chapter Three: Drawing Geometry (igrgeometry.h)
+
+
+Chapter Four: Text (igrtext.h)
+
+     The text capabilities are rather limited compared to most graphics
+libraries.  One of the requirements of Identical Software was that no
+support files be necessary for the library.  Thus no font files could be
+used.  Instead a fixed font of 8 by 8 is provided in the library.  Only a
+single function is provided igrtext.c, ITextDraw().  The function requires
+a screen to write to, x and y coordinates, the color of the text, and the
+text string itself.
+     The following program is a graphical version of the ever popular
+Hello World program:
+
+#include <igrbasics.h>
+#include <igrtext.h>
+#include <ikbbuffer.h>
+
+int main()
+{
+ IGraphicsStart("Hello World");
+ IKeybufferStart();
+
+ IPaletteSet(IPaletteMain, 0, 0, 0, 0);
+ IPaletteSet(IPaletteMain, 1, 255, 0, 0);
+ ITextDraw(IScreenMain, 0, 0, 1, "Hello World");
+ IGraphicsRefresh();
+ IKeybufferGet();
+
+ IKeybufferEnd();
+ IGraphicsEnd();
+ return 0;
+}
+
+Notice that the ITextDraw() call does not have a return at the end of the
+string.  The text drawing function does no processing on the string if a
+return (character #13) is included, the thirteenth character in the font will
+be printed.
+
+Example Program: textexm.c
+     The program textexm.c in the examples subdirectory demonstrates
+displaying what the user types.
+
+
+Chapter Five: Image Routines (igrimage.h)
+
+     Although any picture can be reconstructed by placing pixels or geometric
+objects, it is often more convenient to work with the image as a single
+object.  The image routines of Identical Software's Graphics Library provide
+this capability.  An image has four pieces of information associated with it,
+x and y size, an array of pixels, and a palette.  Images can be retrieved in
+two fashions, capturing a screen section or loading from disk.
+
+Creating Images
+     IImageCapture() takes an image from a virtual screen.  The function
+takes five parameters.  The first is simply the screen to capture.  This is
+follow by two sets of x and y coordinates.  The first set must be the upper
+left corner of the box while the second is the lower right.  Captured images
+have no palette defined by default.  The returned value is the captured image
+or NULL in case of error.
+     IImagePCXLoad() loads a PCX file from disk.  The sole argument is the
+name of the file including the ".pcx" extension.  In order for a pcx file to
+successfully load it must be a 256 color image.  The function may not work on
+all systems if the image is greater than 65,536 bytes as well.  The returned
+values are the same as IImageCapture().
+
+Displaying and Saving
+     IImageDraw() displays the image at the specified x-y coordinate on the
+virtual screen.  To save the image as a PCX file, IImagePCXSave() takes the
+image and filename.  The filename should include the ".pcx" extension.  If
+the image has no palette a palette of entirely black is saved.
+
+Image Palettes
+     The palette associated with an image can be retrieved with
+IImagePaletteGet().  The returned palette is actually a reference to the
+image's palette.  So changes made to the palette are performed to the image.
+If the palette is destroyed the image's palette is destroyed as well.  Simply
+destroying an image's palette can cause problems if the palette is needed.
+The proper method of destroying the palette of an image is as follows:
+
+ IPaletteDestroy( IImagePaletteGet() );
+ IImagePaletteGet() = NULL;
+
+
+Chapter Six: Keyboard Press and Release (ikbpress.h)
+
+
+Chapter Seven: Timer (itimer.h)
+
+     The timer routines can be used to ensure that the program runs at the
+same speed on all systems.  To start the timer the user simply calls
+ITimerStart() with the number of ticks he wishes per second.  The timer can
+be stopped with ITimerEnd().  To halt the program until a tick occurs the
+programmer simply calls ITimerWait().  If a tick has already occured
+ITimerWait() returns immediately.  If the machine is too slow several ticks
+may occur between calls of ITimerWait(), the timer functions do not detect
+this.
+
