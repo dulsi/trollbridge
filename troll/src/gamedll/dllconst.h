@@ -34,6 +34,13 @@
 #define TROLL_SPRITE_EXPLOSION    50
 #define TROLL_SPRITE_SPEAR        51
 #define TROLL_SPRITE_TOAD         52
+#define TROLL_SPRITE_EGG          53
+
+#define TROLL_SLOT_SWORD          0
+#define TROLL_SLOT_KEY            1
+#define TROLL_SLOT_ANHK           2
+#define TROLL_SLOT_SHIELD         3
+#define TROLL_SLOT_EGG            4
 
 #endif
 

@@ -17,6 +17,8 @@ class TrollActivatibleItem: public TrollItem
  public:
   static TrollThing *createAnhk(TrollScreen *scr, IUShort x, IUShort y,
     IUShort secrt = 0);
+  static TrollThing *createEgg(TrollScreen *scr, IUShort x, IUShort y,
+    IUShort secrt = 0);
   static TrollThing *createEnchantedSword(TrollScreen *scr, IUShort x,
     IUShort y, IUShort secrt = 0);
   static TrollThing *createShield(TrollScreen *scr, IUShort x,
@@ -111,8 +113,6 @@ class TrollShieldItem: public TrollCarriedItem
  public:
   TrollShieldItem(IUShort num, IUShort str);
   void activate(TrollCharacter *troll, TrollScreen *screen);
-
- protected:
 };
 
 class TrollShieldProjectile: public TrollProjectile
@@ -127,6 +127,13 @@ class TrollShieldProjectile: public TrollProjectile
   TrollCharacter *troll;
   IUShort trollX, trollY;
   IUShort trollFacing, trollFrame;
+};
+
+class TrollEggItem: public TrollCarriedItem
+{
+ public:
+  TrollEggItem(IUShort num);
+  void activate(TrollCharacter *troll, TrollScreen *screen);
 };
 
 class TrollLimitedItem: public TrollCarriedItem
@@ -251,6 +258,7 @@ extern TrollEnchantedSwordItem TrollEnchantedSword;
 extern TrollKeyItem TrollKey;
 extern TrollAnhkItem TrollAnhk;
 extern TrollShieldItem TrollShield;
+extern TrollEggItem TrollEgg;
 
 #endif
 

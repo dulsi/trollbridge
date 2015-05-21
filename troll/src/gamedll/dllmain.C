@@ -68,12 +68,14 @@ extern "C" int TrollDllInit(TrollGame *game)
  game->addItemType(9, TrollActivatibleItem::createAnhk);
  game->addItemType(10, TrollActivatibleItem::createShield);
  game->addItemType(11, TrollActivatibleItem::createSoldShield);
+ game->addItemType(12, TrollActivatibleItem::createEgg);
  // add carried items
  game->addCarriedItem(&TrollNormalSword);
  game->addCarriedItem(&TrollKey);
  game->addCarriedItem(&TrollEnchantedSword);
  game->addCarriedItem(&TrollAnhk);
  game->addCarriedItem(&TrollShield);
+ game->addCarriedItem(&TrollEgg);
  return 0;
 }
 

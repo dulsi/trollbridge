@@ -26,6 +26,7 @@ TrollEnchantedSwordItem TrollEnchantedSword(2, 2, 1);
 TrollKeyItem TrollKey;
 TrollAnhkItem TrollAnhk(3, 1);
 TrollShieldItem TrollShield(4, 1);
+TrollEggItem TrollEgg(5);
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   TrollActivatibleItem::createAnhk - Creates an anhk.
@@ -59,6 +60,23 @@ TrollThing *TrollActivatibleItem::createEnchantedSword(TrollScreen *scr,
   IUShort x, IUShort y, IUShort secrt = 0)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollEnchantedSword);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollActivatibleItem::createEgg - Creates an egg.
+
+    Parameters:
+      scr          (In)  Screen the egg is on
+      x            (In)  X location
+      y            (In)  Y location
+      secrt        (In)  Secret number to set when dead
+
+    Returns: An egg
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+TrollThing *TrollActivatibleItem::createEgg(TrollScreen *scr,
+  IUShort x, IUShort y, IUShort secrt = 0)
+{
+ return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollEgg);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -158,7 +176,7 @@ TrollActivatibleItem::TrollActivatibleItem(TrollScreen *scr, IUShort xStart,
       dmg          (In)  Damage of the sword
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollSwordItem::TrollSwordItem(IUShort num, IUShort str, IUShort dmg)
-  :TrollCarriedItem(num, 0, str)
+  :TrollCarriedItem(num, TROLL_SLOT_SWORD, str)
 {
  sprite = TROLL_SPRITE_SWORD;
  shift = 0;
@@ -538,7 +556,7 @@ void TrollSwordProjectile::takeHit(TrollThing *hitBy)
 }
 
 TrollAnhkItem::TrollAnhkItem(IUShort num, IUShort str)
-  :TrollCarriedItem(num, 2, str)
+  :TrollCarriedItem(num, TROLL_SLOT_ANHK, str)
 {
  sprite = TROLL_SPRITE_ANHK;
  shift = 0;
@@ -601,7 +619,7 @@ void TrollAnhkProjectile::takeHit(TrollThing *hitBy)
       str          (In)  Strength of the shield
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollShieldItem::TrollShieldItem(IUShort num, IUShort str)
-  :TrollCarriedItem(num, 3, str)
+  :TrollCarriedItem(num, TROLL_SLOT_SHIELD, str)
 {
  sprite = TROLL_SPRITE_SHIELD;
  shift = 10;
@@ -696,6 +714,32 @@ void TrollShieldProjectile::takeHit(TrollThing *hitBy)
 {
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollEggItem::TrollEggItem - Constructor for the egg.
+
+    Parameters:
+      num          (In)  Item number of the egg
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+TrollEggItem::TrollEggItem(IUShort num)
+  :TrollCarriedItem(num, TROLL_SLOT_EGG, 1)
+{
+ sprite = TROLL_SPRITE_EGG;
+ shift = 0;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollEggItem::activate - Activates the egg.
+
+    Parameters:
+      troll        (In)  Character using the egg
+      screen       (In)  Screen being affected
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+void TrollEggItem::activate(TrollCharacter *troll, TrollScreen *screen)
+{
+ // Creates phoenix if there is a nest
+ // Flys the character up two screens
+}
+
 TrollLimitedItem::TrollLimitedItem(IUShort num, IUShort slt, IUShort str)
   : TrollCarriedItem(num, slt, str)
 {
@@ -771,7 +815,7 @@ TrollLimitedActivatibleItem::TrollLimitedActivatibleItem(TrollScreen *scr,
 }
 
 TrollKeyItem::TrollKeyItem()
-  : TrollLimitedItem(1, 1, 1)
+  : TrollLimitedItem(1, TROLL_SLOT_KEY, 1)
 {
  sprite = TROLL_SPRITE_KEY;
  shift = 0;

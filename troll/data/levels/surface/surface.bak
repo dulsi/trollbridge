@@ -1,0 +1,23 @@
+XScreen  12
+YScreen  6
+XStart   160
+YStart   120
+          0           1           2           3           4           5           6           7           8           9          10          11          12          13          14          15
+  0   DarkBlue    DarkBlue      Blank       Blank       Blank       Blank       Blank       Blank     TrollGray   TrollGray   TrollGray     Blank       Blank       Blank       Blank     TrollGray
+  1   DarkBlue    DarkBlue      Blank       Blank       Blank       Blank       Blank       Blank       Blank     TrollGray   TrollGray     Blank       Blank       Blank     TrollGray   TrollGray
+  2     Blank     DarkBlue   TreeBrown1  TreeBrown1     Blank       Blank       Blank       Blank     LightBlue   LightBlue   TrollGray   TrollGray   TrollGray   TrollGray   TrollGray     Blank
+  3   DarkBlue    DarkBlue    LightBlue  TreeBrown1     Blank       Blank     LightBlue   LightBlue   LightBlue     Blank       Blank     TrollGray   TrollGray   TrollGray     Blank       Blank
+  4   DarkBlue    DarkBlue    LightBlue   LightBlue   LightBlue   LightBlue   LightBlue     Blank       Blank       Blank       Blank       Blank     TrollGray     Blank       Blank       Blank
+  5  TreeBrown1  TreeBrown1  TreeBrown1  TreeBrown1     Blank       Blank       Blank       Blank       Blank    TreeGreen5  TreeGreen5  TreeGreen5   TrollGray     Blank       Blank       Blank
+  6  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5     Blank       Blank       Blank       Blank    TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5   TrollGray     Blank      Pyramid2     Blank
+  7  TreeGreen3  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5   TrollGray   TrollGray     Blank       Blank       Blank
+          0           1           2           3           4           5           6           7           8           9          10          11          12          13          14          15
+  0      tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp      mountain4   mountain4   mountain4      tmp         tmp         tmp         tmp      mountain5
+  1      tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp      mountain3   mountain3      tmp         tmp         tmp      mountain3   mountain6
+  2      tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp      mountain3   mountain3   mountain3   mountain3   mountain3     oasis
+  3      tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp      mountain3   mountain3   mountain3    desert6     desert5
+  4      tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp      mountain3    desert6     desert6     desert5
+  5      tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp       forest1    mountain2    desert7     desert6     desert5
+  6      tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp        test2     startroom    desert1     pyramid     desert5
+  7      tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp      mountain1    desert2     desert3     desert4
+

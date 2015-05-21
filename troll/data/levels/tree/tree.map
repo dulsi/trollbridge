@@ -1,0 +1,23 @@
+XScreen  6
+YScreen  7
+XStart   140
+YStart   180
+          0           1           2           3           4           5           6           7           8           9          10          11          12          13          14          15
+  0     Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black
+  1     Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black
+  2     Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black
+  3     Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black       Black
+  4     Black       Black       Black       Black       Black       Black     TrollGray     Black       Black       Black       Black       Black       Black       Black       Black       Black
+  5     Black       Black       Black       Black       Black     TrollGray   TrollGray   TrollGray     Black       Black       Black       Black       Black       Black       Black       Black
+  6     Black       Black       Black       Black     TrollGray   TrollGray   TrollGray   TrollGray   TrollGray     Black       Black       Black       Black       Black       Black       Black
+  7     Black       Black       Black     TrollGray   TrollGray   TrollGray   TrollGray   TrollGray   TrollGray   TrollGray     Black       Black       Black       Black       Black       Black
+          0           1           2           3           4           5           6           7           8           9          10          11          12          13          14          15
+  0     blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank
+  1     blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank
+  2     blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank
+  3     blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank
+  4     blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank       blank
+  5     blank       blank       blank       blank       blank       blank       tree3       blank       blank       blank       blank       blank       blank       blank       blank       blank
+  6     blank       blank       blank       blank       blank       blank       tree2       blank       blank       blank       blank       blank       blank       blank       blank       blank
+  7     blank       blank       blank       blank       blank       blank       tree        blank       blank       blank       blank       blank       blank       blank       blank       blank
+

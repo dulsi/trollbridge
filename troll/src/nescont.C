@@ -7,14 +7,22 @@
 
   Modification History
 
-  8/4/96 Added X window support.
+  08/04/96 Added X window support.
 
-  8/19/96 Added joystick support for linux.
+  08/19/96 Added joystick support for linux.
 
-  8/20/96 Added BIOS joystick support for dos.
+  08/20/96 Added BIOS joystick support for dos.
+
+  10/10/99 Added SDL support
 ********************************************************************/
 
 #include "nescont.h"
+
+#ifdef SDLLIB
+
+#include <SDL.h>
+
+#endif
 
 #ifdef __MSDOS__
 
@@ -66,7 +74,87 @@ static unsigned short jsstatus_bits;
 
 #endif
 
-#ifdef __MSDOS__
+#ifdef SDLLIB
+
+nes_controller::nes_controller()
+{
+ SDL_EventState(SDL_ACTIVEEVENT, SDL_IGNORE);
+ SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
+ SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
+ SDL_EventState(SDL_MOUSEBUTTONUP, SDL_IGNORE);
+ SDL_EventState(SDL_QUIT, SDL_IGNORE);
+ SDL_EventState(SDL_SYSWMEVENT, SDL_IGNORE);
+}
+
+nes_controller::~nes_controller()
+{
+}
+
+void nes_controller::status(signed char &down,signed char &right,
+  unsigned char &a,unsigned char &b,unsigned char &start,
+  unsigned char &select)
+{
+ SDL_Event sdlevent;
+ int avail;
+ unsigned short mask;
+ unsigned short usedb;
+
+ for (avail = SDL_PollEvent(&sdlevent); avail;
+   avail = SDL_PollEvent(&sdlevent))
+ {
+  switch (sdlevent.key.keysym.sym)
+  {
+   case SDLK_KP8:
+   case SDLK_UP:
+    mask=0x0200;
+    break;
+   case SDLK_KP6:
+   case SDLK_RIGHT:
+    mask=0x0400;
+    break;
+   case SDLK_KP4:
+   case SDLK_LEFT:
+    mask=0x0800;
+    break;
+   case SDLK_KP2:
+   case SDLK_DOWN:
+    mask=0x0100;
+    break;
+   case SDLK_RETURN:
+    mask=0x0008;
+    break;
+   case SDLK_LSHIFT:
+   case SDLK_RSHIFT:
+    mask=0x0004;
+    break;
+   case SDLK_RCTRL:
+   case SDLK_LCTRL:
+    mask=0x0001;
+    break;
+   case SDLK_RALT:
+   case SDLK_LALT:
+    mask=0x0002;
+    break;
+   default:
+    mask=0;
+    break;
+  }
+  if (sdlevent.key.state == SDL_PRESSED) kbstatus_bits|=mask;
+  else kbstatus_bits&=(~mask);
+ }
+ status_bits=kbstatus_bits;
+ usedb=(status_bits & 0x000F)<<4;
+ a=(status_bits & 0x0010)?0:(status_bits & 0x0001);
+ b=(status_bits & 0x0020)?0:(status_bits & 0x0002);
+ select=(status_bits & 0x0040)?0:(status_bits & 0x0004);
+ start=(status_bits & 0x0080)?0:(status_bits & 0x0008);
+ down=(status_bits & 0x0100)?1:((status_bits &0x0200)?-1:0);
+ right=(status_bits & 0x0400)?1:((status_bits &0x0800)?-1:0);
+ kbstatus_bits&=0xFF0F;
+ kbstatus_bits|=usedb;
+}
+
+#elif defined(__MSDOS__)
 
 #ifdef ALLEGRO
 

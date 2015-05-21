@@ -23,15 +23,15 @@
 
 /* Sizes of various fixed sized arrays for class TrollGame */
 #define TROLL_MONSTER_TYPES 22
-#define TROLL_ITEM_TYPES    12
-#define TROLL_CARRIED_ITEMS 5
+#define TROLL_ITEM_TYPES    13
+#define TROLL_CARRIED_ITEMS 6
 
 /* Size of the secret array.  Since each secret is one bit, there are eight
  times as many secrets as the array size. */
 #define TROLL_SECRETS_SIZE 20
 
 /* Number of different types of carried items */
-#define TROLL_CHARACTER_CARRIED_ITEMS 4
+#define TROLL_CHARACTER_CARRIED_ITEMS 5
 
 /* Array indices into TrollCharacter's screens array */
 #define TROLL_BACKGROUND_SCREEN 0
