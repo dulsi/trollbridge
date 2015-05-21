@@ -33,6 +33,8 @@
 TrollGame::TrollGame(int argc, char **argv)
 {
  int x,y;
+ IUShort xMult, yMult;
+ IBool fullScreen;
  char *file;
  char *defName = "troll.def";
  char opt;
@@ -43,7 +45,10 @@ TrollGame::TrollGame(int argc, char **argv)
   {0, 0, 0, 0}
  };
 
- while ((opt = getopt_long(argc, argv, "h?d:", long_options, NULL)) != EOF)
+ xMult = 1;
+ yMult = 1;
+ fullScreen = IFALSE;
+ while ((opt = getopt_long(argc, argv, "h?d:x:y:f", long_options, NULL)) != EOF)
  {
   switch (opt)
   {
@@ -67,10 +72,22 @@ troll [options]\n\
      exit(-1);
     }
     break;
+   case 'x':
+    sscanf(optarg, "%d", &x);
+    xMult = x;
+    break;
+   case 'y':
+    sscanf(optarg, "%u", &y);
+    yMult = y;
+    break;
+   case 'f':
+    fullScreen = ITRUE;
    default:
     break;
   }
  }
+
+ IGraphicsStart("Troll Bridge", xMult, yMult, fullScreen);
 
  char *home = getenv("HOME");
  if (home)
@@ -146,6 +163,7 @@ TrollGame::~TrollGame()
  delete definition;
  delete[] savePath;
  ITimerEnd();
+ IGraphicsEnd();
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -425,6 +443,7 @@ char *TrollGame::buildFullPath(const char *path, const char *file)
   strcat(fullPath, "/");
  }
  strcat(fullPath, file);
+ return fullPath;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -481,7 +500,7 @@ void TrollGame::selectName(char *name)
  signed char d, oldD, r, oldR;
  unsigned char a, b, start;
  IScreen bufScreen[2];
- unsigned char c[2];
+ char c[2];
  int x, y;
  int num, len;
 
@@ -532,7 +551,7 @@ void TrollGame::selectName(char *name)
  for (;;)
  {
   IScreenCopy(bufScreen[1], bufScreen[0]);
-  ITextDraw(bufScreen[1], 128, 57, 255, (unsigned char *)name);
+  ITextDraw(bufScreen[1], 128, 57, 255, name);
   IRectangleDraw(bufScreen[1], 47 + x * 12, 90 + y * 12, 47 + x * 12 + 11,
     90 + y * 12 + 11, TROLL_LIGHTGRAY);
   IRectangleDraw(bufScreen[1], 48 + x * 12, 91 + y * 12, 48 + x * 12 + 9,
@@ -701,18 +720,18 @@ bool TrollGame::titleScreen(char *name)
   {
    if (top + i == 0)
    {
-    ITextDraw(bufScreen, 65, i * 16 + 54, 255, (unsigned char *)"New Character");
+    ITextDraw(bufScreen, 65, i * 16 + 54, 255, "New Character");
    }
    else if (top + i == files.length() + 1)
    {
-    ITextDraw(bufScreen, 65, i * 16 + 54, 255, (unsigned char *)"Quit");
+    ITextDraw(bufScreen, 65, i * 16 + 54, 255, "Quit");
    }
    else if (top + i <= files.length())
    {
     memset(name, 0, 9);
     strncpy(name, files[top + i - 1] + len,
       strlen(files[top + i - 1] + len) - 4);
-    ITextDraw(bufScreen, 65, i * 16 + 54, 255, (unsigned char *)name);
+    ITextDraw(bufScreen, 65, i * 16 + 54, 255, name);
    }
   }
   IScreenCopy(IScreenMain, bufScreen);

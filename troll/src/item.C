@@ -37,7 +37,7 @@ void TrollItem::draw(IScreen drawscreen)
 
   sprintf(number, "%d", cost);
   ITextDraw(drawscreen, x - (strlen(number) * 4) + TROLL_SQUARE_X / 2,
-    y + TROLL_SQUARE_Y + 2, 255, (unsigned char *)number);
+    y + TROLL_SQUARE_Y + 2, 255, number);
  }
 }
 

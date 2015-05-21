@@ -1,6 +1,7 @@
 #include <igrbasics.h>
 #include <igrpalette.h>
 #include <unistd.h>
+#include <stdio.h>
 
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname);
 

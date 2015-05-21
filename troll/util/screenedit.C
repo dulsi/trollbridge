@@ -378,7 +378,7 @@ void EditExitSquare(IUShort x, IUShort y)
    }
    else
    {
-    ITextDraw(graphScreens[2], 130, 45 + 15 * i, (i == where) ? 0 : 255, (unsigned char *)menuVar[i]);
+    ITextDraw(graphScreens[2], 130, 45 + 15 * i, (i == where) ? 0 : 255, (char *)menuVar[i]);
    }
   }
   IScreenCopy(IScreenMain, graphScreens[2]);
@@ -1116,7 +1116,7 @@ int main(int argc, char *argv[])
  {
   editScreen = new TrollEditScreen(argv[1]);
   sprites = new SpriteHandler("troll.spr");
-  IGraphicsStart("ScreenEdit");
+  IGraphicsStart("ScreenEdit", 1, 1, IFALSE);
   IKeybufferStart();
   initpal();
   ITimerStart(30);

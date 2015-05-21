@@ -33,7 +33,7 @@ TrollTurtleUnbreakable::TrollTurtleUnbreakable(TrollScreen *scr,
 
 IShort TrollTurtleUnbreakable::getDamage()
 {
- tail->getDamage();
+ return tail->getDamage();
 }
 
 void TrollTurtleUnbreakable::react()

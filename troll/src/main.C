@@ -20,12 +20,9 @@ SpriteHandler TrollSpriteHandler;
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 int main(int argc, char **argv)
 {
- IGraphicsStart("Troll Bridge");
-
  TrollGame game(argc, argv);
 
  game.run();
- IGraphicsEnd();
  return 0;
 }
 

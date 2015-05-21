@@ -435,12 +435,12 @@ TrollSwordProjectile::TrollSwordProjectile(TrollScreen *screen,
  {
   case TROLL_UP:
    sprite = TROLL_SPRITE_SWORD_V;
-   facing = 0;
+   facing = 1;
    direction = TROLL_UP;
    break;
   case TROLL_DOWN:
    sprite = TROLL_SPRITE_SWORD_V;
-   facing = 1;
+   facing = 0;
    direction = TROLL_DOWN;
    break;
   case TROLL_RIGHT:
@@ -748,8 +748,7 @@ void TrollLimitedItem::draw(IScreen drawscreen, IShort x, IShort y)
 
  TrollCarriedItem::draw(drawscreen, x, y);
  sprintf(text, "%d", number);
- ITextDraw(drawscreen, x - (strlen(text) * 4), y - 4, 255,
-   (unsigned char *)text);
+ ITextDraw(drawscreen, x - (strlen(text) * 4), y - 4, 255, text);
 }
 
 IUShort TrollLimitedItem::getNumber()

@@ -159,7 +159,7 @@ char IFAR * IFAR *MapFileRead(char *filename, IPaletteName colornames)
   for (k = 0; k < TROLL_LEVEL_X; k++)
   {
    fscanf(mapfile, "%s", basename);
-   mapInfo[k][i] = IPaletteNameFind(colornames, basename);
+   mapInfo[k][i] = IPaletteNameFind(colornames, (IPaletteNameEntry)basename);
   }
  }
  /* Read and throw out column numbers */

@@ -110,7 +110,7 @@ void TrollMerchant::draw(IScreen drawscreen)
  TrollPerson::draw(drawscreen);
  const Sprite *pic = TrollSpriteHandler.getSprite(TROLL_SPRITE_GOLD);
  pic->draw(drawscreen, 60, 134, 0, 0, 0);
- ITextDraw(drawscreen, 80, 138, 255, (unsigned char *)"X");
+ ITextDraw(drawscreen, 80, 138, 255, "X");
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\

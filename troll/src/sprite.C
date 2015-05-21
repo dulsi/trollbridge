@@ -117,12 +117,12 @@ IUShort Sprite::getYSize() const
 }
 
 SpriteHandler::SpriteHandler()
- : sprites(NULL), num(0)
+ : num(0), sprites(NULL)
 {
 }
 
 SpriteHandler::SpriteHandler(const char *filename)
- : sprites(NULL), num(0)
+ : num(0), sprites(NULL)
 {
  load(filename);
 }

@@ -166,11 +166,11 @@ void TrollCharacter::die()
  where = 0;
  IScreenClear(screens[TROLL_TEMPORARY_SCREEN2]);
  ITextDraw(screens[TROLL_TEMPORARY_SCREEN2], 65, 54, 255,
-   (unsigned char *)"Continue");
+   "Continue");
  ITextDraw(screens[TROLL_TEMPORARY_SCREEN2], 65, 70, 255,
-   (unsigned char *)"Save");
+   "Save");
  ITextDraw(screens[TROLL_TEMPORARY_SCREEN2], 65, 86, 255,
-   (unsigned char *)"Retry");
+   "Retry");
  IScreenCopy(screens[TROLL_TEMPORARY_SCREEN1],
    screens[TROLL_TEMPORARY_SCREEN2]);
  trollPic->draw(screens[TROLL_TEMPORARY_SCREEN1], 40, where * 16 + 50, 0,
@@ -214,7 +214,7 @@ void TrollCharacter::die()
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 void TrollCharacter::display()
 {
- unsigned char s[20];
+ char s[20];
  IUShort i, k;
 
  // copy background screen to the temporary screen
@@ -222,16 +222,16 @@ void TrollCharacter::display()
    screens[TROLL_BACKGROUND_SCREEN]);
 
  // display character status info
- sprintf((char *)s, "  Hp: %-2d / %-2d", hp, thp);
+ sprintf(s, "  Hp: %-2d / %-2d", hp, thp);
  ITextDraw(screens[TROLL_TEMPORARY_SCREEN1], 208, 10, 255, s);
- sprintf((char *)s, "Gold: %-3d", gold);
+ sprintf(s, "Gold: %-3d", gold);
  ITextDraw(screens[TROLL_TEMPORARY_SCREEN1], 208, 23, 255, s);
  IRectangleDraw(screens[TROLL_TEMPORARY_SCREEN1], 130, 9, 154, 35, TROLL_LIGHTGRAY);
  ITextDraw(screens[TROLL_TEMPORARY_SCREEN1], 138, 5, 255,
-   (unsigned char *)"B");
+   "B");
  IRectangleDraw(screens[TROLL_TEMPORARY_SCREEN1], 160, 9, 184, 35, TROLL_LIGHTGRAY);
  ITextDraw(screens[TROLL_TEMPORARY_SCREEN1], 168, 5, 255,
-   (unsigned char *)"A");
+   "A");
  if (bButton && items[bButton])
  {
   items[bButton]->draw(screens[TROLL_TEMPORARY_SCREEN1], 142, 22);
@@ -756,12 +756,12 @@ void TrollCharacter::setText(char *msg1, char *msg2)
  if (msg1)
  {
   ITextDraw(screens[TROLL_BACKGROUND_SCREEN], 150 - strlen(msg1) * 4,
-    TROLL_BUFFER_Y + TROLL_SQUARE_Y + 4, 255, (unsigned char *)msg1);
+    TROLL_BUFFER_Y + TROLL_SQUARE_Y + 4, 255, msg1);
  }
  if (msg2)
  {
   ITextDraw(screens[TROLL_BACKGROUND_SCREEN], 150 - strlen(msg2) * 4,
-    TROLL_BUFFER_Y + TROLL_SQUARE_Y * 2 + 4, 255, (unsigned char *)msg2);
+    TROLL_BUFFER_Y + TROLL_SQUARE_Y * 2 + 4, 255, msg2);
  }
 }
 
@@ -1153,12 +1153,12 @@ void TrollCharacter::setupBackgroundScreen()
  if (msg1)
  {
   ITextDraw(screens[TROLL_BACKGROUND_SCREEN], 150 - strlen(msg1) * 4,
-    TROLL_BUFFER_Y + TROLL_SQUARE_Y + 4, 255, (unsigned char *)msg1);
+    TROLL_BUFFER_Y + TROLL_SQUARE_Y + 4, 255, msg1);
  }
  if (msg2)
  {
   ITextDraw(screens[TROLL_BACKGROUND_SCREEN], 150 - strlen(msg2) * 4,
-    TROLL_BUFFER_Y + TROLL_SQUARE_Y * 2 + 4, 255, (unsigned char *)msg2);
+    TROLL_BUFFER_Y + TROLL_SQUARE_Y * 2 + 4, 255, msg2);
  }
 }
 

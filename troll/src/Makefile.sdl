@@ -5,7 +5,7 @@ SDL_CFLAGS := $(shell sdl-config --cflags)
 SDL_LDFLAGS := $(shell sdl-config --libs)
 
 CXX = g++
-CXXFLAGS = -g -frtti -DSDLLIB -I$(IDENTICALINC_DIR) $(SDL_CFLAGS)
+CXXFLAGS = -Wall -g -frtti -DSDLLIB -I$(IDENTICALINC_DIR) $(SDL_CFLAGS)
 DLLFLAGS = -fPIC -I.
 LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS)
 
