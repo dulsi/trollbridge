@@ -16,13 +16,13 @@
 #define TROLL_SCORPION_SICKNESS 6
 
 TrollThing *TrollScorpion::createBlueScorpion(TrollScreen *scr,
-  IShort sx, IShort sy, IUShort secrt = 0)
+  IShort sx, IShort sy, IUShort secrt)
 {
  return new TrollScorpion(scr, sx, sy, secrt, 0, 3);
 }
 
 TrollThing *TrollScorpion::createRedScorpion(TrollScreen *scr,
-  IShort sx, IShort sy, IUShort secrt = 0)
+  IShort sx, IShort sy, IUShort secrt)
 {
  return new TrollScorpion(scr, sx, sy, secrt, 10, 2);
 }

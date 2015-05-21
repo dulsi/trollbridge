@@ -61,6 +61,9 @@ troll [options]\n\
 \n\
   Options:\n\
     -d, --def=FILENAME   World definition file (defaults to \"troll.def\")\n\
+    -f                   Full screen mode\n\
+    -x#                  Screen width multiplier\n\
+    -y#                  Screen height multiplier\n\
 ");
     exit(0);
     break;

@@ -15,7 +15,7 @@ IShort TrollProjectile::getDamage()
  return(damage);
 }
 
-TrollProjectile::TrollProjectile(TrollScreen *scr, IUShort dmg = 1)
+TrollProjectile::TrollProjectile(TrollScreen *scr, IUShort dmg /*= 1*/)
   :TrollThing(scr)
 {
  damage = dmg;

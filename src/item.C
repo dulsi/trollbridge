@@ -50,7 +50,7 @@ void TrollItem::takeHit(TrollThing *hitBy)
 }
 
 TrollItem::TrollItem(TrollScreen *scr, IUShort xStart, IUShort yStart,
- IUShort secrt = 0, IUShort cst = 0)
+ IUShort secrt /*= 0*/, IUShort cst /*= 0*/)
  :TrollThing(scr, secrt)
 {
  x = xStart;

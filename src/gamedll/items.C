@@ -40,7 +40,7 @@ TrollEggItem TrollEgg(5);
     Returns: An anhk
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createAnhk(TrollScreen *scr, IShort x,
-  IShort y, IUShort secrt = 0)
+  IShort y, IUShort secrt)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollAnhk);
 }
@@ -57,7 +57,7 @@ TrollThing *TrollActivatibleItem::createAnhk(TrollScreen *scr, IShort x,
     Returns: A sword
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createEnchantedSword(TrollScreen *scr,
-  IShort x, IShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollEnchantedSword);
 }
@@ -74,7 +74,7 @@ TrollThing *TrollActivatibleItem::createEnchantedSword(TrollScreen *scr,
     Returns: An egg
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createEgg(TrollScreen *scr,
-  IShort x, IShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollEgg);
 }
@@ -91,7 +91,7 @@ TrollThing *TrollActivatibleItem::createEgg(TrollScreen *scr,
     Returns: A shield
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createShield(TrollScreen *scr, IShort x,
-  IShort y, IUShort secrt = 0)
+  IShort y, IUShort secrt)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollShield);
 }
@@ -108,7 +108,7 @@ TrollThing *TrollActivatibleItem::createShield(TrollScreen *scr, IShort x,
     Returns: A shield for sale
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createSoldShield(TrollScreen *scr,
-  IShort x, IShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 70, &TrollShield);
 }
@@ -125,7 +125,7 @@ TrollThing *TrollActivatibleItem::createSoldShield(TrollScreen *scr,
     Returns: A sword
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollActivatibleItem::createSword(TrollScreen *scr, IShort x,
-  IShort y, IUShort secrt = 0)
+  IShort y, IUShort secrt)
 {
  return new TrollActivatibleItem(scr, x, y, secrt, 0, &TrollNormalSword);
 }
@@ -772,13 +772,13 @@ void TrollLimitedItem::write(BinaryWriteFile &f)
 }
 
 TrollThing *TrollLimitedActivatibleItem::createKey(TrollScreen *scr,
-  IShort x, IShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt)
 {
  return new TrollLimitedActivatibleItem(scr, x, y, secrt, 0, &TrollKey);
 }
 
 TrollThing *TrollLimitedActivatibleItem::createSoldKey(TrollScreen *scr,
-  IShort x, IShort y, IUShort secrt = 0)
+  IShort x, IShort y, IUShort secrt)
 {
  return new TrollLimitedActivatibleItem(scr, x, y, secrt, 60, &TrollKey);
 }
@@ -957,7 +957,7 @@ void TrollTimedItem::react()
       secrt        (In)  Secret number to set when dead
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollTimedItem::TrollTimedItem(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0, IUShort cst = 0)
+  IShort yStart, IUShort secrt /*= 0*/, IUShort cst /*= 0*/)
   : TrollItem(scr, xStart, yStart, secrt, cst)
 {
  life = TROLL_ITEM_LIFESPAN;
@@ -975,7 +975,7 @@ TrollTimedItem::TrollTimedItem(TrollScreen *scr, IShort xStart,
     Returns: A gold coin
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollGold::createGoldCoin(TrollScreen *scr, IShort x, IShort y,
-  IUShort secrt = 0)
+  IUShort secrt)
 {
  return new TrollGold(scr, x, y, secrt, 1);
 }
@@ -992,7 +992,7 @@ TrollThing *TrollGold::createGoldCoin(TrollScreen *scr, IShort x, IShort y,
     Returns: 3 gold coins
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollGold::create3GoldCoins(TrollScreen *scr, IShort x,
-    IShort y, IUShort secrt = 0)
+    IShort y, IUShort secrt)
 {
  return new TrollGold(scr, x, y, secrt, 3);
 }
@@ -1049,7 +1049,7 @@ TrollGold::TrollGold(TrollScreen *scr, IShort xStart, IShort yStart,
     Returns: A hit point
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollHitPoint::createHitPoint(TrollScreen *scr, IShort x,
-  IShort y, IUShort secrt = 0)
+  IShort y, IUShort secrt)
 {
  return new TrollHitPoint(scr, x, y, secrt, 0, 1);
 }
@@ -1066,7 +1066,7 @@ TrollThing *TrollHitPoint::createHitPoint(TrollScreen *scr, IShort x,
     Returns: A hit point for sale
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollHitPoint::createSoldHitPoint(TrollScreen *scr, IShort x,
-  IShort y, IUShort secrt = 0)
+  IShort y, IUShort secrt)
 {
  return new TrollHitPoint(scr, x, y, secrt, 20, 1);
 }
@@ -1135,7 +1135,7 @@ TrollHitPoint::TrollHitPoint(TrollScreen *scr, IShort xStart, IShort yStart,
     Returns: A level map
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollLevelMap::createLevelMap(TrollScreen *scr, IShort x,
-  IShort y, IUShort secrt = 0)
+  IShort y, IUShort secrt)
 {
  return new TrollLevelMap(scr, x, y, secrt);
 }

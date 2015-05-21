@@ -8,7 +8,7 @@
 
 #include <typeinfo>
 #include <string>
-#include <map.h>
+#include <map>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -199,7 +199,7 @@ void TrbFileWrite(char *filename, char IFAR * IFAR * screenfile)
  FILE *input;
  long IFAR *header;
  long i, k;
- map<string, Entry, less<string> > describe;
+ std::map<std::string, Entry, std::less<std::string> > describe;
  Entry cur;
 
  if ((trbfile = fopen(filename, "wb")) == NULL)

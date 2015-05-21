@@ -15,7 +15,7 @@ class TrollPerson: public TrollMonster
 {
  public:
   static TrollThing *createGrayTroll(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
 
   void react();
 
@@ -28,7 +28,7 @@ class TrollMerchant: public TrollPerson
 {
  public:
   static TrollThing *createMerchant(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
 
   ~TrollMerchant();
   void draw(IScreen drawscreen);

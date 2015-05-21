@@ -23,7 +23,7 @@
     Returns: A movable block
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollBlock::createBlock(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return
    new TrollBlock(scr, secrt, TROLL_CALCULATE_X_POS(5),

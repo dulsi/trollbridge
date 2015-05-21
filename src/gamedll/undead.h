@@ -27,7 +27,7 @@ class TrollSkeletalTroll : public TrollUndead
 {
  public:
   static TrollThing *createSkeletalTroll(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
 
   void attack();
   void die();
@@ -45,7 +45,7 @@ class TrollSkeletalTrollWithItem: public TrollSkeletalTroll
 {
  public:
   static TrollThing *createSkeletalTrollWithKey(TrollScreen *scr,
-    IShort xStart, IShort yStart, IUShort secrt = 0);
+    IShort xStart, IShort yStart, IUShort secrt);
 
   void die();
   void draw(IScreen drawscreen);

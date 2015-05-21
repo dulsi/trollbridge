@@ -62,7 +62,7 @@ bool TrollThing::checkCollision(const TrollThing *a, const TrollThing *b)
  else return 0;
 }
 
-TrollThing::TrollThing(TrollScreen *scr, IUShort secrt = 0)
+TrollThing::TrollThing(TrollScreen *scr, IUShort secrt /*= 0*/)
 {
  screen = scr;
  secret = secrt;

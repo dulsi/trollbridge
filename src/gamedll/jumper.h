@@ -16,9 +16,9 @@ class TrollJumper : public TrollStandardMonster
 {
  public:
   static TrollThing *createGreenJumper(TrollScreen *scr, IShort sx,
-    IShort sy, IUShort secrt = 0);
+    IShort sy, IUShort secrt);
   static TrollThing *createRedJumper(TrollScreen *scr, IShort sx,
-    IShort sy, IUShort secrt = 0);
+    IShort sy, IUShort secrt);
 
   void die();
   void react();

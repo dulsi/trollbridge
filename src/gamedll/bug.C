@@ -14,13 +14,13 @@
 #define TROLL_BUG_RUNFAST 2
 
 TrollThing *TrollBug::createBlueBug(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return new TrollBug(scr, xStart, yStart, secrt, 0);
 }
 
 TrollThing *TrollBug::createRedBug(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return new TrollBug(scr, xStart, yStart, secrt, 10);
 }

@@ -16,7 +16,7 @@ class TrollBlock: public TrollMonster
 {
  public:
   static TrollThing *createBlock(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
 
   void react();
   void takeHit(TrollThing *hitBy);

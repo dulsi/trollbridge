@@ -16,7 +16,7 @@ class TrollCobra : public TrollStandardMonster
 {
  public:
   static TrollThing *createGreenCobra(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
 
   void die();
   void react();

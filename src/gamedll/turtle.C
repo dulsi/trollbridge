@@ -13,7 +13,7 @@
 #define TROLL_TURTLE_ACTIVE  2
 
 TrollThing *TrollTurtle::createTurtle(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return new TrollTurtleTail(scr, xStart, yStart, secrt, 0);
 }

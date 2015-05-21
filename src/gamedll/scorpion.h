@@ -16,9 +16,9 @@ class TrollScorpion : public TrollStandardMonster
 {
  public:
   static TrollThing *createBlueScorpion(TrollScreen *scr, IShort sx,
-    IShort sy, IUShort secrt = 0);
+    IShort sy, IUShort secrt);
   static TrollThing *createRedScorpion(TrollScreen *scr, IShort sx,
-    IShort sy, IUShort secrt = 0);
+    IShort sy, IUShort secrt);
 
   void die();
   void react();

@@ -102,7 +102,7 @@ void TrollBlast::takeHit(TrollThing *hitBy)
       dmg          (In)  Damage of the attack
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollStandardProjectile::TrollStandardProjectile(TrollScreen *screen,
-  IUShort dmg = 1)
+  IUShort dmg /*= 1*/)
  : TrollProjectile(screen, dmg)
 {
 }

@@ -20,7 +20,7 @@
 #define TROLL_COBRA_STATE_REPEAT   21
 
 TrollThing *TrollCobra::createGreenCobra(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return new TrollCobra(scr, xStart, yStart, secrt, 5);
 }
@@ -38,15 +38,15 @@ void TrollCobra::die()
   num = IRandom(10);
   if (num > 8)
   {
-   item = TrollGold::create3GoldCoins(screen, x, y);
+   item = TrollGold::create3GoldCoins(screen, x, y, 0);
   }
   else if (num > 3)
   {
-   item = TrollGold::createGoldCoin(screen, x, y);
+   item = TrollGold::createGoldCoin(screen, x, y, 0);
   }
   else
   {
-   item = TrollHitPoint::createHitPoint(screen, x, y);
+   item = TrollHitPoint::createHitPoint(screen, x, y, 0);
   }
   screen->addItem(item);
  }

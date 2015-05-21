@@ -25,14 +25,14 @@
 
 // Although only a singly linked list is required an STL's doubly linked list
 // is used rather than spending the time to implement a custom class.
-#include <list.h>
-#define TrollThingList list<TrollThing *>
-#define TrollThingIterator list<TrollThing *>::iterator
+#include <list>
+#define TrollThingList std::list<TrollThing *>
+#define TrollThingIterator std::list<TrollThing *>::iterator
 
 // Level maps are stored in STL maps.
-#include <map.h>
-#define TrollMap map<string, IUByte *, less<string> >
-#define TrollMapIterator map<string, IUByte *, less<string> >::iterator
+#include <map>
+#define TrollMap std::map<std::string, IUByte *, std::less<std::string> >
+#define TrollMapIterator std::map<std::string, IUByte *, std::less<std::string> >::iterator
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   New Types
@@ -48,9 +48,9 @@ class TrollCarriedItem;
 class TrollCharacter;
 
 typedef TrollThing *(*TrollMonsterConstructor)
-  (TrollScreen *scr, IShort x, IShort y, IUShort secrt = 0);
+  (TrollScreen *scr, IShort x, IShort y, IUShort secrt);
 typedef TrollThing *(*TrollItemConstructor)
-  (TrollScreen *scr, IShort x, IShort y, IUShort secrt = 0);
+  (TrollScreen *scr, IShort x, IShort y, IUShort secrt);
 
 class TrollDefinition
 {

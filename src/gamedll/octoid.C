@@ -17,7 +17,7 @@
 #define TROLL_OCTOID_SICKNESS 6
 
 TrollThing *TrollOctoid::createBlueOctoid(TrollScreen *scr, IShort sx,
-  IShort sy, IUShort secrt = 0)
+  IShort sy, IUShort secrt)
 {
  return new TrollOctoid(scr, sx, sy, secrt, 0, 3);
 }

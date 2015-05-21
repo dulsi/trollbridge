@@ -16,9 +16,9 @@ class TrollBug : public TrollStandardMonster
 {
  public:
   static TrollThing *createBlueBug(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
   static TrollThing *createRedBug(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
 
   void react();
 

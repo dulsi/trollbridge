@@ -54,7 +54,7 @@ void TrollMonster::takeHit(TrollThing *hitBy)
 {
 }
 
-TrollMonster::TrollMonster(TrollScreen *scr, IUShort secrt = 0)
+TrollMonster::TrollMonster(TrollScreen *scr, IUShort secrt /*= 0*/)
  : TrollThing(scr, secrt)
 {
 }
@@ -181,7 +181,7 @@ void TrollStandardMonster::takeHit(TrollThing *hitBy)
 }
 
 TrollStandardMonster::TrollStandardMonster(TrollScreen *scr,
-  IUShort secrt = 0,   IShort dmg = 1)
+  IUShort secrt /*= 0*/,   IShort dmg /*= 1*/)
  : TrollMonster(scr, secrt)
 {
  damage = dmg;

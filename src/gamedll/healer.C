@@ -21,7 +21,7 @@
     Returns: A Healer
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollHealer::createHealer(TrollScreen *scr, IShort sx,
-  IShort sy, IUShort secrt = 0)
+  IShort sy, IUShort secrt)
 {
  return new TrollHealer(scr, sx, sy, secrt);
 }

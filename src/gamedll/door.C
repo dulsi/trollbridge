@@ -22,7 +22,7 @@
     Returns: A door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollDoor::createDoor(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return
    new TrollDoor(scr, secrt, xStart, yStart);
@@ -40,7 +40,7 @@ TrollThing *TrollDoor::createDoor(TrollScreen *scr, IShort xStart,
     Returns: A door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollDoor::createSouthDoor(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return
    new TrollDoor(scr, secrt, 140, TROLL_CALCULATE_Y_POS(TROLL_SCREEN_Y - 1));
@@ -58,7 +58,7 @@ TrollThing *TrollDoor::createSouthDoor(TrollScreen *scr, IShort xStart,
     Returns: A door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollDoor::createWestDoor(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return new TrollDoor(scr, secrt, TROLL_CALCULATE_X_POS(0),
    TROLL_CALCULATE_Y_POS(5));
@@ -76,7 +76,7 @@ TrollThing *TrollDoor::createWestDoor(TrollScreen *scr, IShort xStart,
     Returns: A door
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollDoor::createEastDoor(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return new TrollDoor(scr, secrt, TROLL_CALCULATE_X_POS(TROLL_SCREEN_X - 1),
    TROLL_CALCULATE_Y_POS(5));

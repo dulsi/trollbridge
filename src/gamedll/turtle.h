@@ -18,7 +18,7 @@ class TrollTurtle
 {
  public:
   static TrollThing *createTurtle(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
 };
 
 class TrollTurtleUnbreakable : public TrollMonster

@@ -142,7 +142,7 @@ void TrollScreen::addCharacter(TrollCharacter *trll)
  // creates instances of each monster type
  for (i = 0; i < permMonsterNum; i++)
  {
-  TrollThing *mon = (game->createMonster(permMonsterTypes[i]))(this, TROLL_XYRANDOM, TROLL_XYRANDOM);
+  TrollThing *mon = (game->createMonster(permMonsterTypes[i]))(this, TROLL_XYRANDOM, TROLL_XYRANDOM, 0);
   if (dynamic_cast<TrollStandardMonster *>(mon))
   {
    standardMonsterNum++;
@@ -157,7 +157,7 @@ void TrollScreen::addCharacter(TrollCharacter *trll)
  }
  for (i = 0; i < respawnNum; i++)
  {
-  TrollThing *mon = (game->createMonster(respawnMonsterTypes[i]))(this, TROLL_XYRANDOM, TROLL_XYRANDOM);
+  TrollThing *mon = (game->createMonster(respawnMonsterTypes[i]))(this, TROLL_XYRANDOM, TROLL_XYRANDOM, 0);
   if (dynamic_cast<TrollStandardMonster *>(mon))
   {
    standardMonsterNum++;

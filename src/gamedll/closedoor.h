@@ -16,13 +16,13 @@ class TrollClosingDoor: public TrollMonster
 {
  public:
   static TrollThing *createNorthDoor(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
   static TrollThing *createSouthDoor(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
   static TrollThing *createWestDoor(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
   static TrollThing *createEastDoor(TrollScreen *scr, IShort xStart,
-    IShort yStart, IUShort secrt = 0);
+    IShort yStart, IUShort secrt);
 
   void react();
 

@@ -30,7 +30,7 @@ char *TrollMerchant::saying[TROLL_MERCHANT_SAYINGS][2] =
     Returns: A Gray Troll
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollPerson::createGrayTroll(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return
    new TrollPerson(scr, xStart, yStart, secrt, TROLL_SPRITE_GRAYTROLL, 0);
@@ -85,7 +85,7 @@ TrollPerson::TrollPerson(TrollScreen *scr, IShort xStart, IShort yStart,
     Returns: A Merchant
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollThing *TrollMerchant::createMerchant(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort secrt = 0)
+  IShort yStart, IUShort secrt)
 {
  return new TrollMerchant(scr, xStart, yStart, secrt);
 }

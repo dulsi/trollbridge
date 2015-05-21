@@ -16,7 +16,7 @@ class TrollHealer: public TrollMonster
 {
  public:
   static TrollThing *createHealer(TrollScreen *scr, IShort sx, IShort sy,
-    IUShort secrt = 0);
+    IUShort secrt);
 
   void draw(IScreen drawscreen);
   void react();

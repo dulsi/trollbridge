@@ -17,13 +17,13 @@
 #define TROLL_JUMPER_SICKNESS 13
 
 TrollThing *TrollJumper::createGreenJumper(TrollScreen *scr, IShort sx,
-  IShort sy, IUShort secrt = 0)
+  IShort sy, IUShort secrt)
 {
  return new TrollJumper(scr, sx, sy, secrt, 5);
 }
 
 TrollThing *TrollJumper::createRedJumper(TrollScreen *scr, IShort sx,
-  IShort sy, IUShort secrt = 0)
+  IShort sy, IUShort secrt)
 {
  return new TrollJumper(scr, sx, sy, secrt, 10);
 }

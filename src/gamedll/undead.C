@@ -37,7 +37,7 @@ TrollUndead::TrollUndead(TrollScreen *scr, IUShort secrt, IUShort dmg)
 }
 
 TrollThing *TrollSkeletalTroll::createSkeletalTroll(TrollScreen *scr,
-  IShort xStart, IShort yStart, IUShort secrt = 0)
+  IShort xStart, IShort yStart, IUShort secrt)
 {
  return new TrollSkeletalTroll(scr, xStart, yStart, secrt);
 }
@@ -288,7 +288,7 @@ TrollSkeletalTroll::TrollSkeletalTroll(TrollScreen *scr, IShort xStart,
 }
 
 TrollThing *TrollSkeletalTrollWithItem::createSkeletalTrollWithKey(
-  TrollScreen *scr, IShort xStart, IShort yStart, IUShort secrt = 0)
+  TrollScreen *scr, IShort xStart, IShort yStart, IUShort secrt)
 {
  return new TrollSkeletalTrollWithItem(scr, xStart, yStart, secrt,
    TrollLimitedActivatibleItem::createKey, TROLL_SPRITE_KEY, 0);

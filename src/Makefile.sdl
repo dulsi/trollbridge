@@ -1,5 +1,5 @@
-IDENTICALINC_DIR=/proj/identical/src/include
-IDENTICALLIB_DIR=/proj/identical/lib
+IDENTICALINC_DIR=../identical/src/include
+IDENTICALLIB_DIR=../identical/lib
 
 SDL_CFLAGS := $(shell sdl-config --cflags)
 SDL_LDFLAGS := $(shell sdl-config --libs)

@@ -16,7 +16,7 @@ class TrollOctoid : public TrollStandardMonster
 {
  public:
   static TrollThing *createBlueOctoid(TrollScreen *scr, IShort sx,
-    IShort sy, IUShort secrt = 0);
+    IShort sy, IUShort secrt);
 
   void die();
   void react();
