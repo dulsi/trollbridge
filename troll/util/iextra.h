@@ -26,6 +26,20 @@ typedef IPaletteNameEntry IPaletteNameTable[256];
 typedef IPaletteNameTable IFAR *IPaletteName;
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  IImageSubCapture - Gets an image from the image.
+
+    Parameters:
+      img          (In)  Image
+      x1           (In)  X coordinate of upper-left corner
+      y1           (In)  Y coordinate of upper-left corner
+      x1           (In)  X coordinate of lower-right corner
+      y1           (In)  Y coordinate of lower-right corner
+    Returns: The requested image
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+IImage IImageSubCapture(IImage img, IUShort x1, IUShort y1, IUShort x2,
+                        IUShort y2);
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   IImageTextLoad - Load an image from a text file.
 
     Parameters:

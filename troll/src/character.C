@@ -448,7 +448,7 @@ void TrollCharacter::load()
   f.readUShort(itemNum);
   item = game->getCarriedItem(itemNum);
   items[item->getSlot()] = item;
-  item->load(f);
+  item->read(f);
  }
  f.readUShort(num);
  for (i = 0; i < num; i++)
@@ -624,7 +624,7 @@ void TrollCharacter::save()
   if (items[i])
   {
    f.writeUShort((items[i])->getItemNum());
-   (items[i])->save(f);
+   (items[i])->write(f);
   }
  }
  f.writeUShort(mapInfo.size());

@@ -1,5 +1,4 @@
-#include <trollconst.h>
-#include <file.h>
+#include "trolledit.h"
 #include <sprite.h>
 #include <string.h>
 #include <igrbasics.h>
@@ -8,157 +7,6 @@
 #include <itimer.h>
 #include <igrgeometry.h>
 #include <ctype.h>
-
-class TrollEditExit
-{
- public:
-  TrollEditExit();
-  ~TrollEditExit();
-  IUShort location[2];
-  char *newLevel;
-  IUShort newScreen[2];
-  IUShort newLocation[2];
-};
-
-class TrollEditSecret
-{
- public:
-  TrollEditSecret();
-  ~TrollEditSecret();
-  IUShort secretNum;
-  IUShort unsetScriptSize;
-  IUByte *unsetScript;
-  IUShort setScriptSize;
-  IUByte *setScript;
-};
-
-class TrollEditScreen
-{
- public:
-  TrollEditScreen(char *fname);
-  void save();
-
-  char *filename;
-  IUShort backgroundPics[TROLL_SCREEN_X][TROLL_SCREEN_Y];
-  IUByte backgroundShift[TROLL_SCREEN_X][TROLL_SCREEN_Y];
-  IUShort passability[TROLL_SCREEN_X][TROLL_SCREEN_Y];
-  IUShort exitsNum;
-  TrollEditExit **exits;
-  IUShort permMonsterNum;
-  IUShort *permMonsters;
-  IUShort respawnMonsterNum;
-  IUShort *respawnMonsters;
-  IUShort secretsNum;
-  TrollEditSecret **secrets;
-};
-
-TrollEditExit::TrollEditExit()
-{
- int i;
- // This should be dynamically allocated based on need.  As is it will crash
- // if level names are longer than 49 characters.
- newLevel = new char[50];
- newLevel[0] = 0;
- location[0] = newScreen[0] = newScreen[1] = newLocation[0] = 0;
- location[1] = newLocation[1] = TROLL_BUFFER_Y;
-};
-
-TrollEditExit::~TrollEditExit()
-{
- delete [] newLevel;
-};
-
-TrollEditSecret::TrollEditSecret()
-{
- unsetScriptSize = 0;
- unsetScript = (IUByte *)IMalloc(0);
- setScriptSize = 0;
- setScript = (IUByte *)IMalloc(0);
-}
-
-TrollEditSecret::~TrollEditSecret()
-{
- IFree(unsetScript);
- IFree(setScript);
-}
-
-TrollEditScreen::TrollEditScreen(char *fname)
-{
- int i, num;
-
- filename = strdup(fname);
- BinaryReadFile f(filename);
- f.readUShortArray(TROLL_SCREEN_X * TROLL_SCREEN_Y, (IUShort *)backgroundPics);
- f.readUByteArray(TROLL_SCREEN_X * TROLL_SCREEN_Y, (IUByte *)backgroundShift);
- f.readUShortArray(TROLL_SCREEN_X * TROLL_SCREEN_Y, (IUShort *)passability);
- f.readUShort(exitsNum);
- exits = (TrollEditExit **)malloc(exitsNum * sizeof(TrollEditExit *));
- for (i = 0; i < exitsNum; i++)
- {
-  exits[i] = new TrollEditExit;
-  f.readUShortArray(2, exits[i]->location);
-  // This should be dynamically allocated based on need.  As is it will crash
-  // if level names are longer than 49 characters.
-//  exits[i]->newLevel = new char[50];
-  for (f.readByte((signed char &)exits[i]->newLevel[num = 0]);
-    exits[i]->newLevel[num];
-    f.readByte((signed char &)exits[i]->newLevel[++num]))
-  {
-  }
-  f.readUShortArray(2, exits[i]->newScreen);
-  f.readUShortArray(2, exits[i]->newLocation);
- }
- f.readUShort(permMonsterNum);
- permMonsters = (IUShort *)malloc(permMonsterNum * sizeof(IUShort));
- f.readUShortArray(permMonsterNum, permMonsters);
- f.readUShort(respawnMonsterNum);
- respawnMonsters = (IUShort *)malloc(respawnMonsterNum * sizeof(IUShort));
- f.readUShortArray(respawnMonsterNum, respawnMonsters);
- f.readUShort(secretsNum);
- secrets = (TrollEditSecret **)malloc(secretsNum * sizeof(TrollEditSecret *));
- for (i = 0; i < secretsNum; i++)
- {
-  secrets[i] = new TrollEditSecret;
-  f.readUShort(secrets[i]->secretNum);
-  f.readUShort(secrets[i]->unsetScriptSize);
-  secrets[i]->unsetScript = (IUByte *)realloc(secrets[i]->unsetScript, secrets[i]->unsetScriptSize);
-  f.readUByteArray(secrets[i]->unsetScriptSize, secrets[i]->unsetScript);
-  f.readUShort(secrets[i]->setScriptSize);
-  secrets[i]->setScript = (IUByte *)realloc(secrets[i]->setScript, secrets[i]->setScriptSize);
-  f.readUByteArray(secrets[i]->setScriptSize, secrets[i]->setScript);
- }
-}
-
-void TrollEditScreen::save()
-{
- int i, num;
-
- BinaryWriteFile f(filename);
- f.writeUShortArray(TROLL_SCREEN_X * TROLL_SCREEN_Y, (IUShort *)backgroundPics);
- f.writeUByteArray(TROLL_SCREEN_X * TROLL_SCREEN_Y, (IUByte *)backgroundShift);
- f.writeUShortArray(TROLL_SCREEN_X * TROLL_SCREEN_Y, (IUShort *)passability);
- f.writeUShort(exitsNum);
- for (i = 0; i < exitsNum; i++)
- {
-  f.writeUShortArray(2, exits[i]->location);
-  f.writeByteArray(strlen(exits[i]->newLevel) + 1, (IByte *)exits[i]->newLevel);
-  f.writeUShortArray(2, exits[i]->newScreen);
-  f.writeUShortArray(2, exits[i]->newLocation);
- }
- f.writeUShort(permMonsterNum);
- f.writeUShortArray(permMonsterNum, permMonsters);
- f.writeUShort(respawnMonsterNum);
- f.writeUShortArray(respawnMonsterNum, respawnMonsters);
- f.writeUShort(secretsNum);
- for (i = 0; i < secretsNum; i++)
- {
-  f.writeUShort(secrets[i]->secretNum);
-  f.writeUShort(secrets[i]->unsetScriptSize);
-  f.writeUByteArray(secrets[i]->unsetScriptSize, secrets[i]->unsetScript);
-  f.writeUShort(secrets[i]->setScriptSize);
-  f.writeUByteArray(secrets[i]->setScriptSize, secrets[i]->setScript);
- }
-}
 
 TrollEditScreen *editScreen = NULL;
 SpriteHandler *sprites = NULL;
@@ -208,7 +56,8 @@ void EditBackgrounds()
  char text[6];
  bool stop=false;
  bool draw=false;
- x = y = shift = sprite = 0;
+ x = y = shift = 0;
+ sprite = TROLL_SPRITE_CLEAR;
  while (!stop)
  {
   IScreenCopy(graphScreens[1], graphScreens[0]);
@@ -485,29 +334,35 @@ void EditExitSquare(IUShort x, IUShort y)
  bool stop = false;
  int i, where;
  char text[10];
+ char newLevel[50];
+ IUShort newScreen[2];
+ IUShort newLocation[2];
  void *menuVar[EXIT_MENU_NUM];
 
- for (exitSquare = 0; exitSquare < editScreen->exitsNum; exitSquare++)
+ for (exitSquare = 0; exitSquare < editScreen->exitNum; exitSquare++)
  {
-  if ((editScreen->exits[exitSquare]->location[0] == x) &&
-    (editScreen->exits[exitSquare]->location[1] == y))
+  if ((editScreen->exits[exitSquare]->getX() == x) &&
+    (editScreen->exits[exitSquare]->getY() == y))
   {
    break;
   }
  }
- if (exitSquare == editScreen->exitsNum)
+ if (exitSquare == editScreen->exitNum)
  {
-  editScreen->exitsNum++;
-  editScreen->exits = (TrollEditExit **)realloc(editScreen->exits, editScreen->exitsNum * sizeof(TrollEditExit *));
-  editScreen->exits[exitSquare] = new TrollEditExit;
-  editScreen->exits[exitSquare]->location[0] = x;
-  editScreen->exits[exitSquare]->location[1] = y;
+  editScreen->exitNum++;
+  editScreen->exits = (TrollExit **)realloc(editScreen->exits, editScreen->exitNum * sizeof(TrollExit *));
+  editScreen->exits[exitSquare] = new TrollExit(x, y);
  }
- menuVar[0] = editScreen->exits[exitSquare]->newLevel;
- menuVar[1] = editScreen->exits[exitSquare]->newScreen;
- menuVar[2] = editScreen->exits[exitSquare]->newScreen + 1;
- menuVar[3] = editScreen->exits[exitSquare]->newLocation;
- menuVar[4] = editScreen->exits[exitSquare]->newLocation + 1;
+ strcpy(newLevel, editScreen->exits[exitSquare]->getLevelName());
+ newScreen[0] = editScreen->exits[exitSquare]->getNewScreenX();
+ newScreen[1] = editScreen->exits[exitSquare]->getNewScreenY();
+ newLocation[0] = editScreen->exits[exitSquare]->getNewX();
+ newLocation[1] = editScreen->exits[exitSquare]->getNewY();
+ menuVar[0] = newLevel;
+ menuVar[1] = newScreen;
+ menuVar[2] = newScreen + 1;
+ menuVar[3] = newLocation;
+ menuVar[4] = newLocation + 1;
  where = 0;
  while (!stop)
  {
@@ -597,24 +452,29 @@ void EditExitSquare(IUShort x, IUShort y)
     break;
   }
  }
+ editScreen->exits[exitSquare]->setLevelName(newLevel);
+ editScreen->exits[exitSquare]->setNewScreenX(newScreen[0]);
+ editScreen->exits[exitSquare]->setNewScreenY(newScreen[1]);
+ editScreen->exits[exitSquare]->setNewX(newLocation[0]);
+ editScreen->exits[exitSquare]->setNewY(newLocation[1]);
 }
 
 void DeleteExitSquare(IUShort x, IUShort y)
 {
  int i;
- for (i = 0; i < editScreen->exitsNum; i++)
+ for (i = 0; i < editScreen->exitNum; i++)
  {
-  if ((editScreen->exits[i]->location[0] == x) &&
-    (editScreen->exits[i]->location[1] == y))
+  if ((editScreen->exits[i]->getX() == x) &&
+    (editScreen->exits[i]->getY() == y))
   {
    break;
   }
  }
- if (i < editScreen->exitsNum)
+ if (i < editScreen->exitNum)
  {
   delete editScreen->exits[i];
-  editScreen->exitsNum--;
-  for (; i < editScreen->exitsNum; i++)
+  editScreen->exitNum--;
+  for (; i < editScreen->exitNum; i++)
   {
    editScreen->exits[i] = editScreen->exits[i + 1];
   }
@@ -633,16 +493,16 @@ void EditExits()
  while (!stop)
  {
   IScreenCopy(graphScreens[1], graphScreens[0]);
-  for (i = 0; i < editScreen->exitsNum; i++)
+  for (i = 0; i < editScreen->exitNum; i++)
   {
-   IRectangleDraw(graphScreens[1], editScreen->exits[i]->location[0],
-     editScreen->exits[i]->location[1],
-     editScreen->exits[i]->location[0] + TROLL_SQUARE_X - 1,
-     editScreen->exits[i]->location[1] + TROLL_SQUARE_Y - 1, 0);
-   IRectangleDraw(graphScreens[1], editScreen->exits[i]->location[0] + 1,
-     editScreen->exits[i]->location[1] + 1,
-     editScreen->exits[i]->location[0] + TROLL_SQUARE_X - 2,
-     editScreen->exits[i]->location[1] + TROLL_SQUARE_Y - 2, 255);
+   IRectangleDraw(graphScreens[1], editScreen->exits[i]->getX(),
+     editScreen->exits[i]->getY(),
+     editScreen->exits[i]->getX() + TROLL_SQUARE_X - 1,
+     editScreen->exits[i]->getY() + TROLL_SQUARE_Y - 1, 0);
+   IRectangleDraw(graphScreens[1], editScreen->exits[i]->getX() + 1,
+     editScreen->exits[i]->getY() + 1,
+     editScreen->exits[i]->getX() + TROLL_SQUARE_X - 2,
+     editScreen->exits[i]->getY() + TROLL_SQUARE_Y - 2, 255);
   }
   ITextDraw(graphScreens[1], 170, 0, 255, "X:");
   ITextDraw(graphScreens[1], 170, 10, 255, "Y:");
@@ -970,7 +830,7 @@ void ExportSecrets(char *filename)
 
  if ((f = fopen(filename, "w")) != NULL)
  {
-  for (i = 0; i < editScreen->secretsNum; i++)
+  for (i = 0; i < editScreen->secretNum; i++)
   {
    fprintf(f, "unset%d()\n{\n", editScreen->secrets[i]->secretNum);
    if (editScreen->secrets[i]->unsetScriptSize)
@@ -1129,7 +989,7 @@ void ImportSecrets(char *filename)
    }
   }
   fclose(f);
-  editScreen->secretsNum = ttlSecretNum;
+  editScreen->secretNum = ttlSecretNum;
   editScreen->secrets = secrets;
  }
 }

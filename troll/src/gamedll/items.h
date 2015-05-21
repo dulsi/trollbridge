@@ -142,9 +142,9 @@ class TrollLimitedItem: public TrollCarriedItem
   TrollLimitedItem(IUShort num, IUShort slt, IUShort str);
   void draw(IScreen drawscreen, IUShort x, IUShort y);
   IUShort getNumber();
-  void load(BinaryReadFile &f);
-  void save(BinaryWriteFile &f);
+  void read(BinaryReadFile &f);
   void setNumber(IUShort num);
+  void write(BinaryWriteFile &f);
 
  private:
   IUShort number;

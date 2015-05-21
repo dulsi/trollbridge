@@ -55,12 +55,12 @@ IUShort TrollCarriedItem::getShift()
  return shift;
 }
 
-void TrollCarriedItem::load(BinaryReadFile &f)
+void TrollCarriedItem::read(BinaryReadFile &f)
 {
  // no default extra information
 }
 
-void TrollCarriedItem::save(BinaryWriteFile &f)
+void TrollCarriedItem::write(BinaryWriteFile &f)
 {
  // no default extra information
 }

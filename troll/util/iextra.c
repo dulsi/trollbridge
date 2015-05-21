@@ -9,6 +9,40 @@
 #include <igrimage.h>
 #include "iextra.h"
 
+IImage IImageSubCapture(const IImage img, IUShort x1, IUShort y1, IUShort x2,
+                        IUShort y2)
+{
+ IImage imgsub;
+ IPixel IFAR *linesrc, IFAR *linedst;
+ int i;
+
+ imgsub = (IImage)IMalloc(sizeof(struct IImageStruct));
+ if (imgsub == NULL)
+ {
+  return imgsub;
+ }
+ if (x2 >= imgsub->x)
+ {
+  x2 = imgsub->x - 1;
+ }
+ imgsub->x = x2 - x1 + 1;
+ imgsub->y = y2 - y1 + 1;
+ imgsub->pal = IPaletteCreate();
+ IPaletteCopy(imgsub->pal, img->pal);
+ imgsub->pic = (IPixel IFAR *)IMalloc(imgsub->x * imgsub->y);
+ if (imgsub->pic == NULL)
+ {
+  IFree(imgsub);
+  return NULL;
+ }
+ for (i = imgsub->y, linesrc = img->pic + (y1 * img->x) + x1,
+   linedst = imgsub->pic; i > 0; i--, linesrc += img->x, linedst += imgsub->x)
+ {
+  IMemcpy(linedst, linesrc, imgsub->x);
+ }
+ return imgsub;
+}
+
 IImage IImageTextLoad(const char *filename, IPalette pal, IPaletteName palnm)
 {
  IPixel IFAR *curPixel;
@@ -140,7 +174,7 @@ void IImageTextSave(IImage img, const char *filename, IPalette pal,
    }
    else
    {
-    fprintf(writeFile, "%3d =  %3d  %3d  %3d\n", i, r, g, b);
+    fprintf(writeFile, "%3d =  %3d  %3d  %3d\n", i, r * 4, g * 4, b * 4);
    }
   }
  }

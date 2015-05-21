@@ -27,11 +27,15 @@ PCX2TEXT_EXE = pcx2text
 PCX2ZSP_OBJ = pcx2zsp.o
 PCX2ZSP_EXE = pcx2zsp
 
-SCREENEDIT_OBJ = screenedit.o $(TROLLOBJ_DIR)/file.o $(TROLLOBJ_DIR)/sprite.o
+SCREENEDIT_OBJ = screenedit.o trolledit.o $(TROLLOBJ_DIR)/file.o \
+	$(TROLLOBJ_DIR)/sprite.o $(TROLLOBJ_DIR)/exit.o
 SCREENEDIT_EXE = screenedit
 
+SPLITPCX_OBJ = splitpcx.o iextra.o
+SPLITPCX_EXE = splitpcx
+
 all: $(CREATEMAP_EXE) $(TEXT2PAL_EXE) $(TEXT2PCX_EXE) $(PCX2TEXT_EXE) \
-	$(SCREENEDIT_EXE) $(PCX2ZSP_EXE)
+	$(SCREENEDIT_EXE) $(PCX2ZSP_EXE) $(SPLITPCX_EXE)
 
 $(CREATEMAP_EXE): $(CREATEMAP_OBJ)
 	$(CXX) -o $(CREATEMAP_EXE) $(CREATEMAP_OBJ) $(LIBS)
@@ -51,6 +55,9 @@ $(PCX2ZSP_EXE): $(PCX2ZSP_OBJ)
 $(SCREENEDIT_EXE): $(SCREENEDIT_OBJ)
 	$(CXX) $(CXXFLAGS) -o $(SCREENEDIT_EXE) $(SCREENEDIT_OBJ) $(LIBS)
 
+$(SPLITPCX_EXE): $(SPLITPCX_OBJ)
+	$(CXX) -o $(SPLITPCX_EXE) $(SPLITPCX_OBJ) $(LIBS)
+
 %.o: %.C
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 %.o: %.c
@@ -59,7 +66,7 @@ $(SCREENEDIT_EXE): $(SCREENEDIT_OBJ)
 clean:
 	rm -f *.o $(TEXT2PAL_EXE) $(CREATEMAP_EXE)
 	rm -f $(TEXT2PCX_EXE) $(PCX2TEXT_EXE) $(PCX2ZSP_EXE)
-	rm -f $(SCREENEDIT_EXE)
+	rm -f $(SCREENEDIT_EXE) $(SPLITPCX_EXE)
 
 # dependencies
 createmap.o: iextra.h
@@ -67,6 +74,8 @@ pcx2text.o: iextra.h
 text2pal.o: iextra.h $(TROLLINC_DIR)/file.h
 text2pcx.o: iextra.h
 iextra.o: iextra.h
+screenedit.o: trolledit.h
+trolledit.o: trolledit.h
 $(TROLLOBJ_DIR)/file.o: $(TROLLINC_DIR)/file.h
 $(TROLLOBJ_DIR)/sprite.o: $(TROLLINC_DIR)/file.h $(TROLLINC_DIR)/sprite.h
 

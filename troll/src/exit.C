@@ -30,17 +30,40 @@ TrollExit::TrollExit(BinaryReadFile &f)
  f.readUShort(newY);
 }
 
-TrollExit::TrollExit(IUShort ex, IUShort ey, char *lvlNm, IUShort nsx,
-  IUShort nsy, IUShort nx, IUShort ny)
+TrollExit::TrollExit(IUShort ex, IUShort ey, const char *lvlNm /*= NULL*/,
+  IUShort nsx /*= 0*/, IUShort nsy /*= 0*/, IUShort nx /*= 0*/,
+  IUShort ny /*= 0*/)
 {
  x = ex;
- y = ey;
- levelName = new char[strlen(lvlNm) + 1];
- strcpy(levelName, lvlNm);
+ if (ey > TROLL_BUFFER_Y)
+ {
+  y = ey;
+ }
+ else
+ {
+  y = TROLL_BUFFER_Y;
+ }
+ if (NULL == lvlNm)
+ {
+  levelName = new char[1];
+  levelName[0] = 0;
+ }
+ else
+ {
+  levelName = new char[strlen(lvlNm) + 1];
+  strcpy(levelName, lvlNm);
+ }
  newScreenX = nsx;
  newScreenY = nsy;
  newX = nx;
- newY = ny;
+ if (ny > TROLL_BUFFER_Y)
+ {
+  newY = ny;
+ }
+ else
+ {
+  newY = TROLL_BUFFER_Y;
+ }
 }
 
 TrollExit::~TrollExit()
@@ -81,5 +104,53 @@ IUShort TrollExit::getNewX() const
 IUShort TrollExit::getNewY() const
 {
  return(newY);
+}
+
+void TrollExit::write(BinaryWriteFile &f)
+{
+ f.writeUShort(x);
+ f.writeUShort(y);
+ f.writeByteArray(strlen(levelName) + 1, (IByte *)levelName);
+ f.writeUShort(newScreenX);
+ f.writeUShort(newScreenY);
+ f.writeUShort(newX);
+ f.writeUShort(newY);
+}
+
+void TrollExit::setX(IUShort val)
+{
+ x = val;
+}
+
+void TrollExit::setY(IUShort val)
+{
+ y = val;
+}
+
+void TrollExit::setLevelName(const char *val)
+{
+ delete [] levelName;
+ levelName = new char[strlen(val) + 1];
+ strcpy(levelName, val);
+}
+
+void TrollExit::setNewScreenX(IUShort val)
+{
+ newScreenX = val;
+}
+
+void TrollExit::setNewScreenY(IUShort val)
+{
+ newScreenY = val;
+}
+
+void TrollExit::setNewX(IUShort val)
+{
+ newX = val;
+}
+
+void TrollExit::setNewY(IUShort val)
+{
+ newY = val;
 }
 

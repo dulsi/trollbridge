@@ -59,11 +59,11 @@ TrollSecret::~TrollSecret()
 {
  if (setScript)
  {
-  delete setScript;
+  delete [] setScript;
  }
  if (unsetScript)
  {
-  delete unsetScript;
+  delete [] unsetScript;
  }
 }
 

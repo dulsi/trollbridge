@@ -168,8 +168,8 @@ class TrollExit
 {
  public:
   TrollExit(BinaryReadFile &f);
-  TrollExit(IUShort ex, IUShort ey, char *lvlNm, IUShort nsx, IUShort nsy,
-    IUShort nx, IUShort ny);
+  TrollExit(IUShort ex, IUShort ey, const char *lvlNm = NULL,
+    IUShort nsx = 0, IUShort nsy = 0, IUShort nx = 0, IUShort ny = 0);
   ~TrollExit();
   IUShort getX() const;
   IUShort getY() const;
@@ -178,6 +178,14 @@ class TrollExit
   IUShort getNewScreenY() const;
   IUShort getNewX() const;
   IUShort getNewY() const;
+  void setX(IUShort val);
+  void setY(IUShort val);
+  void setLevelName(const char *val);
+  void setNewScreenX(IUShort val);
+  void setNewScreenY(IUShort val);
+  void setNewX(IUShort val);
+  void setNewY(IUShort val);
+  void write(BinaryWriteFile &f);
 
  protected:
   IUShort x, y;
@@ -299,8 +307,8 @@ class TrollCarriedItem
   IUShort getStrength();
   IUShort getSprite();
   IUShort getShift();
-  virtual void load(BinaryReadFile &f);
-  virtual void save(BinaryWriteFile &f);
+  virtual void read(BinaryReadFile &f);
+  virtual void write(BinaryWriteFile &f);
 
  protected:
   IUShort itemNum;

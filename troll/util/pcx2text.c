@@ -28,6 +28,7 @@ void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
 {
  char opt;
  int i;
+ char *defpal;
  static struct option long_options[] =
  {
   {"pal", 1, 0, 'p'},
@@ -74,9 +75,16 @@ pcx2text [options] inname[.pcx] [outname[.txt]]\n\
   }
  }
  if (!(*pal))
- { /* Create a blank palette and palette name */
-  *pal = IPaletteCreate();
-  *palnm = IPaletteNameCreate();
+ { /* Check environment variable for default text palette */
+  if ((defpal = getenv("TEXT_PALETTE")) != NULL)
+  {
+   IPaletteTextLoad(pal, palnm, defpal);
+  }
+  if (!(*pal))
+  { /* Create a blank palette and palette name */
+   *pal = IPaletteCreate();
+   *palnm = IPaletteNameCreate();
+  }
  }
  if ((argc - optind < 1) || (argc - optind > 2))
  {

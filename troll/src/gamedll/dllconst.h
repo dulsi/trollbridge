@@ -7,9 +7,9 @@
   12/05/98  Dennis      Created.
 \*-------------------------------------------------------------------------*/
 
-#define TROLL_SPRITE_DOOR         8
-#define TROLL_SPRITE_SQUARE       9
-#define TROLL_SPRITE_CLOSEDOOR    24
+#define TROLL_SPRITE_DOOR         12
+#define TROLL_SPRITE_SQUARE       13
+#define TROLL_SPRITE_CLOSEDOOR    28
 #define TROLL_SPRITE_SWORD        29
 #define TROLL_SPRITE_MAGICSWORD   30
 #define TROLL_SPRITE_SWORD_H      31
@@ -21,7 +21,7 @@
 #define TROLL_SPRITE_MAP          37
 #define TROLL_SPRITE_ANHK         38
 #define TROLL_SPRITE_SHIELD       39
-#define TROLL_SPRITE_SHIELDPROJ   40
+#define TROLL_SPRITE_EGG          40
 #define TROLL_SPRITE_GRAYTROLL    41
 #define TROLL_SPRITE_MERCHANT     42
 #define TROLL_SPRITE_AIRELEMENTAL 43
@@ -30,11 +30,11 @@
 #define TROLL_SPRITE_SKELTROLL    46
 #define TROLL_SPRITE_SCORPION     47
 #define TROLL_SPRITE_COBRA        48
-#define TROLL_SPRITE_BLAST        49
-#define TROLL_SPRITE_EXPLOSION    50
+#define TROLL_SPRITE_TOAD         49
+#define TROLL_SPRITE_ORB          50
 #define TROLL_SPRITE_SPEAR        51
-#define TROLL_SPRITE_TOAD         52
-#define TROLL_SPRITE_EGG          53
+#define TROLL_SPRITE_BLAST        52
+#define TROLL_SPRITE_EXPLOSION    53
 
 #define TROLL_SLOT_SWORD          0
 #define TROLL_SLOT_KEY            1

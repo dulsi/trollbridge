@@ -45,8 +45,8 @@
 #define TROLL_BLOCKED   3
 
 /* Direction constants */
-#define TROLL_UP    0
-#define TROLL_DOWN  1
+#define TROLL_DOWN  0
+#define TROLL_UP    1
 #define TROLL_LEFT  2
 #define TROLL_RIGHT 3
 
@@ -58,10 +58,11 @@
 #define TROLL_XYRANDOM 65000
 
 /* Troll sprite picture */
-#define TROLL_SPRITE 28
-#define TROLL_SPRITE_SCROLLBAR 25
-#define TROLL_SPRITE_DOS 26
-#define TROLL_SPRITE_LINUX 27
+#define TROLL_SPRITE 0 /*28*/
+#define TROLL_SPRITE_SCROLLBAR 1 /*25*/
+#define TROLL_SPRITE_DOS 2 /*26*/
+#define TROLL_SPRITE_LINUX 3 /*27*/
+#define TROLL_SPRITE_CLEAR 4
 
 /* Some colors for status display */
 #define TROLL_LIGHTGRAY 24

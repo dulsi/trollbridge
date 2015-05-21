@@ -11,6 +11,17 @@
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include "file.h"
 
+void SwapBytes(IUByte *value, int size)
+{
+ IUByte first;
+ first = *value;
+ for (int i = 1; i < size; i++)
+ {
+  value[i - 1] = value[i];
+ }
+ value[size - 1] = first;
+}
+
 FileList::FileList(const char *pattern)
 {
  if (glob(pattern, 0, NULL, &results))
@@ -40,11 +51,13 @@ char *FileList::operator[](int num)
 BinaryReadFile::BinaryReadFile()
 {
  file = (FILE *)0;
+ swap = false;
 }
 
 BinaryReadFile::BinaryReadFile(const char *filename)
 {
  file = fopen(filename, "rb");
+ swap = false;
 }
 
 BinaryReadFile::~BinaryReadFile()
@@ -61,6 +74,7 @@ void BinaryReadFile::open(const char *filename)
 {
  if (file) close();
  file = fopen(filename, "rb");
+ swap = false;
 }
 
 void BinaryReadFile::readByte(IByte &a)
@@ -76,21 +90,43 @@ void BinaryReadFile::readByteArray(const int size, IByte *a)
 void BinaryReadFile::readShort(IShort &a)
 {
  fread(&a, 2, 1, file);
+ if (swap)
+ {
+  SwapBytes((IUByte *)&a, 2);
+ }
 }
 
 void BinaryReadFile::readShortArray(const int size, IShort *a)
 {
  fread(a, 2, size, file);
+ if (swap)
+ {
+  for (int i = 0; i < size; i++)
+  {
+   SwapBytes((IUByte *)(a + i), 2);
+  }
+ }
 }
 
 void BinaryReadFile::readLong(ILong &a)
 {
  fread(&a, 4, 1, file);
+ if (swap)
+ {
+  SwapBytes((IUByte *)&a, 4);
+ }
 }
 
 void BinaryReadFile::readLongArray(const int size, ILong *a)
 {
  fread(a, 4, size, file);
+ if (swap)
+ {
+  for (int i = 0; i < size; i++)
+  {
+   SwapBytes((IUByte *)(a + i), 4);
+  }
+ }
 }
 
 void BinaryReadFile::readUByte(IUByte &a)
@@ -106,26 +142,53 @@ void BinaryReadFile::readUByteArray(const int size, IUByte *a)
 void BinaryReadFile::readUShort(IUShort &a)
 {
  fread(&a, 2, 1, file);
+ if (swap)
+ {
+  SwapBytes((IUByte *)&a, 2);
+ }
 }
 
 void BinaryReadFile::readUShortArray(const int size, IUShort *a)
 {
  fread(a, 2, size, file);
+ if (swap)
+ {
+  for (int i = 0; i < size; i++)
+  {
+   SwapBytes((IUByte *)(a + i), 2);
+  }
+ }
 }
 
 void BinaryReadFile::readULong(IULong &a)
 {
  fread(&a, 4, 1, file);
+ if (swap)
+ {
+  SwapBytes((IUByte *)&a, 4);
+ }
 }
 
 void BinaryReadFile::readULongArray(const int size, IULong *a)
 {
  fread(a, 4, size, file);
+ if (swap)
+ {
+  for (int i = 0; i < size; i++)
+  {
+   SwapBytes((IUByte *)(a + i), 4);
+  }
+ }
 }
 
 void BinaryReadFile::seek(IULong where)
 {
  fseek(file, where, SEEK_SET);
+}
+
+void BinaryReadFile::setSwap(bool value)
+{
+ swap = value;
 }
 
 BinaryWriteFile::BinaryWriteFile()

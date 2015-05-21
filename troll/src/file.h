@@ -55,9 +55,11 @@ class BinaryReadFile
   void readULong(IULong &a);
   void readULongArray(const int size, IULong *a);
   void seek(IULong where);
+  void setSwap(bool value);
 
  private:
   FILE *file;
+  bool swap;
 };
 
 class BinaryWriteFile

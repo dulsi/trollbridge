@@ -351,12 +351,12 @@ TrollSwordThrust::TrollSwordThrust(TrollScreen *screen, IUShort xStart,
  {
   case TROLL_UP:
    sprite = TROLL_SPRITE_SWORD_V;
-   facing = 0;
+   facing = 1;
    direction = TROLL_UP;
    break;
   case TROLL_DOWN:
    sprite = TROLL_SPRITE_SWORD_V;
-   facing = 1;
+   facing = 0;
    direction = TROLL_DOWN;
    break;
   case TROLL_RIGHT:
@@ -683,7 +683,7 @@ TrollShieldProjectile::TrollShieldProjectile(TrollScreen *screen,
   TrollCharacter *trll)
  : TrollProjectile(screen, 0)
 {
- sprite = TROLL_SPRITE_SHIELDPROJ;
+ sprite = TROLL_SPRITE_SHIELD;
  facing = dir;
  direction = dir;
  x = xStart;
@@ -761,19 +761,19 @@ IUShort TrollLimitedItem::getNumber()
  return number;
 }
 
-void TrollLimitedItem::load(BinaryReadFile &f)
+void TrollLimitedItem::read(BinaryReadFile &f)
 {
  f.readUShort(number);
-}
-
-void TrollLimitedItem::save(BinaryWriteFile &f)
-{
- f.writeUShort(number);
 }
 
 void TrollLimitedItem::setNumber(IUShort num)
 {
  number = num;
+}
+
+void TrollLimitedItem::write(BinaryWriteFile &f)
+{
+ f.writeUShort(number);
 }
 
 TrollThing *TrollLimitedActivatibleItem::createKey(TrollScreen *scr,
