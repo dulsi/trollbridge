@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>Troll Bridge: ScreenEdit</title>
+</head>
+<body bgcolor=#FFFFFF text=#000000 link=#FF0000 alink=#FF0000 vlink=#444444>
+
+<center><h1>Troll Bridge: ScreenEdit</h1></center><p>
+
+Each level is Troll Bridge is a collection of individual screens.
+ScreenEdit is a crude editor for a single screen.  See the
+<a href="utilities.html">utilities</a> for a program to combine screen
+files into a level.<p>
+
+<img alt="[ScreenEdit screenshot]" height=200 width=320 src="screenedit.gif" align=left>
+
+To load a screen simply pass the file as a command line argument.  After
+loading you will be presented with a list of items that can be edited.  'ESC'
+is used to exit most functions in the editor.<p>
+
+<b>Backgrounds:</b> Editing the backgrounds allows you to change the screen
+layout.  In this mode you have a select sprite and color shift.  The sprite
+can be adjusted up and down with the '.' and ',' keys respectively.  The
+color shift is modified up and down with the '=' and '-' keys.  The
+direction keys control movement around the screen.  To place a single
+background image on a square press 'Enter'.  Since multiple copies of an
+image are often put together to create forests, rock formation, etc. it
+would be tedious to require individually placing each image.  To begin
+drawing a group of images press 'Space'.  Every square you move to will
+automatically be given the selected image.  To stop drawing simply press
+'Space' again.<p>
+
+<b>Passability:</b> Modifying passability of squares works in a similar
+fashion to editing backgrounds.  Both the '.' ',' combination and the
+'=' '-' combination can edit the current passibility value.  This value
+is not written to any of the squares until either 'Enter' is used to modify
+a single square or 'Space' is used to edit multiple squares.<p>
+
+<center>
+<table border=0 bgcolor=#DDDDDD width="50%">
+<tr> <th>Value</th> <th>Description</th> </tr>
+<tr> <td>0</td> <td>Open</td> </tr>
+<tr> <td>1</td> <td>Open but monsters cannot start here</td> </tr>
+<tr> <td>2</td> <td>Water</td> </tr>
+<tr> <td>3</td> <td>Blocked</td> </tr>
+</table>
+</center><p>
+
+<b>Exits:</b> Existing exits are given a black and white rectangle around
+the square.  To edit an exit move to the square and press 'Enter' or
+'Space'.  This will bring up the information on the exit.  The filename of
+the level to load can be typed in.  Modifying the map and screen coordinates
+are down with the right and left arrows.  If you try to edit a square
+without an exit one is created.  To delete an exit simply press 'd' when
+on the exit's square.<p>
+
+<b>Monsters:</b> After selecting to edit monsters a list of all the
+monster types on the screen will appear.  The up and down arrows will
+move around this list.  Left and right adjust the monster type to appear.
+The 'd' key will delete the current monster type from the list.<p>
+
+<b>Secrets</b> Secrets can either be exported to a text file or imported
+from one.  The import code is not very fault tolerant.  The file has a
+simple syntax shown below.  Information on function names and arguments
+can be found on the <a href="fileformats.html">file formats page</a>.<p>
+
+<pre>
+unset1()
+{
+ CreateItem(0, 140, 104, 1);
+}
+
+set1()
+{
+ CreateMonster(0, 2);
+}
+</pre><p>
+
+<b>Save:</b> This saves the screen to disk.  At presently there is no
+warning when you attempt to exit without saving changes.  No save as
+functionality exists either so the original file is erased.<p>
+
+</body>
+</html>
+

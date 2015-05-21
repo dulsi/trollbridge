@@ -1,0 +1,87 @@
+IDENTICALINC_DIR = /proj/identical/src/include
+IDENTICALLIB_DIR = /proj/identical/lib
+
+TROLLINC_DIR = ../src
+TROLLOBJ_DIR = ../src
+
+CXX = g++
+CXXFLAGS = -g -frtti -I$(TROLLINC_DIR) -I$(IDENTICALINC_DIR) -DSVGALIB
+#CXXFLAGS = -g -frtti -I$(TROLLINC_DIR) -I$(IDENTICALINC_DIR) -DXLIB
+DLLFLAGS = -fPIC
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-svga -lvga -ldl
+#LIBS = -L$(IDENTICALLIB_DIR) -lidentical-x11 -L/usr/X11R6/lib -lX11 -lXext -ldl
+
+CREATEMAP_OBJ = createmap.o
+CREATEMAP_EXE = createmap
+
+CONVSCR_OBJ = convscr.o $(TROLLOBJ_DIR)/file.o
+CONVSCR_EXE = convscr
+
+TEXT2PAL_OBJ = text2pal.o $(TROLLOBJ_DIR)/file.o
+TEXT2PAL_EXE = text2pal
+
+TEXT2PCX_OBJ = text2pcx.o
+TEXT2PCX_EXE = text2pcx
+
+PCX2TEXT_OBJ = pcx2text.o
+PCX2TEXT_EXE = pcx2text
+
+PCX2ZSP_OBJ = pcx2zsp.o
+PCX2ZSP_EXE = pcx2zsp
+
+SPRITEVIEW_OBJ = spriteview.o $(TROLLOBJ_DIR)/sprite.o $(TROLLOBJ_DIR)/file.o
+SPRITEVIEW_EXE = spriteview
+
+SCREENEDIT_OBJ = screenedit.o $(TROLLOBJ_DIR)/file.o $(TROLLOBJ_DIR)/sprite.o
+SCREENEDIT_EXE = screenedit
+
+SPLITPCX_OBJ = splitpcx.o
+SPLITPCX_EXE = splitpcx
+
+all: $(CREATEMAP_EXE) $(TEXT2PAL_EXE) $(TEXT2PCX_EXE) $(PCX2TEXT_EXE) \
+	$(SPRITEVIEW_EXE) $(SCREENEDIT_EXE) $(CONVSCR_EXE) $(SPLITPCX_EXE) \
+	$(PCX2ZSP_EXE)
+
+$(CREATEMAP_EXE): $(CREATEMAP_OBJ)
+	$(CXX) -o $(CREATEMAP_EXE) $(CREATEMAP_OBJ) $(LIBS)
+
+$(CONVSCR_EXE): $(CONVSCR_OBJ)
+	$(CXX) -o $(CONVSCR_EXE) $(CONVSCR_OBJ) $(LIBS)
+
+$(TEXT2PAL_EXE): $(TEXT2PAL_OBJ)
+	$(CXX) -o $(TEXT2PAL_EXE) $(TEXT2PAL_OBJ) $(LIBS)
+
+$(TEXT2PCX_EXE): $(TEXT2PCX_OBJ)
+	$(CXX) -o $(TEXT2PCX_EXE) $(TEXT2PCX_OBJ) $(LIBS)
+
+$(PCX2TEXT_EXE): $(PCX2TEXT_OBJ)
+	$(CXX) -o $(PCX2TEXT_EXE) $(PCX2TEXT_OBJ) $(LIBS)
+
+$(PCX2ZSP_EXE): $(PCX2ZSP_OBJ)
+	$(CXX) -o $(PCX2ZSP_EXE) $(PCX2ZSP_OBJ) $(LIBS)
+
+$(SPRITEVIEW_EXE): $(SPRITEVIEW_OBJ)
+	$(CXX) -o $(SPRITEVIEW_EXE) $(SPRITEVIEW_OBJ) $(LIBS)
+
+$(SCREENEDIT_EXE): $(SCREENEDIT_OBJ)
+	$(CXX) $(CXXFLAGS) -o $(SCREENEDIT_EXE) $(SCREENEDIT_OBJ) $(LIBS)
+
+$(SPLITPCX_EXE): $(SPLITPCX_OBJ)
+	$(CXX) -o $(SPLITPCX_EXE) $(SPLITPCX_OBJ) $(LIBS)
+
+%.o: %.C
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+%.o: %.c
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+clean:
+	rm -f *.o $(TEXT2PAL_EXE) $(CREATEMAP_EXE) $(TEXT2PAL_EXE)
+	rm -f $(TEXT2PCX_EXE) $(PCX2TEXT_EXE) $(PCX2ZSP_EXE) $(SPRITEVIEW_EXE)
+	rm -f $(SCREENEDIT_EXE) $(SPLITPCX_EXE)
+
+# dependencies
+text2pal.o: $(TROLLINC_DIR)/file.h
+spriteview.o: $(TROLLINC_DIR)/sprite.h $(TROLLINC_DIR)/file.h
+$(TROLLOBJ_DIR)/file.o: $(TROLLINC_DIR)/file.h
+$(TROLLOBJ_DIR)/sprite.o: $(TROLLINC_DIR)/file.h $(TROLLINC_DIR)/sprite.h
+

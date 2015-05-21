@@ -1,0 +1,485 @@
+<html>
+<head>
+<title>Troll Bridge: File Formats</title>
+</head>
+<body bgcolor=#FFFFFF text=#000000 link=#FF0000 alink=#FF0000 vlink=#444444>
+
+<center><h1>Troll Bridge: File Formats</h1></center><p>
+
+The file formats are not considered final at this time.  Every effort will
+be made to inform developers of changes to the file formats and if
+possible tools will be provided to aid in the conversion.<p>
+
+<b>File Format: .pal</b><br>
+The ".pal" files store a 256 color palette.<p>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Main</i></td>
+</tr>
+<tr>
+<td>palette: array[256] of rgb info</td>
+<td>Definition for each color</td>
+</tr>
+</table><br>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Rgb Info</i></td>
+</tr>
+<tr>
+<td>red: byte</td>
+<td>Red value of the color</td>
+</tr>
+<tr>
+<td>green: byte</td>
+<td>Green value of the color</td>
+</tr>
+<tr>
+<td>blue: byte</td>
+<td>Blue value of the color</td>
+</tr>
+</table><p>
+
+<b>File Format: .spr</b><br>
+The ".spr" files store collections of sprites.<p>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Main</i></td>
+</tr>
+<tr>
+<td>spritenum: short</td>
+<td>Number of sprites</td>
+</tr>
+<tr>
+<td>sprites: array[spritenum] of sprite info</td>
+<td>Definition of the sprites</td>
+</tr>
+</table><br>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Sprite Info</i></td>
+</tr>
+<tr>
+<td>xsize: short</td>
+<td>X size of the picture</td>
+</tr>
+<tr>
+<td>ysize: short</td>
+<td>Y size of the picture</td>
+</tr>
+<tr>
+<td>facings: short</td>
+<td>Number of facings</td>
+</tr>
+<tr>
+<td>frames: short</td>
+<td>Number of frames</td>
+</tr>
+<tr>
+<td>picsize: array[facings * frames] of short</td>
+<td>Sizes of each individual picture</td>
+</tr>
+<tr>
+<td colspan=2>
+This is followed by the pictures compressed using a variation of run-length
+encoding.  Each picture has ysize number of segments.  Each segment starts
+with a byte telling the size of the segment followed by that many bytes.
+If the byte has the highest bit set and the byte is not 255 then the next
+byte is repeated a number of times equal to the byte without the highest
+bit set plus one.  Otherwise the byte is just the pixel value.  The color
+255 is transparent.
+</td>
+</tr>
+</table><p>
+
+<b>File Format: .trb</b><br>
+The ".trb" files are the map files for Troll Bridge.<p>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Main</i></td>
+</tr>
+<tr>
+<td>startscreen: array[2] of short</td>
+<td>X and Y location of the starting screen</td>
+</tr>
+<tr>
+<td>startlocation: array[2] of short</td>
+<td>X and Y location on the starting screen</td>
+</tr>
+<tr>
+<td>map: array[TROLL_LEVEL_X][TROLL_LEVEL_Y] of byte</td>
+<td>Colors for each map square</td>
+</tr>
+<tr>
+<td>screens: array[TROLL_LEVEL_X][TROLL_LEVEL_Y][2] of long</td>
+<td>File offset and the size of each screen info</td>
+</tr>
+<tr>
+<td colspan=2>
+This is followed by the definitions of the screens (see the screen
+info structure).  The screens may not be inorder and should be
+referenced by their file offset.  Also the file may have extra space
+that is unused.  This is so that map editors can change screens in the
+middle of the file without moving all the screens to fill all available
+space.
+</td>
+</tr>
+</table><br>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Screen Info</i></td>
+</tr>
+<tr>
+<td>backgroundpics: array[TROLL_SCREEN_X][TROLL_SCREEN_Y] of short</td>
+<td>Number of the background pictures for each square</td>
+</tr>
+<tr>
+<td>backgroundshift: array[TROLL_SCREEN_X][TROLL_SCREEN_Y] of byte</td>
+<td>Color shift value for each square</td>
+</tr>
+<tr>
+<td>passability: array[TROLL_SCREEN_X][TROLL_SCREEN_Y] of short</td>
+<td>Passability of each square</td>
+</tr>
+<tr>
+<td>exitsnum: short</td>
+<td>Number of exits from the screen</td>
+</tr>
+<tr>
+<td>exits: array[exitsnum] of exit info</td>
+<td>Definitions of exits</td>
+</tr>
+<tr>
+<td>permmonsnum: short</td>
+<td>Number of permanent monsters</td>
+</tr>
+<tr>
+<td>permmons: array[permmonsnum] of short</td>
+<td>Permanent monster types</td>
+</tr>
+<tr>
+<td>respawnmonsnum: short</td>
+<td>Number of respawning monsters</td>
+</tr>
+<tr>
+<td>respawnmons: array[respawnmonsnum] of short</td>
+<td>Respawning monster types</td>
+</tr>
+<tr>
+<td>secretsnum: short</td>
+<td>Number of secrets</td>
+</tr>
+<tr>
+<td>secrets: array[secretsnum] of secret info</td>
+<td>Definitions of secrets</td>
+</tr>
+</table><br>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Exit Info</i></td>
+</tr>
+<tr>
+<td>location: array[2] of short</td>
+<td>X and Y location of the exit</td>
+</tr>
+<tr>
+<td>newlevel: string</td>
+<td>Filename of the new level (including .trb)</td>
+</tr>
+<tr>
+<td>newscreen: array[2] of short</td>
+<td>X and Y location of the new screen</td>
+</tr>
+<tr>
+<td>newlocation: array[2] of short</td>
+<td>X and Y location on the new screen</td>
+</tr>
+</table><br>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Secret Info</i></td>
+</tr>
+<tr>
+<td>secretnum: short</td>
+<td>Number in the secret array</td>
+</tr>
+<tr>
+<td>unsetscriptsize: short</td>
+<td>Size of the unset script</td>
+</tr>
+<tr>
+<td>unsetscript: array[unsetscriptsize] of byte</td>
+<td>Sequence of secret commands run when the secret is unset</td>
+</tr>
+<tr>
+<td>setscriptsize: short</td>
+<td>Size of the set script</td>
+</tr>
+<tr>
+<td>setscript: array[setscriptsize] of byte</td>
+<td>Sequence of secret commands run when the secret is set</td>
+</tr>
+</table><p>
+
+<b>Secret Scripts</b><br>
+Currently secret scripts are very limited.  Many more commands are
+planned.  Commands are variable length.  The first byte identifies the
+function and is followed by a variable number of arguments.  The commands
+currently implemented are:<p>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td>Code:</td>
+<td>00</td>
+</tr>
+<tr>
+<td>Function Name:</td>
+<td>(None.  Automatically added to the end of secrets.)</td>
+</tr>
+<tr>
+<td>Arguments:</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Description:</td>
+<td>Terminates the secret script.</td>
+</tr>
+
+<tr>
+<td colspan=2 bgcolor=#FFFFFF>&nbsp;</td>
+</tr>
+<tr>
+
+<td>Code:</td>
+<td>01</td>
+</tr>
+<tr>
+<td>Function Name:</td>
+<td>CreateMonster</td>
+</tr>
+<tr>
+<td rowspan=2 valign=top>Arguments:</td>
+<td>monsterType: short</td>
+</tr>
+<tr>
+<td>secretNum: short</td>
+</tr>
+<tr>
+<td>Description:</td>
+<td>Creates a monster.</td>
+</tr>
+
+<tr>
+<td colspan=2 bgcolor=#FFFFFF>&nbsp;</td>
+</tr>
+<tr>
+
+<tr>
+<td>Code:</td>
+<td>02</td>
+</tr>
+<tr>
+<td>Function Name:</td>
+<td>CreateItem</td>
+</tr>
+<tr>
+<td rowspan=4 valign=top>Arguments:</td>
+<td>itemType: short</td>
+</tr>
+<tr>
+<td>x: short</td>
+</tr>
+<tr>
+<td>y: short</td>
+</tr>
+<tr>
+<td>secretNum: short</td>
+</tr>
+<tr>
+<td>Description:</td>
+<td>Create an item.</td>
+</tr>
+
+<tr>
+<td colspan=2 bgcolor=#FFFFFF>&nbsp;</td>
+</tr>
+<tr>
+
+<tr>
+<td>Code:</td>
+<td>03</td>
+</tr>
+<tr>
+<td>Function Name:</td>
+<td>SetBackground</td>
+</tr>
+<tr>
+<td rowspan=5 valign=top>Arguments:</td>
+<td>x: short (in squares)</td>
+</tr>
+<tr>
+<td>y: short (in squares)</td>
+</tr>
+<tr>
+<td>sprite: short</td>
+</tr>
+<tr>
+<td>shift: byte</td>
+</tr>
+<tr>
+<td>passability: short</td>
+</tr>
+<tr>
+<td>Description:</td>
+<td>Sets a background square.</td>
+</tr>
+
+<tr>
+<td colspan=2 bgcolor=#FFFFFF>&nbsp;</td>
+</tr>
+<tr>
+
+<tr>
+<td>Code:</td>
+<td>04</td>
+</tr>
+<tr>
+<td>Function Name:</td>
+<td>CreateExit</td>
+</tr>
+<tr>
+<td rowspan=7 valign=top>Arguments:</td>
+<td>x: short</td>
+</tr>
+<tr>
+<td>y: short</td>
+</tr>
+<tr>
+<td>levelName: string (including .trb)</td>
+</tr>
+<tr>
+<td>mapX: short</td>
+</tr>
+<tr>
+<td>mapY: short</td>
+</tr>
+<tr>
+<td>screenX: short</td>
+</tr>
+<tr>
+<td>screenY: short</td>
+</tr>
+<tr>
+<td>Description:</td>
+<td>Create an exit.</td>
+</tr>
+
+<tr>
+<td colspan=2 bgcolor=#FFFFFF>&nbsp;</td>
+</tr>
+<tr>
+
+<tr>
+<td>Code:</td>
+<td>05</td>
+</tr>
+<tr>
+<td>Function Name:</td>
+<td>SetText</td>
+</tr>
+<tr>
+<td rowspan=2 valign=top>Arguments:</td>
+<td>message1: string</td>
+</tr>
+<tr>
+<td>message2: string</td>
+</tr>
+<tr>
+<td>Description:</td>
+<td>Sets the messages to display.</td>
+</tr>
+</table><p>
+
+<b>File Format: .trs</b><br>
+The ".trs" files saves the characters data.  Filenames have a maximum of
+8 characters plus the extension.<p>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Main</i></td>
+</tr>
+<tr>
+<td>thp: short</td>
+<td>Total number of hit points</td>
+</tr>
+<tr>
+<td>shift: short</td>
+<td>Color shift of hero</td>
+</tr>
+<tr>
+<td>gold: short</td>
+<td>Gold coins</td>
+</tr>
+<tr>
+<td>secrets: array[TROLL_SECRETS_SIZE] of  byte</td>
+<td>Secret bits</td>
+</tr>
+<tr>
+<td>itemsNum: short</td>
+<td>Number of items</td>
+</tr>
+<tr>
+<td>items: array[itemsNum] of item info</td>
+<td>Items</td>
+</tr>
+<tr>
+<td>mapNum: short</td>
+<td>Number of maps</td>
+</tr>
+<tr>
+<td>maps: array[mapNum] of map info</td>
+<td>Maps</td>
+</tr>
+</table><br>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Item Info</i></td>
+</tr>
+<tr>
+<td>itemNum: short</td>
+<td>Item number</td>
+</tr>
+<tr>
+<td colspan=2>
+Items can also save extra data.  For example the key saves the current
+number of keys.  There is nothing that lists the size of this data or what
+it contains.
+</td>
+</tr>
+</table><br>
+
+<table border=0 bgcolor=#DDDDDD width="100%">
+<tr>
+<td colspan=2><i>Map Info</i></td>
+</tr>
+<tr>
+<td>levelName: string</td>
+<td>Name of the level file (including .trb)</td>
+</tr>
+<tr>
+<td>map: array[TROLL_LEVEL_X][TROLL_LEVEL_Y] of byte</td>
+<td>Colors for each map square</td>
+</tr>
+</table><p>
+
+</body>
+</html>
+

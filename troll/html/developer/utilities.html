@@ -1,0 +1,74 @@
+<html>
+<head>
+<title>Troll Bridge: Utilities</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<center><h1>Troll Bridge: Utilities</h1></center><p>
+
+<hr>
+
+Unfortunately there is very little documention on the utilities for
+Troll Bridge.  Most were designed to be functional and not pretty or
+user-friendly.<p>
+
+<b>createmap:</b>  Createmap is used to combine a collection of screens
+into a single level file.  It takes a single argument, the map file.  The
+map file is a text file that tells what the screen files are.  For an
+example look in the files included with Troll Bridge.<p>
+
+<b>createspr:</b>  If you check the data directory included with Troll
+Bridge, you will notice all the images are stored in ".txt" and the level
+data is not stored in the ".trb" format used by Troll Bridge.  Instead
+many of these other utilities are used to build the game data.  Since such
+a task is tedious and repedative this script was developed to automate
+it.  It has some variables at the beginning which will need to be modified
+depending on where you put Troll Bridge.  It builds the troll bridge
+palette, the sprite file, and any level in the levels directory.  It takes
+no command line arguments but does read information for building the
+sprite file from standard in.  Included in the source distribution is
+"sprite.lst" which is the information to build the Troll Bridge sprite
+file.<p>
+
+<b>pcx2text:</b>  A simple text picture format was made where color
+entries are given names so that they automatically change when the
+palette is modified.  This utility mostly converts a pcx file to the
+text picture format.  Unfortunately it make no attempt to convert the
+color entries into the appropriate name so instead you must edit them
+afterwords.  The input file is the first argument.  The second
+argument is the output file or the program simply uses the input filename
+with a ".txt" extension.<p>
+
+<b>pcx2zsp:</b>  A zsp originally stood for Zelda sprite file and was
+used by an earlier project to make a clone of the Legend of Zelda.  For
+simplicity the format is used by Troll Bridge as well.  The program
+pcx2zsp takes several pcx files that show different frames of a sprite
+and converts it into a zsp.  Three arguments are required, filename of the
+output file, number of facings and number of frames.  The pcx files must
+have the same name as the output file except they have a letter indicating
+facing, a number indicating frame and a ".pcx" extension.  For example
+"pcx2zsp thing 2 1" would make a file "thing.zsp" that combines
+"thinga0.pcx" and "thingb0.pcx".<p>
+
+<b>text2pal:</b>  Over time the palette of Troll Bridge has required
+change.  To facillitate such changes a text format of the palette was
+created.  It included names for the colors so that a picture could
+specify colors by name and automatically change when the palette
+entries were moved.  The text palette consists of the red, green, and
+blue values followed by a color name.  Comments may be included with a
+pound sign.  (As a side benefit simply adding "GIMP Palette" to the
+beginning of the file allowed use in the gimp.)  The program has one
+required command line argument, a text file.  If no other argument is
+given palette will have the same name as the input file but with a ".pal"
+extension.  Otherwise the second argument specifies the output file.<p>
+
+<b>text2pcx:</b>  This programs converts a picture from a simple text
+format to a pcx.  It is currently hard coded to read "../data/trollpal.txt"
+for a palette.  The first argument is the input text file.  If a second
+argument is included it is used as the output file.  When no output file
+is specified it uses the iput file with a ".pcx" extension.<p>
+
+</body>
+</html>
+

@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+
+TROLL_DATA=/proj/troll/data
+TROLL_UTIL=/proj/troll/util
+TROLL_TMP=/tmp/troll
+alphabet="abcdefghijklmnopqrstuvwxyz"
+
+mkdir $TROLL_TMP
+
+# Generate palette file
+$TROLL_UTIL/text2pal $TROLL_DATA/trollpal.txt $TROLL_TMP/troll.pal
+
+ZSP_FILES=
+ZSP_NUM=0
+
+# Generate all zsp files (first generate pcx files)
+while read name facings frames ; do
+ if [ -x $TROLL_DATA/images/$name -a pre$name != pre ]; then
+  i=0
+  while expr $i \< $facings >/dev/null ; do
+   i=`expr $i + 1`
+   k=0
+   while expr $k \< $frames >/dev/null ; do
+    $TROLL_UTIL/text2pcx $TROLL_DATA/images/$name/$name`expr substr $alphabet $i 1`$k.txt \
+      $TROLL_TMP/$name`expr substr $alphabet $i 1`$k.pcx
+    k=`expr $k + 1`
+   done
+  done
+  $TROLL_UTIL/pcx2zsp $TROLL_TMP/$name $facings $frames
+  ZSP_FILES="$ZSP_FILES $TROLL_TMP/$name.zsp"
+  ZSP_NUM=`expr $ZSP_NUM + 1`
+ fi
+done
+
+# Crunch to troll.spr file
+printf \\0`expr $ZSP_NUM % 8 + $ZSP_NUM / 8 % 8 \* 10 + $ZSP_NUM / 64 % 8 \* 100`\\0`expr $ZSP_NUM / 512 % 8 + $ZSP_NUM / 4096 % 8 \* 10 + $ZSP_NUM / 32768 % 8 \* 100` \
+  | dd bs=1 count=2 of=$TROLL_TMP/troll.spr 2>/dev/null >/dev/null
+cat $ZSP_FILES >>$TROLL_TMP/troll.spr
+
+# Copy files to data directory
+cp $TROLL_TMP/troll.pal $TROLL_TMP/troll.spr $TROLL_DATA
+
+# Generate all the levels
+pushd $TROLL_DATA/levels >/dev/null
+for each in * ; do
+ if [ -d $TROLL_DATA/levels/$each ] ; then
+  cd $TROLL_DATA/levels/$each
+  $TROLL_UTIL/createmap $each.map
+ fi
+done
+popd >/dev/null
+
+# Cleanup
+rm -R /tmp/troll
+
