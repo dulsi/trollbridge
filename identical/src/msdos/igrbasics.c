@@ -14,7 +14,8 @@
 IScreen IScreenMain;
 IPalette IPaletteMain = NULL;
 
-void IGraphicsStart(const char *name)
+void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
+                    IBool fullScreen)
 {
  asm {
   mov ax,0013h

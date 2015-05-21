@@ -18,7 +18,6 @@ Future...
 
 * Non shared memory version for X Windows
 * More geometry fetures (especialy a filled polygon draw)
-* Load and save palette
 * Defines for the various key codes returned by IKeybufferGet()
 * Joystick and mouse support
 * Add assembly version of ILineDraw()

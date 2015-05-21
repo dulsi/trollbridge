@@ -31,7 +31,8 @@ XImage *IXImage;
 GC IXGc;
 Colormap IXCmap;
 
-void IGraphicsStart(const char *name)
+void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
+                    IBool fullScreen)
 {
  Screen *xscreen;
  XSizeHints xsizehints;

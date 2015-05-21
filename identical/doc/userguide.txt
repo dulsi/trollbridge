@@ -55,11 +55,13 @@ Chapter One: Graphics Basics (igrbasics.h)
 Getting There and Back
      Before doing anything else, the programmer needs to start the graphics
 mode.  IGraphicsStart() initializes a 320 by 200 drawing screen with 256
-colors.  The function take a string as an argument.  This parameter is used
-on windowing systems as the name displayed in the title bar.  After
-completing execution the program should call IGraphicsEnd to restore the
-system to its original state.  Typically a program would have the following
-form:
+colors.  The function takes four arguments.  The first parameter is a string
+used on windowing systems as the name displayed in the title bar.  The next
+two arguments are multiplers for the width and height of the screen.  The
+last argument determines if the program should attempt to run full screen.
+After completing execution the program should call IGraphicsEnd to restore
+the system to its original state.  Typically a program would have the
+following form:
 
 #include <igrbasics.h>
  .
@@ -67,7 +69,7 @@ form:
  .
 int main(int argc, char *argv[])
 {
- IGraphicsStart("Typical Program");
+ IGraphicsStart("Typical Program", 1, 1, IFALSE);
   .
   .
   .
@@ -195,7 +197,7 @@ the typical program looks like:
  .
 int main(int argc, char *argv[])
 {
- IGraphicsStart("Typical Buffered Keyboard");
+ IGraphicsStart("Typical Buffered Keyboard", 1, 1, IFALSE);
  IKeybufferStart();
   .
   .
@@ -332,7 +334,7 @@ Hello World program:
 
 int main()
 {
- IGraphicsStart("Hello World");
+ IGraphicsStart("Hello World", 1, 1, IFALSE);
  IKeybufferStart();
 
  IPaletteSet(IPaletteMain, 0, 0, 0, 0);

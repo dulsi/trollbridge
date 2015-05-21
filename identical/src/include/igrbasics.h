@@ -37,8 +37,12 @@ extern IPalette IPaletteMain;
 
     Parameters:
       name         (In)  Name of the program (displays as window title)
+      xMult        (In)  X multiplier
+      yMult        (In)  Y multiplier
+      fullScreen   (In)  Use full screen
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-void IGraphicsStart(const char *name);
+void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
+                    IBool fullScreen);
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   IGraphicsRefresh - Refreshes of the screen

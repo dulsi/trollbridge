@@ -18,7 +18,7 @@ void ITestPaletteCycle();
 int main()
 {
  /* Initialize graphics and keyboard */
- IGraphicsStart("Basic Example");
+ IGraphicsStart("Basic Example", 1, 1, IFALSE);
  IKeybufferStart();
 
  /* Run virtual screen tests */

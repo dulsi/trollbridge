@@ -1,12 +1,15 @@
+SDL_CFLAGS := $(shell sdl-config --cflags)
+SDL_LIBS := $(shell sdl-config --libs)
+
 IDENTICALINC_DIR = ../src/include
 IDENTICALLIB_DIR = ../lib
 
 CPP = gcc
 HDRS = -I$(IDENTICALINC_DIR)
 DEFS = -DSDLLIB
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl
+LDFLAGS = -L$(IDENTICALLIB_DIR) -lidentical-sdl $(SDL_LIBS)
 
-include ../GNUmake
+CPPFLAGS = $(HDRS) $(DEFS) $(SDL_CFLAGS)
 
 BASICEXM_OBJ = basicexm.o
 BASICEXM_EXE = basicexm

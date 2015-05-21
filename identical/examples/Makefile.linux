@@ -2,10 +2,10 @@ IDENTICALINC_DIR = ../src/include
 IDENTICALLIB_DIR = ../lib
 
 CPP = gcc
-CPPFLAGS = -I$(IDENTICALINC_DIR) -DSVGALIB
-#CPPFLAGS = -I$(IDENTICALINC_DIR) -DXLIB
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical-svga -lvga
-#LIBS = -L$(IDENTICALLIB_DIR) -lidentical-x11 -L/usr/X11R6/lib -lX11 -lXext
+#CPPFLAGS = -I$(IDENTICALINC_DIR) -DSVGALIB
+CPPFLAGS = -I$(IDENTICALINC_DIR) -DXLIB
+#LIBS = -L$(IDENTICALLIB_DIR) -lidentical-svga -lvga
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-x11 -L/usr/X11R6/lib -lX11 -lXext
 
 BASICEXM_OBJ = basicexm.o
 BASICEXM_EXE = basicexm

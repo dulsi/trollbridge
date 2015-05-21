@@ -78,7 +78,7 @@ void IPalettePalSave(IPalette pal, const char *filename)
 {
  FILE *palfile;
 
- if ((palfile = fopen(filename, "rb"))==NULL)
+ if ((palfile = fopen(filename, "wb"))==NULL)
  {
   exit(2);
  }

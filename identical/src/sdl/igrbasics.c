@@ -18,35 +18,75 @@ the code is not very efficient. */
 
 IScreen IScreenMain;
 IPalette IPaletteMain = NULL;
+IUShort IXMult = 0;
+IUShort IYMult = 0;
 
 /* Extra global variables needed by SDL */
 SDL_Surface *ISDLScreen;
 
-void IGraphicsStart(const char *name)
+void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
+                    IBool fullScreen)
 {
  if (SDL_Init(SDL_INIT_VIDEO) < 0)
  {
   printf("Failed - SDL_Init\n");
   exit(0);
  }
- ISDLScreen = SDL_SetVideoMode(320, 200, 8, SDL_SWSURFACE);
+ IXMult = xMult;
+ IYMult = yMult;
+ ISDLScreen = SDL_SetVideoMode(320 * xMult, 200 * yMult, 8,
+   SDL_SWSURFACE | (fullScreen ? SDL_FULLSCREEN : 0));
  if (ISDLScreen == NULL)
  {
   printf("Failed - SDL_SetVideoMode\n");
   exit(0);
  }
  SDL_WM_SetCaption(name, name);
- IScreenMain = (IScreen)ISDLScreen->pixels;
+ if ((1 == xMult) && (1 == yMult))
+  IScreenMain = (IScreen)ISDLScreen->pixels;
+ else
+  IScreenMain = (IScreen)malloc(320 * 200 * sizeof(IPixel));
  IPaletteMain = (IPalette)ISDLScreen->format->palette;
 }
 
 void IGraphicsRefresh()
 {
+ if ((1 != IXMult) || (1 != IYMult))
+ {
+  int x, y, xMult, yMult;
+  IPixel IFAR *curPos;
+  IPixel IFAR *prevLine;
+  IPixel IFAR *realPos;
+
+  SDL_LockSurface(ISDLScreen);
+  curPos = IScreenMain;
+  realPos = ISDLScreen->pixels;
+  for (y = 0; y < 200; ++y)
+  {
+   prevLine = curPos;
+   for (yMult = 0; yMult < IYMult; ++yMult)
+   {
+    curPos = prevLine;
+    for (x = 0; x < 320; ++x)
+    {
+     for (xMult = 0; xMult < IXMult; ++xMult)
+     {
+      *realPos = *curPos;
+      ++realPos;
+     }
+     ++curPos;
+    }
+   }
+  }
+  SDL_UnlockSurface(ISDLScreen);
+ }
  SDL_UpdateRect(ISDLScreen, 0, 0, 0, 0);
 }
 
 void IGraphicsEnd()
 {
+ if ((1 != IXMult) || (1 != IYMult))
+  free(IScreenMain);
  SDL_Quit();
 }
 

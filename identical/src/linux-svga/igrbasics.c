@@ -13,7 +13,8 @@
 IScreen IScreenMain;
 IPalette IPaletteMain = NULL;
 
-void IGraphicsStart(const char *name)
+void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
+                    IBool fullScreen)
 {
  vga_init();
  vga_setmode(G320x200x256);

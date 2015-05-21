@@ -12,7 +12,8 @@ IScreen IScreenMain;
 IPalette IPaletteMain = NULL;
 static BITMAP *buffer;
 
-void IGraphicsStart(const char *name)
+void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
+                    IBool fullScreen)
 {
  unsigned long screen_base_addr;
 

@@ -275,7 +275,7 @@ unsigned char ITextFont8x8[256][8] = {
 
 
 void ITextDraw(IScreen screen, IUShort x, IUShort y, IPixel c,
-               const unsigned char *s)
+               const char *s)
 {
  int len, i, k;
  unsigned char bit;
@@ -284,7 +284,7 @@ void ITextDraw(IScreen screen, IUShort x, IUShort y, IPixel c,
  for (i = 0; i < len; i++) {
   for (k = 0; k < 8; k++) {
    for (bit = 128; bit > 0; bit = (bit >> 1)) {
-    if ((ITextFont8x8[s[i]][k]) & bit) {
+    if ((ITextFont8x8[(unsigned char)s[i]][k]) & bit) {
      IPixelDraw(screen, x, y + k, c);
     }
     x++;

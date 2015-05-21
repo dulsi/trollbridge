@@ -29,7 +29,7 @@ extern "C" {
       s            (In)  String
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 void ITextDraw(IScreen screen, IUShort x, IUShort y, IPixel c,
-               const unsigned char *s);
+               const char *s);
 
 
 #ifdef __cplusplus
