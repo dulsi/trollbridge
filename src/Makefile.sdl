@@ -38,8 +38,8 @@ $(DLL_DIR)/%.o: $(DLL_DIR)/%.C
 %.o: %.C
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-#clean:
-#	rm -f $(TROLL_OBJ) $(DLL_OBJ) $(TROLL_EXE) $(TROLL_DLL)
+clean:
+	rm -f $(TROLL_OBJ) $(DLL_OBJ) $(TROLL_EXE) $(TROLL_DLL)
 
 # dependencies
 character.o game.o main.o screen.o thing.o item.o monster.o carrieditem.o \

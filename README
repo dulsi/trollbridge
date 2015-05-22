@@ -1,0 +1,19 @@
+                                  TROLL BRIDGE
+
+                     http://www.identicalsoftware.com/troll/
+
+Troll Bridge is an adventure in the style of the original Legend of Zelda. The
+main character is a troll who has escaped from slavery. By finding clues and
+collecting items, the character works to free his people.
+
+Although the core engine is done, monster AIs and levels are in need of much
+work. The game is currently not very playable.
+
+The code is made available under GPLv2. The levels and images are free to use
+in Troll Bridge but not other programs.
+
+TO DO
+* Levels and a method of tieing them together.
+* Graphics for more monsters.
+* Improved game editor.
+* Music and sound.
