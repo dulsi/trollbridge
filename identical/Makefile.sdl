@@ -19,12 +19,15 @@ TARGET = $(SDL_LIB)
 all: $(SDL_LIB)
 
 $(SDL_LIB): $(SDL_OBJ)
+	if test ! -d lib; then mkdir -p lib; fi
 	$(AR) $(ARFLAGS) $(SDL_LIB) $(SDL_OBJ)
 
 $(OBJ_DIR)$(SDL_DIR)c_%.o: src/%.c
+	if test ! -d $(OBJ_DIR)$(SDL_DIR); then mkdir -p $(OBJ_DIR)$(SDL_DIR); fi
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(OBJ_DIR)$(SDL_DIR)%.o: src/$(SDL_DIR)%.c
+	if test ! -d $(OBJ_DIR)$(SDL_DIR); then mkdir -p $(OBJ_DIR)$(SDL_DIR); fi
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 #clean:

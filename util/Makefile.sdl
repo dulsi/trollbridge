@@ -1,6 +1,10 @@
 IDENTICALINC_DIR = ../identical/src/include
 IDENTICALLIB_DIR = ../identical/lib
 
+ifndef prefix
+	prefix=
+endif
+
 SDL_CFLAGS := $(shell sdl-config --cflags)
 SDL_LDFLAGS := $(shell sdl-config --libs)
 
@@ -8,7 +12,7 @@ TROLLINC_DIR = ../src
 TROLLOBJ_DIR = ../src
 
 CXX = g++
-CXXFLAGS = -g -frtti -I$(TROLLINC_DIR) -I$(IDENTICALINC_DIR) -DSDLLIB $(SDL_CFLAGS)
+CXXFLAGS = -g -I$(TROLLINC_DIR) -I$(IDENTICALINC_DIR) -DSDLLIB $(SDL_CFLAGS)
 DLLFLAGS = -fPIC
 LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS)
 
@@ -67,6 +71,14 @@ clean:
 	rm -f *.o $(TEXT2PAL_EXE) $(CREATEMAP_EXE)
 	rm -f $(TEXT2PCX_EXE) $(PCX2TEXT_EXE) $(PCX2ZSP_EXE)
 	rm -f $(SCREENEDIT_EXE) $(SPLITPCX_EXE)
+
+install:
+	mkdir -p ${prefix}/usr/bin
+	cp $(CREATEMAP_EXE) $(TEXT2PAL_EXE) $(TEXT2PCX_EXE) ${prefix}/usr/bin
+	cp $(PCX2TEXT_EXE) $(SCREENEDIT_EXE) $(PCX2ZSP_EXE) ${prefix}/usr/bin
+	cp $(SPLITPCX_EXE) ${prefix}/usr/bin
+	mkdir -p ${prefix}/usr/share/man/man1
+	cp ../man/man1/* ${prefix}/usr/share/man/man1
 
 # dependencies
 createmap.o: iextra.h

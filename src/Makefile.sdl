@@ -5,7 +5,7 @@ SDL_CFLAGS := $(shell sdl-config --cflags)
 SDL_LDFLAGS := $(shell sdl-config --libs)
 
 CXX = g++
-CXXFLAGS = -Wall -g -frtti -DSDLLIB -I$(IDENTICALINC_DIR) $(SDL_CFLAGS)
+CXXFLAGS = -Wall -g -DSDLLIB -I$(IDENTICALINC_DIR) $(SDL_CFLAGS)
 DLLFLAGS = -fPIC -I.
 LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS)
 
@@ -24,6 +24,16 @@ DLL_OBJ = $(DLL_DIR)/dllmain.o $(DLL_DIR)/items.o $(DLL_DIR)/people.o \
 	$(DLL_DIR)/turtle.o
 TROLL_DLL = troll.so
 
+ifndef prefix
+	prefix=
+endif
+ifndef LIB_DIR
+	LIB_DIR=lib
+endif
+BINDIR=${prefix}/usr/bin
+LIBDIR=${prefix}/usr/$(LIB_DIR)/troll
+DATADIR=${prefix}/usr/share/troll
+
 all: $(TROLL_EXE) $(TROLL_DLL)
 
 $(TROLL_EXE): $(TROLL_OBJ)
@@ -33,13 +43,23 @@ $(TROLL_DLL): $(DLL_OBJ)
 	$(CXX) -shared -o $(TROLL_DLL) $(DLL_OBJ)
 
 $(DLL_DIR)/%.o: $(DLL_DIR)/%.C
-	$(CXX) $(DLLFLAGS) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(DLLFLAGS) $(CXXFLAGS) -DLIBRARY_DIR=\"${LIBDIR}\" -DDATA_DIR=\"${DATADIR}\" -c -o $@ $<
 
 %.o: %.C
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -DLIBRARY_DIR=\"${LIBDIR}\" -DDATA_DIR=\"${DATADIR}\" -c -o $@ $<
 
 clean:
 	rm -f $(TROLL_OBJ) $(DLL_OBJ) $(TROLL_EXE) $(TROLL_DLL)
+
+install:
+	mkdir -p $(BINDIR)
+	cp troll $(BINDIR)
+	mkdir -p $(LIBDIR)/troll
+	cp troll.so $(LIBDIR)/troll
+	mkdir -p $(DATADIR)/troll
+	cp trolltitle.pcx ../data/troll.def ../data/troll.spr ../data/troll.pal ../data/levels/*/*.trb $(DATADIR)/troll
+	mkdir -p ${prefix}/usr/include/troll
+	cp *.h ${prefix}/usr/include/troll
 
 # dependencies
 character.o game.o main.o screen.o thing.o item.o monster.o carrieditem.o \
