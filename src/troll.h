@@ -103,6 +103,8 @@ class TrollGame
   bool titleScreen(char *name);
   void turnCleanUp();
 
+  std::string dataDir;
+  std::string libDir;
   TrollDefinition *definition;
   TrollMonsterConstructor monsterTypes[TROLL_MONSTER_TYPES];
   TrollItemConstructor itemTypes[TROLL_ITEM_TYPES];

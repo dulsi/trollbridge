@@ -31,6 +31,7 @@
       argv         (In)  Arguments [not currently used]
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollGame::TrollGame(int argc, char **argv)
+: dataDir(DATA_DIR), libDir(LIBRARY_DIR)
 {
  int x,y;
  IUShort xMult, yMult;
@@ -42,13 +43,15 @@ TrollGame::TrollGame(int argc, char **argv)
  static struct option long_options[] =
  {
   {"def", 1, 0, 'd'},
+  {"lib", 1, 0, 'l'},
+  {"data", 1, 0, 'a'},
   {0, 0, 0, 0}
  };
 
- xMult = 1;
- yMult = 1;
+ xMult = 0;
+ yMult = 0;
  fullScreen = IFALSE;
- while ((opt = getopt_long(argc, argv, "h?d:x:y:f", long_options, NULL)) != EOF)
+ while ((opt = getopt_long(argc, argv, "h?d:x:y:fa:l:", long_options, NULL)) != EOF)
  {
   switch (opt)
   {
@@ -74,6 +77,12 @@ troll [options]\n\
      printf("Definition files must be stored in %s\n", DATA_DIR);
      exit(-1);
     }
+    break;
+   case 'a':
+    dataDir = optarg;
+    break;
+   case 'l':
+    libDir = optarg;
     break;
    case 'x':
     sscanf(optarg, "%d", &x);
@@ -124,20 +133,20 @@ troll [options]\n\
  // Run at 30 frames per second
  ITimerStart(30);
 
- file = buildFullPath(DATA_DIR, defName);
+ file = buildFullPath(dataDir.c_str(), defName);
  definition = new TrollDefinition(file);
  delete[] file;
- file = buildFullPath(DATA_DIR, definition->getPaletteFile());
+ file = buildFullPath(dataDir.c_str(), definition->getPaletteFile());
  pal = IPalettePalLoad(file);
  delete[] file;
  IPaletteSet(pal, 255, 255, 255, 255);
  IPaletteCopy(IPaletteMain, pal);
  IPaletteDestroy(pal);
- file = buildFullPath(DATA_DIR, definition->getSpriteFile());
+ file = buildFullPath(dataDir.c_str(), definition->getSpriteFile());
  TrollSpriteHandler.load(file);
  delete[] file;
  // Load monster and items from dynamically linked library
- file = buildFullPath(LIBRARY_DIR, definition->getDllFile());
+ file = buildFullPath(libDir.c_str(), definition->getDllFile());
  loadLibrary(file);
  delete[] file;
  // Initialize variables to nothing
@@ -151,7 +160,7 @@ troll [options]\n\
  }
  troll = NULL;
  control = new nes_controller();
- file = buildFullPath(DATA_DIR, definition->getTitleFile());
+ file = buildFullPath(dataDir.c_str(), definition->getTitleFile());
  titlePic = IImagePCXLoad(file);
  delete[] file;
  levelName = NULL;
@@ -376,7 +385,7 @@ void TrollGame::loadLevel(const char *filename)
  IULong *header;
  char *file;
 
- file = buildFullPath(DATA_DIR, filename);
+ file = buildFullPath(dataDir.c_str(), filename);
 
  BinaryReadFile levelFile(file);
 

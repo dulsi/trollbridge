@@ -32,6 +32,18 @@ void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
   printf("Failed - SDL_Init\n");
   exit(0);
  }
+ const SDL_VideoInfo *info = SDL_GetVideoInfo();
+ int xFull = info->current_w;
+ int yFull = info->current_h;
+ if ((xMult == 0) || (yMult == 0))
+ {
+  xMult = (xFull - 10) / 320; // Allow for window decoration
+  yMult = (yFull - 10) / 200; // Allow for window decoration
+  if (xMult > yMult)
+   xMult = yMult;
+  else
+   yMult = xMult;
+ }
  IXMult = xMult;
  IYMult = yMult;
  ISDLScreen = SDL_SetVideoMode(320 * xMult, 200 * yMult, 8,
