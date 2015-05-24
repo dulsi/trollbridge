@@ -40,11 +40,16 @@ make -f Makefile.sdl prefix=%{buildroot} LIB_DIR=%{_lib} install
 cd ../util
 make -f Makefile.sdl prefix=%{buildroot} install
 
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+
 %files
 %doc README LICENSE
 %{_bindir}/troll
 %{_libdir}/troll
 %{_datadir}/troll
+%{_datadir}/icons/hicolor/*/apps/troll.png
+%{_datadir}/applications/troll.desktop
 
 %files devel
 %{_bindir}/createmap

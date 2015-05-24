@@ -20,9 +20,16 @@ SpriteHandler TrollSpriteHandler;
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 int main(int argc, char **argv)
 {
- TrollGame game(argc, argv);
+ try
+ {
+  TrollGame game(argc, argv);
 
- game.run();
+  game.run();
+ }
+ catch (const std::exception &e)
+ {
+  printf("%s\n", e.what());
+ }
  return 0;
 }
 

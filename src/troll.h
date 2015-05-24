@@ -15,6 +15,7 @@
 // string produces errors when included latter for some reason.
 #include <string>
 
+#include <exception>
 #include <time.h>
 #include <istdlib.h>
 #include <igrbasics.h>
@@ -51,6 +52,17 @@ typedef TrollThing *(*TrollMonsterConstructor)
   (TrollScreen *scr, IShort x, IShort y, IUShort secrt);
 typedef TrollThing *(*TrollItemConstructor)
   (TrollScreen *scr, IShort x, IShort y, IUShort secrt);
+
+class TrollException : public std::exception
+{
+ public:
+  TrollException(const std::string &s) : w(s) {}
+  ~TrollException() throw() {}
+  const char *what() const throw() { return w.c_str(); }
+
+ private:
+  std::string w;
+};
 
 class TrollDefinition
 {

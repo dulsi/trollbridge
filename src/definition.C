@@ -57,6 +57,10 @@ TrollDefinition::TrollDefinition(const char *filename)
   }
   fclose(f);
  }
+ else
+ {
+  throw TrollException(std::string("Definition file '") + filename + std::string("' cannot be opened."));
+ }
 }
 
 TrollDefinition::~TrollDefinition()

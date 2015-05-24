@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Troll Bridge
+Comment=A troll works to free his people from an evil ruler in an adventure game.
+TryExec=troll
+Exec=troll %f
+Terminal=false
+Type=Application
+Icon=troll
+Categories=Game;
+
