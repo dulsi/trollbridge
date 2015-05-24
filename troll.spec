@@ -63,5 +63,5 @@ make -f Makefile.sdl prefix=%{buildroot} install
 %{_includedir}/troll
 
 %changelog
-* Fri May 24 2015 Dennis Payne <dulsi@identicalsoftware.com> - 0.5.2-1
+* Sun May 24 2015 Dennis Payne <dulsi@identicalsoftware.com> - 0.5.2-1
 - New version of Troll Bridge released.
