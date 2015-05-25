@@ -8,6 +8,8 @@ Vendor:		Dennis Payne <dulsi@identicalsoftware.com>
 Url:		http://www.identicalsoftware.com/troll/
 Source0:		http://www.identicalsoftware.com/troll/%{name}-%{version}.tgz
 BuildRequires: SDL-devel
+BuildRequires: desktop-file-utils
+
 
 %description
 Troll Bridge is an adventure game in the style of the original Legend of

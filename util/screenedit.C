@@ -23,6 +23,7 @@ void initpal()
  pal = IPaletteCreate();
  fread(pal,1,3*256,palfile);
  fclose(palfile);
+ IPaletteSet(pal, 255, 255, 255, 255);
  IPaletteCopy(IPaletteMain, pal);
  IPaletteDestroy(pal);
 }
@@ -1116,7 +1117,7 @@ int main(int argc, char *argv[])
  {
   editScreen = new TrollEditScreen(argv[1]);
   sprites = new SpriteHandler("troll.spr");
-  IGraphicsStart("ScreenEdit", 1, 1, IFALSE);
+  IGraphicsStart("ScreenEdit", 0, 0, IFALSE);
   IKeybufferStart();
   initpal();
   ITimerStart(30);
