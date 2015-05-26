@@ -9,14 +9,6 @@
 #ifndef __NESCONT_H
 #define __NESCONT_H
 
-#if defined(__MSDOS__) && !defined(ALLEGRO)
-#ifdef __cplusplus
-    #define __CPPARGS ...
-#else
-    #define __CPPARGS
-#endif
-#endif
-
 class nes_controller {
 public:
  nes_controller();
@@ -35,11 +27,6 @@ public:
  \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
  void status(signed char &down,signed char &right,unsigned char &a,
    unsigned char &b,unsigned char &start, unsigned char &select);
-
-protected:
-#if defined(__MSDOS__) && !defined(ALLEGRO)
- void interrupt (*oldhandler)(__CPPARGS);
-#endif
 };
 
 #endif
