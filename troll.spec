@@ -30,18 +30,18 @@ Bridge game engine.
 
 %build
 cd identical
-make -f Makefile.sdl %{?_smp_mflags}
+make %{?_smp_mflags}
 cd ../src
-make -f Makefile.sdl LIB_DIR=%{_lib} %{?_smp_mflags}
+make LIB_DIR=%{_lib} %{?_smp_mflags}
 cd ../util
-make -f Makefile.sdl %{?_smp_mflags}
+make %{?_smp_mflags}
 
 
 %install
 cd src
-make -f Makefile.sdl prefix=%{buildroot} LIB_DIR=%{_lib} install
+make prefix=%{buildroot} LIB_DIR=%{_lib} install
 cd ../util
-make -f Makefile.sdl prefix=%{buildroot} install
+make prefix=%{buildroot} install
 
 %posttrans
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
