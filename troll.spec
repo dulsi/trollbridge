@@ -7,6 +7,7 @@ License:	GPLv2+
 Vendor:		Dennis Payne <dulsi@identicalsoftware.com>
 Url:		http://www.identicalsoftware.com/troll/
 Source0:		http://www.identicalsoftware.com/troll/%{name}-%{version}.tgz
+BuildRequires: boost-devel
 BuildRequires: SDL-devel
 BuildRequires: SDL_image-devel
 BuildRequires: desktop-file-utils

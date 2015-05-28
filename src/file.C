@@ -10,6 +10,7 @@
   Includes
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include "file.h"
+#include <boost/filesystem.hpp>
 
 void SwapBytes(IUByte *value, int size)
 {
@@ -26,30 +27,28 @@ FileException::FileException()
 {
 }
 
-FileList::FileList(const char *pattern)
+FileList::FileList(const char *path, const char *extension)
 {
- if (glob(pattern, 0, NULL, &results))
+ boost::filesystem::path p(path);
+ for (boost::filesystem::directory_iterator itr(p); itr != boost::filesystem::directory_iterator(); itr++)
  {
-  results.gl_pathc = 0;
+  if (itr->path().extension() == extension)
+   results.push_back(itr->path().string());
  }
 }
 
 FileList::~FileList()
 {
- if (results.gl_pathc)
- {
-  globfree(&results);
- }
 }
 
 IUShort FileList::length()
 {
- return results.gl_pathc;
+ return results.size();
 }
 
-char *FileList::operator[](int num)
+const char *FileList::operator[](int num)
 {
- return results.gl_pathv[num];
+ return results[num].c_str();
 }
 
 BinaryReadFile::BinaryReadFile()

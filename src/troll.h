@@ -20,6 +20,7 @@
 #include <istdlib.h>
 #include <igrbasics.h>
 #include <igrimage.h>
+#include "irandom.h"
 #include "trollconst.h"
 #include "sprite.h"
 #include "nescont.h"

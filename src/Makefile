@@ -7,13 +7,13 @@ SDL_LDFLAGS := $(shell sdl-config --libs)
 CXX = g++
 CXXFLAGS = -Wall -g -DSDLLIB -I$(IDENTICALINC_DIR) $(SDL_CFLAGS)
 DLLFLAGS = -fPIC -I.
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS)
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -lboost_filesystem -lboost_system -ldl $(SDL_LDFLAGS)
 
 DLL_DIR = gamedll
 
 TROLL_OBJ = definition.o character.o file.o game.o main.o nescont.o \
 	screen.o sprite.o thing.o monster.o item.o carrieditem.o \
-	projectile.o secret.o exit.o
+	projectile.o secret.o exit.o irandom.o
 TROLL_EXE = troll
 
 DLL_OBJ = $(DLL_DIR)/dllmain.o $(DLL_DIR)/items.o $(DLL_DIR)/people.o \

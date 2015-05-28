@@ -11,10 +11,12 @@
   Includes
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include <istdlib.h>
-#include <glob.h>
 
 // Run-Time Type Identification breaks fstreams under g++ 2.7.2
 #include <stdio.h>
+
+#include <vector>
+#include <string>
 
 /* Error Note:
        At this time very little if any error checking is done in the binary
@@ -31,13 +33,13 @@ class FileException
 class FileList
 {
  public:
-  FileList(const char *pattern);
+  FileList(const char *path, const char *extension);
   ~FileList();
   IUShort length();
-  char *operator[](int num);
+  const char *operator[](int num);
 
  private:
-  glob_t results;
+  std::vector<std::string> results;
 };
 
 class BinaryReadFile

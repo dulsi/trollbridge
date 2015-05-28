@@ -1,4 +1,4 @@
-#include <string.h>
+#include <string>
 #include "sprite.h"
 
 #define IHorizontalLineDraw(screen, x1, x2, y, clr) \

@@ -17,10 +17,13 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <getopt.h>
+#include <boost/filesystem.hpp>
 #include "troll.h"
 
-#ifndef __MSDOS__
+#ifndef STATIC_LIBRARY
 #include <dlfcn.h>
+#else
+extern "C" int TrollDllInit(TrollGame *game);
 #endif
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -117,17 +120,18 @@ troll [options]\n\
   savePath = (char *)IMalloc(12);
   savePath[0] = 0;
  }
-#ifdef __MSDOS__
+#if defined(__MSDOS__) || defined(_WIN32)
  strcat(savePath, "troll.dot");
+ boost::filesystem::create_directory(savePath);
 #else
  strcat(savePath, ".troll");
-#endif
  int err = mkdir(savePath, 0700);
  if ((-1 == err) && (EEXIST != errno))
  {
   fprintf(stderr, "Error creating directory %s\n", savePath);
   exit(2);
  }
+#endif
  strcat(savePath, "/");
 
  // Run at 30 frames per second
@@ -466,7 +470,7 @@ char *TrollGame::buildFullPath(const char *path, const char *file)
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 void TrollGame::loadLibrary(const char *filename)
 {
-#ifndef __MSDOS__
+#ifndef STATIC_LIBRARY
  void *lib;
  int (*libinit)(TrollGame *);
 
@@ -694,6 +698,9 @@ bool TrollGame::titleScreen(char *name)
 #elif defined(__MSDOS__)
  const Sprite *iconPic =
    TrollSpriteHandler.getSprite(TROLL_SPRITE_DOS);
+#elif defined(_WIN32)
+ const Sprite *iconPic =
+   TrollSpriteHandler.getSprite(TROLL_SPRITE_DOS);
 #endif
 
  // Quick color hack
@@ -702,9 +709,7 @@ bool TrollGame::titleScreen(char *name)
  IPaletteCopy(pal, IPaletteMain);
 
  // Intialize everything
- char *file = buildFullPath(savePath, "*"TROLL_SAVE_EXT);
- FileList files(file);
- delete[] file;
+ FileList files(savePath, TROLL_SAVE_EXT);
  top = 0;
  where = 0;
  bufScreen = IScreenCreate();

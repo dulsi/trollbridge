@@ -16,8 +16,6 @@ extern "C" {
 #if defined(__MSDOS__) && !defined(ALLEGRO)
 
 #define IFAR far
-#define IRandom(x) random(x)
-#define IRandomize() randomize()
 
 #if defined(__LARGE__) || defined(__HUGE__) || defined(__COMPACT__)
 
@@ -59,8 +57,6 @@ typedef signed long ILong;
 #define IFree(x) free(x)
 #define IMemset(x,y,z) memset(x,y,z)
 #define IMemcpy(x,y,z) memcpy(x,y,z)
-#define IRandom(x) (random()%x)
-#define IRandomize() (srandom(time(0)))
 
 typedef unsigned short IUShort;
 typedef unsigned int IULong;
