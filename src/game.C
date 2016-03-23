@@ -439,7 +439,7 @@ void TrollGame::loadLevel(const char *filename)
   }
  }
  // Delete the header
- delete header;
+ delete [] header;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
