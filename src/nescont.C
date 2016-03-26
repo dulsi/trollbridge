@@ -62,7 +62,6 @@ nes_controller::nes_controller()
  SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
  SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
  SDL_EventState(SDL_MOUSEBUTTONUP, SDL_IGNORE);
- SDL_EventState(SDL_QUIT, SDL_IGNORE);
  SDL_EventState(SDL_SYSWMEVENT, SDL_IGNORE);
 }
 
@@ -90,6 +89,11 @@ void nes_controller::status(signed char &down,signed char &right,
  {
   switch (sdlevent.type)
   {
+   case SDL_QUIT:
+   {
+    SDL_Quit();
+    exit(0);
+   }
    case SDL_KEYDOWN:
    case SDL_KEYUP:
     switch (sdlevent.key.keysym.sym)
