@@ -26,7 +26,8 @@ void TrollThing::die()
 void TrollThing::draw(IScreen drawscreen)
 {
  const Sprite *pic = TrollSpriteHandler.getSprite(sprite);
- pic->draw(drawscreen, x, y, frame, facing, shift);
+ if (pic)
+  pic->draw(drawscreen, x, y, frame, facing, shift);
 }
 
 IUShort TrollThing::getDirection() const
