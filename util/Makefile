@@ -14,7 +14,7 @@ TROLLOBJ_DIR = ../src
 CXX = g++
 CXXFLAGS = -g -I$(TROLLINC_DIR) -I$(IDENTICALINC_DIR) -DSDLLIB $(SDL_CFLAGS)
 DLLFLAGS = -fPIC
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS)
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS) -lboost_filesystem -lboost_system
 
 CREATEMAP_OBJ = createmap.o iextra.o
 CREATEMAP_EXE = createmap
