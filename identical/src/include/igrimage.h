@@ -72,6 +72,15 @@ const IPalette IImagePaletteGet(const IImage img);                         */
 void IImagePaletteSet(IImage img, const IPalette pal);
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  IImageLoad - Load an image from a file.
+
+    Parameters:
+      filename     (In)  Name (and path) of the pcx file
+    Returns: The loaded image
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+IImage IImageLoad(const char *filename);
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   IImagePCXLoad - Load an image from a PCX file.
 
     Parameters:

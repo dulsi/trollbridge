@@ -12,6 +12,9 @@
 #include <igrbasics.h>
 #include <igrimage.h>
 #include <stdio.h>
+#include <SDL.h>
+#include <SDL_image.h>
+
 
 IImage IImageCapture(const IScreen screen, IUShort x1, IUShort y1, IUShort x2,
                      IUShort y2)
@@ -67,6 +70,25 @@ void IImagePaletteSet(IImage img, const IPalette pal)
    IPaletteCopy(img->pal, pal);
   }
  }
+}
+
+IImage IImageLoad(const char *filename)
+{
+ IImage img;
+ SDL_Surface *surf = IMG_Load(filename);
+ if (surf == NULL)
+  return NULL;
+ img = (IImage)IMalloc(sizeof(struct IImageStruct));
+ img->x = surf->w;
+ img->y = surf->h;
+ img->pic = (IPixel IFAR *)IMalloc(sizeof(IPixel) * img->x * img->y);
+ memcpy(img->pic, surf->pixels, sizeof(IPixel) * img->x * img->y);
+ img->pal = (IPalette)IMalloc(sizeof(IPaletteTable));
+ for (int i = 0; i < surf->format->palette->ncolors; i++)
+ {
+  IPaletteSet(img->pal, i, surf->format->palette->colors[i].r / 4, surf->format->palette->colors[i].g / 4, surf->format->palette->colors[i].b / 4);
+ }
+ return img;
 }
 
 IImage IImagePCXLoad(const char *filename)

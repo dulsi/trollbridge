@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <SDL.h>
 #include "iextra.h"
 
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
@@ -15,8 +16,20 @@ int main(int argc, char *argv[])
  IPalette pal = NULL;
  IPaletteName palnm = NULL;
 
+ if (SDL_Init(SDL_INIT_VIDEO) < 0)
+ {
+  printf("Failed - SDL_Init\n");
+  exit(0);
+ }
  ParseCommandLine(argc, argv, inname, outname, &pal, &palnm);
- img = IImagePCXLoad(inname);
+ if (strcmp(inname + strlen(inname) - 4, ".pcx") == 0)
+ {
+  img = IImagePCXLoad(inname);
+ }
+ else
+ {
+  img = IImageLoad(inname);
+ }
  IImageTextSave(img, outname, pal, palnm);
  IPaletteDestroy(pal);
  IPaletteNameDestroy(palnm);
@@ -92,7 +105,8 @@ pcx2text [options] inname[.pcx] [outname[.txt]]\n\
   exit(4);
  }
  strcpy(inname, argv[optind]);
- if (strcmp(inname + strlen(inname) - 4, ".pcx") != 0)
+ size_t len = strlen(inname);
+ if ((len < 4) || ((strcmp(inname + len - 4, ".pcx") != 0) && (strcmp(inname + len - 4, ".png") != 0)))
  {
   strcat(inname, ".pcx");
  }

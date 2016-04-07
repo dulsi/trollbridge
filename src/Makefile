@@ -7,7 +7,7 @@ SDL_LDFLAGS := $(shell sdl-config --libs)
 CXX = g++
 CXXFLAGS = -Wall -g -DSDLLIB -I$(IDENTICALINC_DIR) $(SDL_CFLAGS)
 DLLFLAGS = -fPIC -I.
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -lboost_filesystem -lboost_system -ldl $(SDL_LDFLAGS)
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -lboost_filesystem -lboost_system -ldl $(SDL_LDFLAGS) -lSDL_image
 
 DLL_DIR = gamedll
 

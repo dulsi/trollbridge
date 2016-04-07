@@ -81,6 +81,8 @@ TrollEditScreen::~TrollEditScreen()
   delete exits[i];
  }
  free(exits);
+ free(permMonsters);
+ free(respawnMonsters);
  for (i = 0; i < secretNum; i++)
  {
   delete secrets[i];
