@@ -47,9 +47,10 @@ cp $TROLL_TMP/troll.pal $TROLL_TMP/troll.spr $TROLL_DATA
 # Generate all the levels
 pushd $TROLL_DATA/levels >/dev/null
 for each in * ; do
- if [ -d $TROLL_DATA/levels/$each ] ; then
-  cd $TROLL_DATA/levels/$each
-  $TROLL_UTIL/createmap $each.map
+ if [ -d $each ] ; then
+  cd $each
+  ../../$TROLL_UTIL/createmap -p../../trollpal.txt $each.map
+  cd ..
  fi
 done
 popd >/dev/null
