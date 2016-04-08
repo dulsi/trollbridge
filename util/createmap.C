@@ -197,7 +197,7 @@ void TrbFileWrite(char *filename, char IFAR * IFAR * screenfile)
 {
  FILE *trbfile;
  FILE *input;
- long IFAR *header;
+ IULong IFAR *header;
  long i, k;
  std::map<std::string, Entry, std::less<std::string> > describe;
  Entry cur;
@@ -212,7 +212,7 @@ void TrbFileWrite(char *filename, char IFAR * IFAR * screenfile)
   printf("Falled to allocate memory\n");
   exit(2);
  }
- if ((header = (long IFAR *)IMalloc(sizeof(long)*TROLL_LEVEL_X*TROLL_LEVEL_Y*2)) == NULL)
+ if ((header = (IULong IFAR *)IMalloc(sizeof(IULong)*TROLL_LEVEL_X*TROLL_LEVEL_Y*2)) == NULL)
  {
   printf("Falled to allocate memory\n");
   exit(2);
@@ -222,8 +222,8 @@ void TrbFileWrite(char *filename, char IFAR * IFAR * screenfile)
  fwrite(&xStart, 1, sizeof(IUShort), trbfile);
  fwrite(&yStart, 1, sizeof(IUShort), trbfile);
  fwrite(mapInfo, 1, sizeof(IUByte) * TROLL_LEVEL_X * TROLL_LEVEL_Y, trbfile);
- fwrite(header, 1, sizeof(long) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2, trbfile);
- cur.where = sizeof(long) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2 +
+ fwrite(header, 1, sizeof(IULong) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2, trbfile);
+ cur.where = sizeof(IULong) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2 +
      sizeof(IUByte) * TROLL_LEVEL_X * TROLL_LEVEL_Y + 4 * sizeof(IUShort);
  for (i = 0; i < TROLL_LEVEL_X * TROLL_LEVEL_Y; i++)
  {
@@ -251,7 +251,7 @@ void TrbFileWrite(char *filename, char IFAR * IFAR * screenfile)
   }
  }
  fseek(trbfile, sizeof(IUByte) * TROLL_LEVEL_X * TROLL_LEVEL_Y + 4 * sizeof(IUShort), SEEK_SET);
- fwrite(header, 1, sizeof(long) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2, trbfile);
+ fwrite(header, 1, sizeof(IULong) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2, trbfile);
  fclose(trbfile);
 }
 
