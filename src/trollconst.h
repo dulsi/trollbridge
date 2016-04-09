@@ -30,7 +30,7 @@
 #define TROLL_SQUARE_X 20
 
 /* Sizes of various fixed sized arrays for class TrollGame */
-#define TROLL_MONSTER_TYPES 23
+#define TROLL_MONSTER_TYPES 24
 #define TROLL_ITEM_TYPES    13
 #define TROLL_CARRIED_ITEMS 6
 

@@ -9,6 +9,7 @@
 #include "dllconst.h"
 #include "spider.h"
 #include "explosion.h"
+#include <igrgeometry.h>
 
 #define TROLL_SPIDER_MOVE_DOWN 1
 #define TROLL_SPIDER_MOVE_UP   7
@@ -29,9 +30,17 @@ void TrollSpider::die()
  screen->addMonster(new TrollExplosion(screen, x, y, 39 + shift));
 }
 
+void TrollSpider::draw(IScreen drawscreen)
+{
+ if (state !=TROLL_SPIDER_OFFSCREEN)
+ {
+  ILineDraw(drawscreen, x + 10, TROLL_BUFFER_Y, x + 10, y + 8, 255);
+ }
+ TrollStandardMonster::draw(drawscreen);
+}
+
 void TrollSpider::react()
 {
- int i;
  IUShort yCur;
 
  if (invincible)
@@ -46,22 +55,12 @@ void TrollSpider::react()
  }
  if (state == TROLL_SPIDER_OFFSCREEN)
  {
-  if ((time >= 30) && (IRandom(60) == 0))
+  if ((time >= 30) && (IRandom(20) == 0))
   {
    time = 0;
    state = TROLL_SPIDER_WAIT1;
-   int k;
 
-   for (i = IRandom(TROLL_SCREEN_X - 1) + 1, k = 0; i > 0; k++)
-   {
-    k %= TROLL_SCREEN_X;
-    x = k % TROLL_SCREEN_X;
-    y = 0;
-    if (screen->getPassability(x, y) <= TROLL_NOMONSTER)
-    {
-     i--;
-    }
-   }
+   x = IRandom(TROLL_SCREEN_X - 1) + 1;
    x *= TROLL_SQUARE_X;
    y = TROLL_BUFFER_Y;
   }
@@ -88,7 +87,7 @@ void TrollSpider::react()
  {
   if (time == speed * 4)
   {
-   time = 0;
+   time = 20;
    x = y = -100;
    state = TROLL_SPIDER_OFFSCREEN;
    direction = TROLL_DOWN;

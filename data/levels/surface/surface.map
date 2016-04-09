@@ -10,7 +10,7 @@ YStart   120
   4   DarkBlue    DarkBlue    LightBlue   LightBlue   LightBlue   LightBlue   LightBlue     Blank       Blank       Blank       Blank       Blank     TrollGray     Blank       Blank       Blank
   5  TreeBrown1  TreeBrown1  TreeBrown1  TreeBrown1     Blank       Blank       Blank       Blank       Blank    TreeGreen5  TreeGreen5  TreeGreen5   TrollGray     Blank       Blank       Blank
   6  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5     Blank       Blank       Blank       Blank    TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5   TrollGray     Blank      Pyramid2     Blank
-  7  TreeGreen3  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5   TrollGray   TrollGray     Blank       Blank       Blank
+  7  TreeGreen3  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5  TreeGreen5   TrollGray     Blank       Blank       Blank
           0           1           2           3           4           5           6           7           8           9          10          11          12          13          14          15
   0      tmp2        tmp3        tmp3        tmp3        tmp3        tmp3        tmp3        tmp3     mountain4   mountain4   mountain4      tmp3        tmp3        tmp3        tmp3     mountain5
   1      tmp4        tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp      mountain3   mountain3      tmp         tmp         tmp      mountain3   mountain6
@@ -19,5 +19,5 @@ YStart   120
   4      tmp4        tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp      mountain3    desert6     desert6     desert5
   5      tmp4        tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp        test3      forest1    mountain2    desert7     desert6     desert5
   6      tmp4        tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp         tmp        test2     startroom    desert1     pyramid     desert5
-  7      tmp5        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6     mountain1    desert2     desert3     desert4
+  7      tmp5        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6        tmp6    spidertree   mountain1    desert2     desert3     desert4
 

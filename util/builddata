@@ -37,7 +37,7 @@ while read name facings frames ; do
 done
 
 # Crunch to troll.spr file
-printf \\0`expr $ZSP_NUM % 8 + $ZSP_NUM / 8 % 8 \* 10 + $ZSP_NUM / 64 % 8 \* 100`\\0`expr $ZSP_NUM / 512 % 8 + $ZSP_NUM / 4096 % 8 \* 10 + $ZSP_NUM / 32768 % 8 \* 100` \
+printf \\`expr $ZSP_NUM % 8 + $ZSP_NUM / 8 % 8 \* 10 + $ZSP_NUM / 64 % 8 \* 100`\\0`expr $ZSP_NUM / 512 % 8 + $ZSP_NUM / 4096 % 8 \* 10 + $ZSP_NUM / 32768 % 8 \* 100` \
   | dd bs=1 count=2 of=$TROLL_TMP/troll.spr 2>/dev/null >/dev/null
 cat $ZSP_FILES >>$TROLL_TMP/troll.spr
 

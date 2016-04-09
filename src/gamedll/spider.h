@@ -19,6 +19,7 @@ class TrollSpider : public TrollStandardMonster
     IShort sy, IUShort secrt);
 
   void die();
+  void draw(IScreen drawscreen);
   void react();
 
  protected:
