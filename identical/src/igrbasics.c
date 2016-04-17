@@ -27,7 +27,7 @@ SDL_Surface *ISDLScreen;
 void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
                     IBool fullScreen)
 {
- if (SDL_Init(SDL_INIT_VIDEO) < 0)
+ if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
  {
   printf("Failed - SDL_Init\n");
   exit(0);

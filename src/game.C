@@ -34,7 +34,7 @@ extern "C" int TrollDllInit(TrollGame *game);
       argv         (In)  Arguments [not currently used]
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollGame::TrollGame(int argc, char **argv)
-: dataDir(DATA_DIR), libDir(LIBRARY_DIR)
+: dataDir(DATA_DIR), libDir(LIBRARY_DIR), musicObj(NULL)
 {
  int x,y;
  IUShort xMult, yMult;
@@ -103,6 +103,7 @@ troll [options]\n\
  }
 
  IGraphicsStart("Troll Bridge", xMult, yMult, fullScreen);
+ Mix_Init(MIX_INIT_OGG);
 
  char *home = getenv("HOME");
  if (home)
@@ -168,6 +169,7 @@ troll [options]\n\
  titlePic = IImagePCXLoad(file);
  delete[] file;
  levelName = NULL;
+ Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -175,10 +177,16 @@ troll [options]\n\
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollGame::~TrollGame()
 {
+ if (musicObj)
+ {
+  Mix_HaltMusic();
+  Mix_FreeMusic(musicObj);
+ }
  IImageDestroy(titlePic);
  delete definition;
  delete[] savePath;
  ITimerEnd();
+ Mix_Quit();
  IGraphicsEnd();
 }
 
@@ -387,6 +395,7 @@ void TrollGame::loadLevel(const char *filename)
 {
  int x, y;
  IULong *header;
+ IUShort musicLen;
  char *file;
 
  file = buildFullPath(dataDir.c_str(), filename);
@@ -413,6 +422,12 @@ void TrollGame::loadLevel(const char *filename)
  levelFile.readUShort(yScreen);
  levelFile.readUShort(xStart);
  levelFile.readUShort(yStart);
+ levelFile.readUShort(musicLen);
+ char *musictmp = new char[musicLen + 1];
+ musictmp[musicLen] = 0;
+ levelFile.readUByteArray(musicLen, (IUByte *)musictmp);
+ setMusic(musictmp);
+ delete musictmp;
  levelFile.readUByteArray(TROLL_LEVEL_X * TROLL_LEVEL_Y, (IUByte *)mapInfo);
 /* for (x = 0; x < TROLL_LEVEL_X; x++)
  {
@@ -664,6 +679,32 @@ void TrollGame::selectName(char *name)
  }
 }
 
+void TrollGame::setMusic(const std::string &m)
+{
+ if (music == m)
+  return;
+ if (musicObj)
+ {
+  Mix_HaltMusic();
+  Mix_FreeMusic(musicObj);
+  musicObj = NULL;
+ }
+ music = m;
+ SDL_RWops *musicFile;
+ char *file;
+
+ file = buildFullPath(dataDir.c_str(), ("sounds/" + music).c_str());
+ musicFile = SDL_RWFromFile(file, "rb");
+
+ delete[] file;
+ if (musicFile)
+ {
+  musicObj = Mix_LoadMUS_RW(musicFile);
+  if (musicObj)
+   Mix_FadeInMusic(musicObj, -1, 1000);
+ }
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   TrollGame::titleScreen - Displays a simple little title screen until
     start is pressed.
@@ -715,6 +756,7 @@ bool TrollGame::titleScreen(char *name)
  bufScreen = IScreenCreate();
  IPaletteCopy(IPaletteMain, IImagePaletteGet(titlePic));
 
+ setMusic("Boot_Up.ogg");
  // Run the title screen until start is pressed
  d = 0;
  for (;;)

@@ -19,6 +19,7 @@
 #include "nescont.h"
 
 #include <SDL.h>
+#include <SDL_mixer.h>
 
 SDL_Joystick *js = NULL;
 unsigned int jsmask = 0;
@@ -91,6 +92,7 @@ void nes_controller::status(signed char &down,signed char &right,
   {
    case SDL_QUIT:
    {
+    Mix_Quit();
     SDL_Quit();
     exit(0);
    }

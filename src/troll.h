@@ -24,6 +24,8 @@
 #include "trollconst.h"
 #include "sprite.h"
 #include "nescont.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
 
 // Although only a singly linked list is required an STL's doubly linked list
 // is used rather than spending the time to implement a custom class.
@@ -113,6 +115,7 @@ class TrollGame
   char *buildFullPath(const char *path, const char *file);
   void loadLibrary(const char *filename);
   void selectName(char *name);
+  void setMusic(const std::string &m);
   bool titleScreen(char *name);
   void turnCleanUp();
 
@@ -131,6 +134,8 @@ class TrollGame
   char *savePath;
   IUShort xScreen, yScreen;
   IUShort xStart, yStart;
+  std::string music;
+  Mix_Music *musicObj;
 
   // Used for switching levels
   TrollScreen *extraScreen;

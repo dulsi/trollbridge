@@ -32,6 +32,7 @@ IUShort xScreen;
 IUShort yScreen;
 IUShort xStart;
 IUShort yStart;
+char music[255];
 IUByte mapInfo[TROLL_LEVEL_X][TROLL_LEVEL_Y];
 
 main(int argc,char *argv[])
@@ -147,6 +148,7 @@ char IFAR * IFAR *MapFileRead(char *filename, IPaletteName colornames)
  fscanf(mapfile, "%s%d", basename, &yScreen);
  fscanf(mapfile, "%s%d", basename, &xStart);
  fscanf(mapfile, "%s%d", basename, &yStart);
+ fscanf(mapfile, "%s%s", basename, &music);
  /* Read and throw out column numbers */
  for (i = 0; i < TROLL_LEVEL_X; i++)
  {
@@ -221,10 +223,14 @@ void TrbFileWrite(char *filename, char IFAR * IFAR * screenfile)
  fwrite(&yScreen, 1, sizeof(IUShort), trbfile);
  fwrite(&xStart, 1, sizeof(IUShort), trbfile);
  fwrite(&yStart, 1, sizeof(IUShort), trbfile);
+ IUShort musicLen = strlen(music);
+ fwrite(&musicLen, 1, sizeof(IUShort), trbfile);
+ fwrite(music, musicLen, 1, trbfile);
  fwrite(mapInfo, 1, sizeof(IUByte) * TROLL_LEVEL_X * TROLL_LEVEL_Y, trbfile);
  fwrite(header, 1, sizeof(IULong) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2, trbfile);
  cur.where = sizeof(IULong) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2 +
-     sizeof(IUByte) * TROLL_LEVEL_X * TROLL_LEVEL_Y + 4 * sizeof(IUShort);
+     sizeof(IUByte) * TROLL_LEVEL_X * TROLL_LEVEL_Y + 5 * sizeof(IUShort) +
+     musicLen;
  for (i = 0; i < TROLL_LEVEL_X * TROLL_LEVEL_Y; i++)
  {
   Entry theEntry = describe[screenfile[i]];
@@ -250,7 +256,7 @@ void TrbFileWrite(char *filename, char IFAR * IFAR * screenfile)
    cur.where += cur.size;
   }
  }
- fseek(trbfile, sizeof(IUByte) * TROLL_LEVEL_X * TROLL_LEVEL_Y + 4 * sizeof(IUShort), SEEK_SET);
+ fseek(trbfile, sizeof(IUByte) * TROLL_LEVEL_X * TROLL_LEVEL_Y + 5 * sizeof(IUShort) + musicLen, SEEK_SET);
  fwrite(header, 1, sizeof(IULong) * TROLL_LEVEL_X * TROLL_LEVEL_Y * 2, trbfile);
  fclose(trbfile);
 }
