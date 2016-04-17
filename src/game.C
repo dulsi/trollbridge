@@ -241,7 +241,14 @@ void TrollGame::addCarriedItem(TrollCarriedItem *item)
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 void TrollGame::addItemType(IUShort num, TrollItemConstructor construct)
 {
- itemTypes[num] = construct;
+ if (num == itemTypes.size())
+  itemTypes.push_back(construct);
+ else
+ {
+  for (int i = itemTypes.size(); i < num; ++i)
+   itemTypes.push_back(NULL);
+  itemTypes[num] = construct;
+ }
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -254,7 +261,14 @@ void TrollGame::addItemType(IUShort num, TrollItemConstructor construct)
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 void TrollGame::addMonsterType(IUShort num, TrollMonsterConstructor construct)
 {
- monsterTypes[num] = construct;
+ if (num == monsterTypes.size())
+  monsterTypes.push_back(construct);
+ else
+ {
+  for (int i = monsterTypes.size(); i < num; ++i)
+   monsterTypes.push_back(NULL);
+  monsterTypes[num] = construct;
+ }
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\

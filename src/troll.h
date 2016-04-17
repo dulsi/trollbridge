@@ -122,8 +122,8 @@ class TrollGame
   std::string dataDir;
   std::string libDir;
   TrollDefinition *definition;
-  TrollMonsterConstructor monsterTypes[TROLL_MONSTER_TYPES];
-  TrollItemConstructor itemTypes[TROLL_ITEM_TYPES];
+  std::vector<TrollMonsterConstructor> monsterTypes;
+  std::vector<TrollItemConstructor> itemTypes;
   TrollCarriedItem *carriedItems[TROLL_CARRIED_ITEMS];
   TrollScreen *screen[TROLL_LEVEL_X][TROLL_LEVEL_Y];
   IUByte mapInfo[TROLL_LEVEL_X][TROLL_LEVEL_Y];
