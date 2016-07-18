@@ -59,7 +59,7 @@ nes_controller::nes_controller()
    }
   }
  }
- SDL_EventState(SDL_ACTIVEEVENT, SDL_IGNORE);
+// SDL_EventState(SDL_ACTIVEEVENT, SDL_IGNORE);
  SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
  SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
  SDL_EventState(SDL_MOUSEBUTTONUP, SDL_IGNORE);
@@ -100,19 +100,19 @@ void nes_controller::status(signed char &down,signed char &right,
    case SDL_KEYUP:
     switch (sdlevent.key.keysym.sym)
     {
-     case SDLK_KP8:
+     case SDLK_KP_8:
      case SDLK_UP:
       mask=0x0200;
       break;
-     case SDLK_KP6:
+     case SDLK_KP_6:
      case SDLK_RIGHT:
       mask=0x0400;
       break;
-     case SDLK_KP4:
+     case SDLK_KP_4:
      case SDLK_LEFT:
       mask=0x0800;
       break;
-     case SDLK_KP2:
+     case SDLK_KP_2:
      case SDLK_DOWN:
       mask=0x0100;
       break;

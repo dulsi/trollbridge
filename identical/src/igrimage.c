@@ -75,6 +75,7 @@ void IImagePaletteSet(IImage img, const IPalette pal)
 IImage IImageLoad(const char *filename)
 {
  IImage img;
+ int i;
  SDL_Surface *surf = IMG_Load(filename);
  if (surf == NULL)
   return NULL;
@@ -84,17 +85,9 @@ IImage IImageLoad(const char *filename)
  img->pic = (IPixel IFAR *)IMalloc(sizeof(IPixel) * img->x * img->y);
  memcpy(img->pic, surf->pixels, sizeof(IPixel) * img->x * img->y);
  img->pal = (IPalette)IMalloc(sizeof(IPaletteTable));
- for (int i = 0; i < surf->format->palette->ncolors; ++i)
+ for (i = 0; i < surf->format->palette->ncolors; ++i)
  {
   IPaletteSet(img->pal, i, surf->format->palette->colors[i].r / 4, surf->format->palette->colors[i].g / 4, surf->format->palette->colors[i].b / 4);
- }
- if ((surf->format->colorkey >= 0) && (surf->format->colorkey < 256))
- {
-  for (int i = 0; i < img->x * img->y; ++i)
-  {
-   if (img->pic[i] == surf->format->colorkey)
-    img->pic[i] = 255;
-  }
  }
  return img;
 }

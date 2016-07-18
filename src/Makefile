@@ -1,13 +1,13 @@
 IDENTICALINC_DIR=../identical/src/include
 IDENTICALLIB_DIR=../identical/lib
 
-SDL_CFLAGS := $(shell sdl-config --cflags)
-SDL_LDFLAGS := $(shell sdl-config --libs)
+SDL_CFLAGS := $(shell sdl2-config --cflags)
+SDL_LDFLAGS := $(shell sdl2-config --libs)
 
 CXX = g++
 CXXFLAGS = -Wall -g -DSDLLIB -I$(IDENTICALINC_DIR) $(SDL_CFLAGS)
 DLLFLAGS = -fPIC -I.
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -lboost_filesystem -lboost_system -ldl $(SDL_LDFLAGS) -lSDL_image -lSDL_mixer
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -lboost_filesystem -lboost_system -ldl $(SDL_LDFLAGS) -lSDL2_image -lSDL2_mixer
 
 DLL_DIR = gamedll
 

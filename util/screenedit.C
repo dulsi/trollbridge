@@ -1117,7 +1117,7 @@ int main(int argc, char *argv[])
  {
   editScreen = new TrollEditScreen(argv[1]);
   sprites = new SpriteHandler("troll.spr");
-  IGraphicsStart("ScreenEdit", 0, 0, IFALSE);
+  IGraphicsStart("ScreenEdit", 0, 0, IFALSE, IFALSE);
   IKeybufferStart();
   initpal();
   ITimerStart(30);

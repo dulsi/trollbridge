@@ -20,21 +20,38 @@ IScreen IScreenMain;
 IPalette IPaletteMain = NULL;
 IUShort IXMult = 0;
 IUShort IYMult = 0;
+IUShort IXReal = 0;
+IUShort IYReal = 0;
 
 /* Extra global variables needed by SDL */
+SDL_Window *ISDLMainWindow;
+SDL_Renderer *ISDLMainRenderer;
+SDL_Texture *ISDLMainTexture;
+SDL_Surface *ISDLMainScreen;
 SDL_Surface *ISDLScreen;
 
 void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
-                    IBool fullScreen)
+                    IBool fullScreen, IBool soft)
 {
  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
  {
   printf("Failed - SDL_Init\n");
   exit(0);
  }
- const SDL_VideoInfo *info = SDL_GetVideoInfo();
- int xFull = info->current_w;
- int yFull = info->current_h;
+ SDL_DisplayMode info;
+ int success = SDL_GetCurrentDisplayMode(0, &info);
+ if (success != 0)
+ {
+  printf("%s\n", SDL_GetError());
+  exit(0);
+ }
+ int xFull = info.w;
+ int yFull = info.h;
+ if (fullScreen && soft)
+ {
+  IXReal = xFull;
+  IYReal = yFull;
+ }
  if ((xMult == 0) || (yMult == 0))
  {
   xMult = (xFull - 10) / 320; // Allow for window decoration
@@ -46,14 +63,43 @@ void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
  }
  IXMult = xMult;
  IYMult = yMult;
- ISDLScreen = SDL_SetVideoMode(320 * xMult, 200 * yMult, 8,
-   SDL_SWSURFACE | (fullScreen ? SDL_FULLSCREEN : 0));
- if (ISDLScreen == NULL)
+ ISDLMainWindow = SDL_CreateWindow(name,
+                           SDL_WINDOWPOS_UNDEFINED,
+                           SDL_WINDOWPOS_UNDEFINED,
+                           ((fullScreen && soft) ? IXReal : 320 * xMult), ((fullScreen && soft) ? IYReal : 200 * yMult),
+                           (fullScreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
+ if (ISDLMainWindow == NULL)
  {
-  printf("Failed - SDL_SetVideoMode\n");
+  printf("Failed - SDL_CreateWindow\n");
   exit(0);
  }
- SDL_WM_SetCaption(name, name);
+
+ ISDLMainRenderer = SDL_CreateRenderer(ISDLMainWindow, -1, ((fullScreen && soft) ? SDL_RENDERER_SOFTWARE : 0));
+ if (ISDLMainRenderer == NULL)
+ {
+  printf("Failed - SDL_CreateRenderer\n");
+  exit(0);
+ }
+ ISDLMainTexture = SDL_CreateTexture(ISDLMainRenderer,
+                             SDL_PIXELFORMAT_ARGB8888,
+                             SDL_TEXTUREACCESS_STREAMING,
+                             ((fullScreen && soft) ? IXReal : 320 * xMult), ((fullScreen && soft) ? IYReal : 200 * yMult));
+ if (ISDLMainTexture == NULL)
+ {
+  printf("Failed - SDL_CreateTexture\n");
+  exit(0);
+ }
+ ISDLMainScreen = SDL_CreateRGBSurface(0, 320 * xMult, 200 * yMult, 32,
+                                        0x00FF0000,
+                                        0x0000FF00,
+                                        0x000000FF,
+                                        0xFF000000);
+ ISDLScreen = SDL_CreateRGBSurface(0, 320 * xMult, 200 * yMult, 8, 0, 0, 0, 0);
+ if (ISDLScreen == NULL)
+ {
+  printf("Failed - SDL_CreateRGBSurface\n");
+  exit(0);
+ }
  if ((1 == xMult) && (1 == yMult))
   IScreenMain = (IScreen)ISDLScreen->pixels;
  else
@@ -63,36 +109,80 @@ void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
 
 void IGraphicsRefresh()
 {
- if ((1 != IXMult) || (1 != IYMult))
+ void *pixels;
+ int pitch;
+ SDL_Rect dest;
+ dest.x = 0;
+ dest.y = 0;
+ if (IXReal)
+ {
+  dest.w = IXReal;
+  dest.h = IYReal;
+ }
+ else
+ {
+  dest.w = 320 * IXMult;
+  dest.h = 200 * IYMult;
+ }
+ SDL_LockTexture(ISDLMainTexture, &dest, &pixels, &pitch);
+ if (IXReal)
+ {
+  double scaleWidth =  320.0 / (double)IXReal;
+  double scaleHeight = 200.0 / (double)IYReal;
+  double curX = 0;
+  double curY = 0;
+  Uint8 *realLine;
+  Uint8 *realPos;
+  int cy;
+  int cx;
+
+  realPos = (Uint8 *)pixels;
+  for (cy = 0; cy < IYReal; cy++, curY += scaleHeight)
+  {
+   curX = 0;
+   realLine = realPos;
+   for (cx = 0; cx < IXReal; cx++, curX += scaleWidth)
+   {
+    SDL_GetRGB(IScreenMain[((int)curY) * 320 + ((int)curX)], ISDLScreen->format, realPos + 2, realPos + 1, realPos);
+    realPos += 4;
+   }
+   realPos = realLine + pitch;
+  }
+ }
+ else
  {
   int x, y, xMult, yMult;
   IPixel IFAR *curPos;
   IPixel IFAR *prevLine;
-  IPixel IFAR *realPos;
+  Uint8 *realLine;
+  Uint8 *realPos;
 
-  SDL_LockSurface(ISDLScreen);
   curPos = IScreenMain;
-  realPos = ISDLScreen->pixels;
+  realPos = (Uint8 *)pixels;
   for (y = 0; y < 200; ++y)
   {
    prevLine = curPos;
    for (yMult = 0; yMult < IYMult; ++yMult)
    {
     curPos = prevLine;
+    realLine = realPos;
     for (x = 0; x < 320; ++x)
     {
      for (xMult = 0; xMult < IXMult; ++xMult)
      {
-      *realPos = *curPos;
-      ++realPos;
+      SDL_GetRGB(*curPos, ISDLScreen->format, realPos + 2, realPos + 1, realPos);
+      realPos += 4;
      }
      ++curPos;
     }
+    realPos = realLine + pitch;
    }
   }
-  SDL_UnlockSurface(ISDLScreen);
  }
- SDL_UpdateRect(ISDLScreen, 0, 0, 0, 0);
+ SDL_UnlockTexture(ISDLMainTexture);
+ SDL_RenderClear(ISDLMainRenderer);
+ SDL_RenderCopy(ISDLMainRenderer, ISDLMainTexture, NULL, NULL);
+ SDL_RenderPresent(ISDLMainRenderer);
 }
 
 void IGraphicsEnd()
@@ -125,7 +215,7 @@ void IPaletteCopy(IPalette paldst, const IPalette palsrc)
    sdlcol[color].g = (*palsrc)[color][1] << 2;
    sdlcol[color].b = (*palsrc)[color][2] << 2;
   }
-  SDL_SetColors(ISDLScreen, sdlcol, 0, 256);
+  SDL_SetPaletteColors((SDL_Palette *)IPaletteMain, sdlcol, 0, 256);
  }
  else
  {
@@ -142,7 +232,7 @@ void IPaletteSet(IPalette pal, IPixel c, IColor r, IColor g, IColor b)
   sdlcol.r = r << 2;
   sdlcol.g = g << 2;
   sdlcol.b = b << 2;
-  SDL_SetColors(ISDLScreen, &sdlcol, c, 1);
+  SDL_SetPaletteColors((SDL_Palette *)IPaletteMain, &sdlcol, c, 1);
  }
  else {
   (*pal)[c][0] = r;

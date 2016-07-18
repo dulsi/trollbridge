@@ -1,4 +1,4 @@
-SDL_CFLAGS := $(shell sdl-config --cflags)
+SDL_CFLAGS := $(shell sdl2-config --cflags)
 
 CC = gcc
 CFLAGS = -O -DSDLLIB -Isrc/include $(SDL_CFLAGS)

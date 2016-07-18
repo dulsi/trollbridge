@@ -151,7 +151,7 @@ int IKeybufferModify;
 void IKeybufferStart()
 {
  IKeybufferFirst = IKeybufferLast = IKeybufferModify = 0;
- SDL_EventState(SDL_ACTIVEEVENT, SDL_IGNORE);
+// SDL_EventState(SDL_ACTIVEEVENT, SDL_IGNORE);
  SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
  SDL_EventState(SDL_MOUSEBUTTONDOWN, SDL_IGNORE);
  SDL_EventState(SDL_MOUSEBUTTONUP, SDL_IGNORE);

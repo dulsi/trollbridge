@@ -39,9 +39,10 @@ TrollGame::TrollGame(int argc, char **argv)
  int x,y;
  IUShort xMult, yMult;
  IBool fullScreen;
+ IBool soft;
  char *file;
  char *defName = "troll.def";
- char opt;
+ int opt;
  IPalette pal;
  static struct option long_options[] =
  {
@@ -54,7 +55,8 @@ TrollGame::TrollGame(int argc, char **argv)
  xMult = 0;
  yMult = 0;
  fullScreen = IFALSE;
- while ((opt = getopt_long(argc, argv, "h?d:x:y:fa:l:", long_options, NULL)) != EOF)
+ soft = IFALSE;
+ while ((opt = getopt_long(argc, argv, "h?d:x:y:fwa:l:", long_options, NULL)) != EOF)
  {
   switch (opt)
   {
@@ -97,12 +99,16 @@ troll [options]\n\
     break;
    case 'f':
     fullScreen = ITRUE;
+    break;
+   case 'w':
+    soft = ITRUE;
+    break;
    default:
     break;
   }
  }
 
- IGraphicsStart("Troll Bridge", xMult, yMult, fullScreen);
+ IGraphicsStart("Troll Bridge", xMult, yMult, fullScreen, soft);
  Mix_Init(MIX_INIT_OGG);
 
  char *home = getenv("HOME");
@@ -713,7 +719,7 @@ void TrollGame::setMusic(const std::string &m)
  delete[] file;
  if (musicFile)
  {
-  musicObj = Mix_LoadMUS_RW(musicFile);
+  musicObj = Mix_LoadMUS_RW(musicFile, 0);
   if (musicObj)
    Mix_FadeInMusic(musicObj, -1, 1000);
  }

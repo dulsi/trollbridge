@@ -8,8 +8,9 @@ Vendor:		Dennis Payne <dulsi@identicalsoftware.com>
 Url:		http://www.identicalsoftware.com/troll/
 Source0:		http://www.identicalsoftware.com/troll/%{name}-%{version}.tgz
 BuildRequires: boost-devel
-BuildRequires: SDL-devel
-BuildRequires: SDL_image-devel
+BuildRequires: SDL2-devel
+BuildRequires: SDL2_image-devel
+BuildRequires: SDL2_mixer-devel
 BuildRequires: desktop-file-utils
 
 

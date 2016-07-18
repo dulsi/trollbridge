@@ -42,7 +42,7 @@ extern IPalette IPaletteMain;
       fullScreen   (In)  Use full screen
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 void IGraphicsStart(const char *name, IUShort xMult, IUShort yMult,
-                    IBool fullScreen);
+                    IBool fullScreen, IBool soft);
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   IGraphicsRefresh - Refreshes of the screen

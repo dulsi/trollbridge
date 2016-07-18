@@ -5,8 +5,8 @@ ifndef prefix
 	prefix=
 endif
 
-SDL_CFLAGS := $(shell sdl-config --cflags)
-SDL_LDFLAGS := $(shell sdl-config --libs)
+SDL_CFLAGS := $(shell sdl2-config --cflags)
+SDL_LDFLAGS := $(shell sdl2-config --libs)
 
 TROLLINC_DIR = ../src
 TROLLOBJ_DIR = ../src
@@ -14,7 +14,7 @@ TROLLOBJ_DIR = ../src
 CXX = g++
 CXXFLAGS = -g -I$(TROLLINC_DIR) -I$(IDENTICALINC_DIR) -DSDLLIB $(SDL_CFLAGS)
 DLLFLAGS = -fPIC
-LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS) -lboost_filesystem -lboost_system -lSDL_image
+LIBS = -L$(IDENTICALLIB_DIR) -lidentical-sdl -ldl $(SDL_LDFLAGS) -lboost_filesystem -lboost_system -lSDL2_image
 
 CREATEMAP_OBJ = createmap.o iextra.o
 CREATEMAP_EXE = createmap
