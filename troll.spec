@@ -1,6 +1,6 @@
 Summary:	 A troll works to free his people from an evil ruler in an adventure game.
 Name:		troll
-Version:	0.5.2
+Version:	0.5.3
 Release:	1
 Group:		Amusements/Games
 License:	GPLv2+
@@ -68,5 +68,8 @@ make prefix=%{buildroot} install
 %{_includedir}/troll
 
 %changelog
+* Sun Aug 28 2016 Dennis Payne <dulsi@identicalsoftware.com> - 0.5.3-1
+- New version of Troll Bridge released.
+
 * Sun May 24 2015 Dennis Payne <dulsi@identicalsoftware.com> - 0.5.2-1
 - New version of Troll Bridge released.
