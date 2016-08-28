@@ -58,7 +58,7 @@ install:
 	cp troll.so $(LIBDIR)
 	mkdir -p $(DATADIR)
 	cp trolltitle.pcx ../data/troll.def ../data/troll.spr ../data/troll.pal ../data/levels/*/*.trb $(DATADIR)
-	cp -R ../sounds $(DATADIR)
+	cp -R ../data/sounds $(DATADIR)
 	mkdir -p ${prefix}/usr/include/troll
 	cp *.h ${prefix}/usr/include/troll
 	if test ! -d ${prefix}/usr/share/icons/hicolor; then mkdir -p ${prefix}/usr/share/icons/hicolor; fi
