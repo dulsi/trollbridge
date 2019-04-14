@@ -174,6 +174,7 @@ troll [options]\n\
  file = buildFullPath(dataDir.c_str(), definition->getTitleFile());
  titlePic = IImagePCXLoad(file);
  delete[] file;
+ IPaletteSet(titlePic->pal, 255, 255, 255, 255);
  levelName = NULL;
  Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
 }

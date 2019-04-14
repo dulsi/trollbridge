@@ -1,4 +1,7 @@
 GIMP Palette
+Name: Troll Bridge
+Columns: 16
+#
   0    0    0      Black
 #
 # Monster colors
@@ -61,3 +64,6 @@ GIMP Palette
 237  153   58      Pyramid3
 254  188   93      Pyramid4
 #
+  0  112   47      TrollLightGreen
+  0   68   34      TrollDarkGreen
+  0   57   28      TrollDarkerGreen

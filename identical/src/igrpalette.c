@@ -107,7 +107,7 @@ void IPaletteTextLoad(IPalette *pal, IPaletteName *palnm,
  for (i = 0; (!feof(readFile)) && (i < 256); )
  {
   fgets(line, 255, readFile);
-  if (strncmp(line, "GIMP Palette", 12) == 0)
+  if ((strncmp(line, "GIMP Palette", 12) == 0) || (strncmp(line, "Name:", 5) == 0) || (strncmp(line, "Columns:", 8) == 0))
   { /* Allows the reading of GIMP palette files. */
    continue;
   }
