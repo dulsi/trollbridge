@@ -4,8 +4,10 @@
 #include <getopt.h>
 #include "iextra.h"
 
+IPixel transparent[3] = {255, 0, 181};
+
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
-  IPalette *pal, IPaletteName *palnm);
+  IPalette *pal, IPaletteName *palnm, int &shift);
 
 int main(int argc, char *argv[])
 {
@@ -14,9 +16,16 @@ int main(int argc, char *argv[])
  IImage img = NULL;
  IPalette pal = NULL;
  IPaletteName palnm = NULL;
+ int shift = 0;
 
- ParseCommandLine(argc, argv, inname, outname, &pal, &palnm);
+ ParseCommandLine(argc, argv, inname, outname, &pal, &palnm, shift);
+ IPaletteSet(pal, 255, transparent[0], transparent[1], transparent[2]);
  img = IImageTextLoad(inname, pal, palnm);
+ for (int i = 0; i < img->x * img->y; i++)
+ {
+  if (img->pic[i] != 255)
+   img->pic[i] += shift;
+ }
  IImagePCXSave(img, outname);
  IImageDestroy(img);
  IPaletteDestroy(pal);
@@ -24,7 +33,7 @@ int main(int argc, char *argv[])
 }
 
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
-  IPalette *pal, IPaletteName *palnm)
+  IPalette *pal, IPaletteName *palnm, int &shift)
 {
  char opt;
  int i;
@@ -32,10 +41,11 @@ void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
  static struct option long_options[] =
  {
   {"pal", 1, 0, 'p'},
+  {"shift", 1, 0, 's'},
   {0, 0, 0, 0}
  };
 
- while ((opt = getopt_long(argc,argv,"h?p:", long_options, NULL)) != EOF)
+ while ((opt = getopt_long(argc,argv,"h?p:s:", long_options, NULL)) != EOF)
  {
   switch (opt)
   {
@@ -48,6 +58,7 @@ text2pcx [options] inname[.txt] [outname[.pcx]]\n\
 \n\
   Options:\n\
     -p, --pal=TEXTPALETTE  Text palette for color names\n\
+    -s, --shift=COLORSHIFT  Shifts the colors of the image\n\
 \n\
   inname[.txt]             Name of input file\n\
   [outname[.pcx]]          Name of output file (defaults to input file name)\n\
@@ -71,6 +82,12 @@ text2pcx [options] inname[.txt] [outname[.pcx]]\n\
       printf("Error reading text palette file: %s\n", optarg);
       exit(6);
      }
+    }
+    break;
+   case 's':
+    if (optarg)
+    {
+     shift = atoi(optarg);
     }
     break;
    default:
