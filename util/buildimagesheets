@@ -1,0 +1,145 @@
+#!/bin/bash
+#
+
+TROLL_DATA=../data
+TROLL_UTIL=../util
+TROLL_TMP=/tmp/troll
+alphabet="abcdefghijklmnopqrstuvwxyz"
+
+TEXT_PALETTE=$TROLL_DATA/trollpal.txt
+export TEXT_PALETTE
+
+mkdir $TROLL_TMP
+
+# Generate all pcx files and combine them
+while read name facings frames shift; do
+ if [ -x $TROLL_DATA/images/$name -a pre$name != pre ]; then
+  i=0
+  while expr $i \< $facings >/dev/null ; do
+   i=`expr $i + 1`
+   k=0
+   while expr $k \< $frames >/dev/null ; do
+    if [ -n $shift ]; then
+     $TROLL_UTIL/text2pcx --shift=$shift $TROLL_DATA/images/$name/$name`expr substr $alphabet $i 1`$k.txt \
+       $TROLL_TMP/$name`expr substr $alphabet $i 1`$k.pcx
+    else
+     $TROLL_UTIL/text2pcx $TROLL_DATA/images/$name/$name`expr substr $alphabet $i 1`$k.txt \
+       $TROLL_TMP/$name`expr substr $alphabet $i 1`$k.pcx
+    fi
+    k=`expr $k + 1`
+   done
+  done
+  convert $TROLL_TMP/*.pcx +append $TROLL_TMP/next.png
+  rm $TROLL_TMP/*.pcx
+  if [ -f $TROLL_TMP/current.png ]; then
+   cp $TROLL_TMP/current.png $TROLL_TMP/previous.png
+   convert $TROLL_TMP/previous.png $TROLL_TMP/next.png -append $TROLL_TMP/current.png
+  else
+   cp $TROLL_TMP/next.png $TROLL_TMP/current.png
+  fi
+ fi
+done < spritesheet.lst
+cp $TROLL_TMP/current.png spritesheet.png
+rm $TROLL_TMP/current.png $TROLL_TMP/previous.png $TROLL_TMP/next.png
+
+l=0
+while read name facings frames shift; do
+ if [ -x $TROLL_DATA/images/$name -a pre$name != pre ]; then
+  i=0
+  while expr $i \< $facings >/dev/null ; do
+   i=`expr $i + 1`
+   k=0
+   while expr $k \< $frames >/dev/null ; do
+    if [ -n $shift ]; then
+     $TROLL_UTIL/text2pcx --shift=$shift $TROLL_DATA/images/$name/$name`expr substr $alphabet $i 1`$k.txt \
+       $TROLL_TMP/$name`expr substr $alphabet $i 1`$k.pcx
+    else
+     $TROLL_UTIL/text2pcx $TROLL_DATA/images/$name/$name`expr substr $alphabet $i 1`$k.txt \
+       $TROLL_TMP/$name`expr substr $alphabet $i 1`$k.pcx
+    fi
+    l=`expr $l + 1`
+    if [ -f $TROLL_TMP/next.png ]; then
+     cp $TROLL_TMP/next.png $TROLL_TMP/previous.png
+     convert $TROLL_TMP/previous.png $TROLL_TMP/*.pcx +append $TROLL_TMP/next.png
+    else
+     convert $TROLL_TMP/*.pcx +append $TROLL_TMP/next.png
+    fi
+    rm $TROLL_TMP/*.pcx
+    if [ $l -eq 10 ]; then
+     if [ -f $TROLL_TMP/current.png ]; then
+      cp $TROLL_TMP/current.png $TROLL_TMP/previous.png
+      convert $TROLL_TMP/previous.png $TROLL_TMP/next.png -append $TROLL_TMP/current.png
+     else
+      cp $TROLL_TMP/next.png $TROLL_TMP/current.png
+     fi
+     rm $TROLL_TMP/next.png
+     l=0
+    fi
+    k=`expr $k + 1`
+   done
+  done
+ fi
+done < tilesheet.lst
+if [ $l -ne 0 ]; then
+ if [ -f $TROLL_TMP/current.png ]; then
+  cp $TROLL_TMP/current.png $TROLL_TMP/previous.png
+  convert $TROLL_TMP/previous.png $TROLL_TMP/next.png -append $TROLL_TMP/current.png
+ else
+  cp $TROLL_TMP/next.png $TROLL_TMP/current.png
+ fi
+fi
+cp $TROLL_TMP/current.png tilesheet.png
+rm $TROLL_TMP/current.png $TROLL_TMP/previous.png $TROLL_TMP/next.png
+
+l=0
+while read name facings frames shift; do
+ if [ -x $TROLL_DATA/images/$name -a pre$name != pre ]; then
+  i=0
+  while expr $i \< $facings >/dev/null ; do
+   i=`expr $i + 1`
+   k=0
+   while expr $k \< $frames >/dev/null ; do
+    if [ -n $shift ]; then
+     $TROLL_UTIL/text2pcx --shift=$shift $TROLL_DATA/images/$name/$name`expr substr $alphabet $i 1`$k.txt \
+       $TROLL_TMP/$name`expr substr $alphabet $i 1`$k.pcx
+    else
+     $TROLL_UTIL/text2pcx $TROLL_DATA/images/$name/$name`expr substr $alphabet $i 1`$k.txt \
+       $TROLL_TMP/$name`expr substr $alphabet $i 1`$k.pcx
+    fi
+    l=`expr $l + 1`
+    if [ -f $TROLL_TMP/next.png ]; then
+     cp $TROLL_TMP/next.png $TROLL_TMP/previous.png
+     convert $TROLL_TMP/previous.png $TROLL_TMP/*.pcx +append $TROLL_TMP/next.png
+    else
+     convert $TROLL_TMP/*.pcx +append $TROLL_TMP/next.png
+    fi
+    rm $TROLL_TMP/*.pcx
+    if [ $l -eq 10 ]; then
+     if [ -f $TROLL_TMP/current.png ]; then
+      cp $TROLL_TMP/current.png $TROLL_TMP/previous.png
+      convert $TROLL_TMP/previous.png $TROLL_TMP/next.png -append $TROLL_TMP/current.png
+     else
+      cp $TROLL_TMP/next.png $TROLL_TMP/current.png
+     fi
+     rm $TROLL_TMP/next.png
+     l=0
+    fi
+    k=`expr $k + 1`
+   done
+  done
+ fi
+done < itemsheet.lst
+if [ $l -ne 0 ]; then
+ if [ -f $TROLL_TMP/current.png ]; then
+  cp $TROLL_TMP/current.png $TROLL_TMP/previous.png
+  convert $TROLL_TMP/previous.png $TROLL_TMP/next.png -append $TROLL_TMP/current.png
+ else
+  cp $TROLL_TMP/next.png $TROLL_TMP/current.png
+ fi
+fi
+cp $TROLL_TMP/current.png itemsheet.png
+rm $TROLL_TMP/current.png $TROLL_TMP/previous.png $TROLL_TMP/next.png
+
+# Cleanup
+rm -R /tmp/troll
+
