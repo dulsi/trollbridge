@@ -1,12 +1,13 @@
-Summary:	 A troll works to free his people from an evil ruler in an adventure game.
+Summary:	 A troll works to free his people from an evil ruler in an adventure game
 Name:		troll
-Version:	0.5.5
+Version:	0.5.6
 Release:	1
-Group:		Amusements/Games
 License:	GPLv2+
 Vendor:		Dennis Payne <dulsi@identicalsoftware.com>
 Url:		http://www.identicalsoftware.com/troll/
 Source0:		http://www.identicalsoftware.com/troll/%{name}-%{version}.tgz
+BuildRequires: gcc
+BuildRequires: gcc-c++
 BuildRequires: boost-devel
 BuildRequires: SDL2-devel
 BuildRequires: SDL2_image-devel
@@ -20,7 +21,6 @@ Zelda.
 
 %package	devel
 Summary:	The development environment for Troll Bridge adventures.
-Group:		Amusements/Games
 Requires:	%{name} = %{version}
 
 %description	devel
@@ -45,8 +45,8 @@ make prefix=%{buildroot} LIB_DIR=%{_lib} install
 cd ../util
 make prefix=%{buildroot} install
 
-%posttrans
-/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+%check
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/*.appdata.xml
 
 %files
 %doc README LICENSE
@@ -55,6 +55,7 @@ make prefix=%{buildroot} install
 %{_datadir}/troll
 %{_datadir}/icons/hicolor/*/apps/troll.png
 %{_datadir}/applications/troll.desktop
+%{_datadir}/appdata/troll.appdata.xml
 
 %files devel
 %{_bindir}/createmap
