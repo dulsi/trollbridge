@@ -64,6 +64,8 @@ install:
 	if test ! -d ${prefix}/usr/share/icons/hicolor; then mkdir -p ${prefix}/usr/share/icons/hicolor; fi
 	cp -R ../icons/* ${prefix}/usr/share/icons/hicolor/
 	desktop-file-install --dir=${prefix}/usr/share/applications ../troll.desktop
+	if test ! -d $(prefix)/usr/share/appdata; then mkdir -p $(prefix)/usr/share/appdata; fi
+	cp -R ../troll.appdata.xml $(prefix)/usr/share/appdata/
 
 # dependencies
 character.o game.o main.o screen.o thing.o item.o monster.o carrieditem.o \

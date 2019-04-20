@@ -6,5 +6,4 @@ Exec=troll %f
 Terminal=false
 Type=Application
 Icon=troll
-Categories=Game;
-
+Categories=Game;AdventureGame;
