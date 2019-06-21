@@ -5,6 +5,8 @@
 #include <SDL.h>
 #include "iextra.h"
 
+IColor transparent[3] = {63, 0, 53};
+
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
   IPalette *pal, IPaletteName *palnm);
 
@@ -29,6 +31,20 @@ int main(int argc, char *argv[])
  else
  {
   img = IImageLoad(inname);
+ }
+ IPixel pix = IPaletteFind(IImagePaletteGet(img), transparent[0], transparent[1], transparent[2]);
+ if (pix != 255)
+ {
+  for (int y = 0; y < img->y; y++)
+  {
+   for (int x = 0; x < img->x; x++)
+   {
+    if (pix == img->pic[y * img->x + x])
+    {
+     img->pic[y * img->x + x] = 255;
+    }
+   }
+  }
  }
  IImageTextSave(img, outname, pal, palnm);
  IPaletteDestroy(pal);

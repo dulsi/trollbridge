@@ -4,7 +4,7 @@
 #include <getopt.h>
 #include "iextra.h"
 
-IPixel transparent[3] = {255, 0, 181};
+IColor transparent[3] = {255, 0, 181};
 
 void ParseCommandLine(int argc, char *argv[], char *inname, char *outname,
   IPalette *pal, IPaletteName *palnm, int &shift);
