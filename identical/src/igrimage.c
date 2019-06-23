@@ -83,7 +83,10 @@ IImage IImageLoad(const char *filename)
  img->x = surf->w;
  img->y = surf->h;
  img->pic = (IPixel IFAR *)IMalloc(sizeof(IPixel) * img->x * img->y);
- memcpy(img->pic, surf->pixels, sizeof(IPixel) * img->x * img->y);
+ for (int y = 0; y < surf->h; y++)
+ {
+  memcpy(img->pic + (img->x * y), surf->pixels + (y * surf->pitch), sizeof(IPixel) * img->x);
+ }
  img->pal = (IPalette)IMalloc(sizeof(IPaletteTable));
  for (i = 0; i < surf->format->palette->ncolors; ++i)
  {
