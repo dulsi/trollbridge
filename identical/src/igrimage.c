@@ -11,6 +11,7 @@
 #include <istdlib.h>
 #include <igrbasics.h>
 #include <igrimage.h>
+#include <igrpalette.h>
 #include <stdio.h>
 #include <SDL.h>
 #include <SDL_image.h>
@@ -83,14 +84,55 @@ IImage IImageLoad(const char *filename)
  img->x = surf->w;
  img->y = surf->h;
  img->pic = (IPixel IFAR *)IMalloc(sizeof(IPixel) * img->x * img->y);
- for (int y = 0; y < surf->h; y++)
- {
-  memcpy(img->pic + (img->x * y), surf->pixels + (y * surf->pitch), sizeof(IPixel) * img->x);
- }
  img->pal = (IPalette)IMalloc(sizeof(IPaletteTable));
- for (i = 0; i < surf->format->palette->ncolors; ++i)
+ if ((surf->format->BytesPerPixel == 1) && (surf->format->Rmask == 0) && (surf->format->Gmask == 0) && (surf->format->Bmask == 0) && (surf->format->Amask == 0))
  {
-  IPaletteSet(img->pal, i, surf->format->palette->colors[i].r / 4, surf->format->palette->colors[i].g / 4, surf->format->palette->colors[i].b / 4);
+  for (int y = 0; y < surf->h; y++)
+  {
+   memcpy(img->pic + (img->x * y), surf->pixels + (y * surf->pitch), sizeof(IPixel) * img->x);
+  }
+  for (i = 0; i < surf->format->palette->ncolors; ++i)
+  {
+   IPaletteSet(img->pal, i, surf->format->palette->colors[i].r / 4, surf->format->palette->colors[i].g / 4, surf->format->palette->colors[i].b / 4);
+  }
+ }
+ else
+ {
+  SDL_PixelFormat *fmt = surf->format;
+  int palCurrent = 0;
+  for (int y = 0; y < surf->h; y++)
+  {
+   for (int x = 0; x < surf->w; x++)
+   {
+    Uint32 temp, pixel;
+    Uint8 red, green, blue, alpha;
+    pixel = *((Uint32*)(surf->pixels + (y * surf->pitch) + x * fmt->BytesPerPixel));
+    temp = pixel & fmt->Rmask;
+    temp = temp >> fmt->Rshift;
+    temp = temp << fmt->Rloss;
+    red = (Uint8)temp / 4;
+    temp = pixel & fmt->Gmask;
+    temp = temp >> fmt->Gshift;
+    temp = temp << fmt->Gloss;
+    green = (Uint8)temp / 4;
+    temp = pixel & fmt->Bmask;
+    temp = temp >> fmt->Bshift;
+    temp = temp << fmt->Bloss;
+    blue = (Uint8)temp / 4;
+    temp = pixel & fmt->Amask;
+    temp = temp >> fmt->Ashift;
+    temp = temp << fmt->Aloss;
+    alpha = (Uint8)temp / 4;
+    IPixel pix = IPaletteFind(IImagePaletteGet(img), red, green, blue);
+    if (pix == 255)
+    {
+     IPaletteSet(img->pal, palCurrent, red, green, blue);
+     pix = palCurrent;
+     palCurrent++;
+    }
+    img->pic[(img->x * y) + x] = pix;
+   }
+  }
  }
  return img;
 }
