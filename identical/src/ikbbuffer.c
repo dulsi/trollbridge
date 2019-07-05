@@ -235,13 +235,115 @@ void IKeybufferHandler(int waitEvent)
        {
         table = 0;
        }
-       else if ((sdlevent.key.keysym.sym & 0xF180) == 0x0100)
-       {
-        table = 1;
-       }
        else
        {
-        table = -1;
+        switch(sdlevent.key.keysym.sym)
+        {
+         case SDLK_F1:
+          table = 1;
+          sdlevent.key.keysym.sym = 26;
+          break;
+         case SDLK_F2:
+          table = 1;
+          sdlevent.key.keysym.sym = 27;
+          break;
+         case SDLK_F3:
+          table = 1;
+          sdlevent.key.keysym.sym = 28;
+          break;
+         case SDLK_F4:
+          table = 1;
+          sdlevent.key.keysym.sym = 29;
+          break;
+         case SDLK_F5:
+          table = 1;
+          sdlevent.key.keysym.sym = 30;
+          break;
+         case SDLK_F6:
+          table = 1;
+          sdlevent.key.keysym.sym = 31;
+          break;
+         case SDLK_F7:
+          table = 1;
+          sdlevent.key.keysym.sym = 32;
+          break;
+         case SDLK_F8:
+          table = 1;
+          sdlevent.key.keysym.sym = 33;
+          break;
+         case SDLK_F9:
+          table = 1;
+          sdlevent.key.keysym.sym = 34;
+          break;
+         case SDLK_F10:
+          table = 1;
+          sdlevent.key.keysym.sym = 35;
+          break;
+         case SDLK_F11:
+          table = 1;
+          sdlevent.key.keysym.sym = 36;
+          break;
+         case SDLK_F12:
+          table = 1;
+          sdlevent.key.keysym.sym = 37;
+          break;
+         case SDLK_UP:
+          table = 1;
+          sdlevent.key.keysym.sym = 17;
+          break;
+         case SDLK_DOWN:
+          table = 1;
+          sdlevent.key.keysym.sym = 18;
+          break;
+         case SDLK_LEFT:
+          table = 1;
+          sdlevent.key.keysym.sym = 20;
+          break;
+         case SDLK_RIGHT:
+          table = 1;
+          sdlevent.key.keysym.sym = 19;
+          break;
+         case SDLK_KP_1:
+          table = 1;
+          sdlevent.key.keysym.sym = 23;
+          break;
+         case SDLK_KP_2:
+          table = 1;
+          sdlevent.key.keysym.sym = 2;
+          break;
+         case SDLK_KP_3:
+          table = 1;
+          sdlevent.key.keysym.sym = 25;
+          break;
+         case SDLK_KP_4:
+          table = 1;
+          sdlevent.key.keysym.sym = 4;
+          break;
+         case SDLK_KP_5:
+          table = 1;
+          sdlevent.key.keysym.sym = 5;
+          break;
+         case SDLK_KP_6:
+          table = 1;
+          sdlevent.key.keysym.sym = 6;
+          break;
+         case SDLK_KP_7:
+          table = 1;
+          sdlevent.key.keysym.sym = 22;
+          break;
+         case SDLK_KP_8:
+          table = 1;
+          sdlevent.key.keysym.sym = 8;
+          break;
+         case SDLK_KP_9:
+          table = 1;
+          sdlevent.key.keysym.sym = 24;
+          break;
+         default:
+          table = -1;
+          break;
+        }
+        table = 1;
        }
        if ((table >= 0) &&
          (IKeybufferMap[table][mask][sdlevent.key.keysym.sym & 0x7F] != 0xFF))
