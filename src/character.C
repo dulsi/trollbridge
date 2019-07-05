@@ -32,7 +32,7 @@ TrollCharacter::TrollCharacter(TrollGame *gm, char *nm, const char *startFile,
  // Initialize all attributes
  game = gm;
  name = strdup(nm);
- for (i = 0; i < 3; i++)
+ for (i = 0; i < 4; i++)
  {
   screens[i] = IScreenCreate();
  }
@@ -82,7 +82,7 @@ TrollCharacter::~TrollCharacter()
  int i;
 
  screen->removeCharacter(this);
- for (i = 0; i < 3; i++)
+ for (i = 0; i < 4; i++)
  {
   IScreenDestroy(screens[i]);
  }
@@ -219,7 +219,7 @@ void TrollCharacter::display()
 
  // copy background screen to the temporary screen
  IScreenCopy(screens[TROLL_TEMPORARY_SCREEN1],
-   screens[TROLL_BACKGROUND_SCREEN]);
+   screens[TROLL_BACKGROUND_SCREEN + (game->getTurnCount() / 10) % 2]);
 
  // display character status info
  sprintf(s, "  Hp: %-2d / %-2d", hp, thp);
@@ -667,6 +667,8 @@ void TrollCharacter::setBackground(IUShort x, IUShort y, IUShort sprt,
  const Sprite *pic = TrollSpriteHandler.getSprite(sprt);
  pic->draw(screens[TROLL_BACKGROUND_SCREEN], TROLL_CALCULATE_X_POS(x),
    TROLL_CALCULATE_Y_POS(y), 0, 0, shft);
+ pic->draw(screens[TROLL_BACKGROUND_SCREEN + 1], TROLL_CALCULATE_X_POS(x),
+   TROLL_CALCULATE_Y_POS(y), 1 % pic->getFrames(), 0, shft);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
@@ -1133,31 +1135,41 @@ void TrollCharacter::selectNextB()
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 void TrollCharacter::setupBackgroundScreen()
 {
+ setupBackgroundScreen(screens[TROLL_BACKGROUND_SCREEN], 0);
+ setupBackgroundScreen(screens[TROLL_BACKGROUND_SCREEN + 1], 1);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollCharacter::setupBackgroundScreen - Loads all the images of the
+    backgound onto one of the virtual screens.
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+void TrollCharacter::setupBackgroundScreen(IScreen s, IUShort frame)
+{
  IUShort x, y, sprt;
  IUByte shft;
  char *msg1;
  char *msg2;
 
- IScreenClear(screens[TROLL_BACKGROUND_SCREEN]);
+ IScreenClear(s);
  for (y = 0; y < TROLL_SCREEN_Y; y++)
  {
   for (x = 0; x < TROLL_SCREEN_X; x++)
   {
    screen->getBackground(x, y, sprt, shft);
    const Sprite *pic = TrollSpriteHandler.getSprite(sprt);
-   pic->draw(screens[TROLL_BACKGROUND_SCREEN], TROLL_CALCULATE_X_POS(x),
-     TROLL_CALCULATE_Y_POS(y), 0, 0, shft);
+   pic->draw(s, TROLL_CALCULATE_X_POS(x),
+     TROLL_CALCULATE_Y_POS(y), frame % pic->getFrames(), 0, shft);
   }
  }
  screen->getText(msg1, msg2);
  if (msg1)
  {
-  ITextDraw(screens[TROLL_BACKGROUND_SCREEN], 150 - strlen(msg1) * 4,
+  ITextDraw(s, 150 - strlen(msg1) * 4,
     TROLL_BUFFER_Y + TROLL_SQUARE_Y + 4, 255, msg1);
  }
  if (msg2)
  {
-  ITextDraw(screens[TROLL_BACKGROUND_SCREEN], 150 - strlen(msg2) * 4,
+  ITextDraw(s, 150 - strlen(msg2) * 4,
     TROLL_BUFFER_Y + TROLL_SQUARE_Y * 2 + 4, 255, msg2);
  }
 }

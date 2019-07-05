@@ -34,7 +34,7 @@ extern "C" int TrollDllInit(TrollGame *game);
       argv         (In)  Arguments [not currently used]
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 TrollGame::TrollGame(int argc, char **argv)
-: dataDir(DATA_DIR), libDir(LIBRARY_DIR), musicObj(NULL)
+: dataDir(DATA_DIR), libDir(LIBRARY_DIR), musicObj(NULL), turnCount(0)
 {
  int x,y;
  IUShort xMult, yMult;
@@ -215,6 +215,7 @@ void TrollGame::run()
   {
    troll->display();
    turnCleanUp();
+   turnCount++;
    ITimerWait();
    troll->getScreen()->update();
   }
@@ -364,6 +365,16 @@ const char *TrollGame::getSavePath()
 TrollScreen *TrollGame::getScreen(IUShort x, IUShort y)
 {
  return(screen[x][y]);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollGame::getTurnCount - Gets the number of turns since the program started.
+
+    Returns: The number of turns since the program started
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+unsigned long TrollGame::getTurnCount()
+{
+ return(turnCount);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\

@@ -41,8 +41,8 @@
 
 /* Array indices into TrollCharacter's screens array */
 #define TROLL_BACKGROUND_SCREEN 0
-#define TROLL_TEMPORARY_SCREEN1 1
-#define TROLL_TEMPORARY_SCREEN2 2
+#define TROLL_TEMPORARY_SCREEN1 2
+#define TROLL_TEMPORARY_SCREEN2 3
 
 /* Passibility constants [not fully implement] */
 #define TROLL_OPEN      0

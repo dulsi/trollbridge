@@ -105,6 +105,7 @@ class TrollGame
   IUByte getMapInfo(IUShort x, IUShort y);
   const char *getSavePath();
   TrollScreen *getScreen(IUShort x, IUShort y);
+  unsigned long getTurnCount();
   IUShort getXScreen();
   IUShort getXStart();
   IUShort getYScreen();
@@ -136,6 +137,7 @@ class TrollGame
   IUShort xStart, yStart;
   std::string music;
   Mix_Music *musicObj;
+  unsigned long turnCount;
 
   // Used for switching levels
   TrollScreen *extraScreen;
@@ -413,12 +415,13 @@ class TrollCharacter: public TrollThing
   void scrollLeft();
   void selectNextB();
   void setupBackgroundScreen();
+  void setupBackgroundScreen(IScreen s, IUShort frame);
   void walk(IUShort dir);
 
   TrollGame *game;
   char *name;
   nes_controller *control;
-  IScreen screens[3];
+  IScreen screens[4];
   IShort hp, thp;
   IUShort xScreen, yScreen;
   IUShort gold;
