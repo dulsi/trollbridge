@@ -462,6 +462,26 @@ void TrollScreen::removeCharacter(TrollCharacter *trll)
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollScreen::removeKeepThings - get things that are to be kept.
+
+    Parameters:
+      lst          (Out)  All things that are to be kept
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+void TrollScreen::removeKeepThings(TrollThingList &lst)
+{
+ for (TrollThingIterator itr = characterProj.begin(); itr != characterProj.end();)
+ {
+  if ((*itr)->isKeep())
+  {
+   lst.push_back(*itr);
+   itr = characterProj.erase(itr);
+  }
+  else
+   itr++;
+ }
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   TrollScreen::setBackground - set the sprite and color shift for a
     background square.
 

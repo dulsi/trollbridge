@@ -41,6 +41,8 @@
 #define TROLL_SPRITE_BLAST        57
 #define TROLL_SPRITE_EXPLOSION    58
 #define TROLL_SPRITE_SPIDER       59
+#define TROLL_SPRITE_PHOENIX      64
+#define TROLL_SPRITE_NEST         66
 
 #define TROLL_SLOT_SWORD          0
 #define TROLL_SLOT_KEY            1

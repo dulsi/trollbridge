@@ -32,6 +32,7 @@ TrollCharacter::TrollCharacter(TrollGame *gm, char *nm, const char *startFile,
  // Initialize all attributes
  game = gm;
  name = strdup(nm);
+ controlled = 0;
  for (i = 0; i < 4; i++)
  {
   screens[i] = IScreenCreate();
@@ -510,6 +511,28 @@ void TrollCharacter::react()
  unsigned char a, b, st, sl;
 
  control->status(d, r, a, b, st, sl);
+ if (controlled)
+ {
+  switch (controlled)
+  {
+   case TROLL_CONTROLLED_SCROLLUP:
+    scrollUp();
+    break;
+   case TROLL_CONTROLLED_SCROLLDOWN:
+    scrollDown();
+    break;
+   case TROLL_CONTROLLED_SCROLLLEFT:
+    scrollLeft();
+    break;
+   case TROLL_CONTROLLED_SCROLLRIGHT:
+    scrollRight();
+    break;
+   default:
+    break;
+  }
+  controlled = 1;
+  return;
+ }
  // decrease invincibility timer
  if (invincible)
  {
@@ -672,6 +695,21 @@ void TrollCharacter::setBackground(IUShort x, IUShort y, IUShort sprt,
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
+  TrollCharacter::setControlled - Sets the controlled state of the character.
+
+    Parameters:
+      c          (In)  Controlled or not
+\* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+void TrollCharacter::setControlled(IUShort c)
+{
+ controlled = c;
+ if (controlled)
+  invincible = 1;
+ else
+  invincible = 0;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   TrollCharacter::setGold - Sets the gold of the character.
 
     Parameters:
@@ -745,25 +783,28 @@ void TrollCharacter::setText(char *msg1, char *msg2)
  IUShort x, y, sprt;
  IUByte shft;
 
- for (y = 1; y < 3; y++)
+ for (int frame = 0; frame < 2; frame++)
  {
-  for (x = 0; x < TROLL_SCREEN_X; x++)
+  for (y = 1; y < 3; y++)
   {
-   screen->getBackground(x, y, sprt, shft);
-   const Sprite *pic = TrollSpriteHandler.getSprite(sprt);
-   pic->draw(screens[TROLL_BACKGROUND_SCREEN], TROLL_CALCULATE_X_POS(x),
-     TROLL_CALCULATE_Y_POS(y), 0, 0, shft);
+   for (x = 0; x < TROLL_SCREEN_X; x++)
+   {
+    screen->getBackground(x, y, sprt, shft);
+    const Sprite *pic = TrollSpriteHandler.getSprite(sprt);
+    pic->draw(screens[TROLL_BACKGROUND_SCREEN + frame], TROLL_CALCULATE_X_POS(x),
+      TROLL_CALCULATE_Y_POS(y), frame % pic->getFrames(), 0, shft);
+   }
   }
- }
- if (msg1)
- {
-  ITextDraw(screens[TROLL_BACKGROUND_SCREEN], 150 - strlen(msg1) * 4,
-    TROLL_BUFFER_Y + TROLL_SQUARE_Y + 4, 255, msg1);
- }
- if (msg2)
- {
-  ITextDraw(screens[TROLL_BACKGROUND_SCREEN], 150 - strlen(msg2) * 4,
-    TROLL_BUFFER_Y + TROLL_SQUARE_Y * 2 + 4, 255, msg2);
+  if (msg1)
+  {
+   ITextDraw(screens[TROLL_BACKGROUND_SCREEN + frame], 150 - strlen(msg1) * 4,
+     TROLL_BUFFER_Y + TROLL_SQUARE_Y + 4, 255, msg1);
+  }
+  if (msg2)
+  {
+   ITextDraw(screens[TROLL_BACKGROUND_SCREEN + frame], 150 - strlen(msg2) * 4,
+     TROLL_BUFFER_Y + TROLL_SQUARE_Y * 2 + 4, 255, msg2);
+  }
  }
 }
 
@@ -858,6 +899,7 @@ void TrollCharacter::scrollUp()
 {
  IScreen swapScreen;
  int i;
+ TrollThingList lst;
 
  // Change the background screen with the second temporary screen
  swapScreen = screens[TROLL_TEMPORARY_SCREEN2];
@@ -865,10 +907,15 @@ void TrollCharacter::scrollUp()
  screens[TROLL_BACKGROUND_SCREEN] = swapScreen;
 
  // Get the new screen and draw the backgrounds
+ screen->removeKeepThings(lst);
  screen->removeCharacter(this);
  yScreen--;
  screen = game->getScreen(xScreen, yScreen);
  screen->addCharacter(this);
+ for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+ {
+  screen->addCharacterProjectile(*itr);
+ }
  setMapInfo(game->getLevelName(), xScreen, yScreen,
    game->getMapInfo(xScreen, yScreen));
  setupBackgroundScreen();
@@ -894,6 +941,10 @@ void TrollCharacter::scrollUp()
 
   // Draw the troll
   draw(screens[TROLL_TEMPORARY_SCREEN1]);
+  for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+  {
+   (*itr)->draw(screens[TROLL_TEMPORARY_SCREEN1]);
+  }
 
   // Display everything on the real screen
   IScreenCopy(IScreenMain, screens[TROLL_TEMPORARY_SCREEN1]);
@@ -907,6 +958,14 @@ void TrollCharacter::scrollUp()
   {
    y = 200 - TrollSpriteHandler.getSprite(sprite)->getYSize();
   }
+  for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+  {
+   (*itr)->y += TROLL_SQUARE_Y / 2;
+   if ((*itr)->y + TrollSpriteHandler.getSprite((*itr)->sprite)->getYSize() > 200)
+   {
+    (*itr)->y = 200 - TrollSpriteHandler.getSprite((*itr)->sprite)->getYSize();
+   }
+  }
  }
 }
 
@@ -917,6 +976,7 @@ void TrollCharacter::scrollDown()
 {
  IScreen swapScreen;
  int i;
+ TrollThingList lst;
 
  // Change the background screen with the second temporary screen
  swapScreen = screens[TROLL_TEMPORARY_SCREEN2];
@@ -924,10 +984,15 @@ void TrollCharacter::scrollDown()
  screens[TROLL_BACKGROUND_SCREEN] = swapScreen;
 
  // Get the new screen and draw the backgrounds
+ screen->removeKeepThings(lst);
  screen->removeCharacter(this);
  yScreen++;
  screen = game->getScreen(xScreen, yScreen);
  screen->addCharacter(this);
+ for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+ {
+  screen->addCharacterProjectile(*itr);
+ }
  setMapInfo(game->getLevelName(), xScreen, yScreen,
    game->getMapInfo(xScreen, yScreen));
  setupBackgroundScreen();
@@ -954,6 +1019,10 @@ void TrollCharacter::scrollDown()
 
   // Draw the troll
   draw(screens[TROLL_TEMPORARY_SCREEN1]);
+  for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+  {
+   (*itr)->draw(screens[TROLL_TEMPORARY_SCREEN1]);
+  }
 
   // Display everything on the real screen
   IScreenCopy(IScreenMain, screens[TROLL_TEMPORARY_SCREEN1]);
@@ -967,6 +1036,14 @@ void TrollCharacter::scrollDown()
   {
    y = TROLL_BUFFER_Y;
   }
+  for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+  {
+   (*itr)->y -= TROLL_SQUARE_Y / 2;
+   if ((*itr)->y < TROLL_BUFFER_Y)
+   {
+    (*itr)->y = TROLL_BUFFER_Y;
+   }
+  }
  }
 }
 
@@ -978,6 +1055,7 @@ void TrollCharacter::scrollRight()
  IScreen swapScreen;
  int i;
  int yRegion;
+ TrollThingList lst;
 
  // Change the background screen with the second temporary screen
  swapScreen = screens[TROLL_TEMPORARY_SCREEN2];
@@ -985,12 +1063,17 @@ void TrollCharacter::scrollRight()
  screens[TROLL_BACKGROUND_SCREEN] = swapScreen;
 
  // Get the new screen and draw the backgrounds
+ screen->removeKeepThings(lst);
  screen->removeCharacter(this);
  xScreen++;
  screen = game->getScreen(xScreen, yScreen);
  setMapInfo(game->getLevelName(), xScreen, yScreen,
    game->getMapInfo(xScreen, yScreen));
  screen->addCharacter(this);
+ for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+ {
+  screen->addCharacterProjectile(*itr);
+ }
  setupBackgroundScreen();
 
  // Scroll over to the new screen
@@ -1019,6 +1102,10 @@ void TrollCharacter::scrollRight()
 
   // Draw the troll
   draw(screens[TROLL_TEMPORARY_SCREEN1]);
+  for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+  {
+   (*itr)->draw(screens[TROLL_TEMPORARY_SCREEN1]);
+  }
 
   // Display everything on the real screen
   IScreenCopy(IScreenMain, screens[TROLL_TEMPORARY_SCREEN1]);
@@ -1035,6 +1122,17 @@ void TrollCharacter::scrollRight()
   {
    x -= TROLL_SQUARE_X / 2;
   }
+  for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+  {
+   if ((*itr)->x < TROLL_SQUARE_X / 2)
+   {
+    (*itr)->x = 0;
+   }
+   else
+   {
+    (*itr)->x -= TROLL_SQUARE_X / 2;
+   }
+  }
  }
 }
 
@@ -1046,6 +1144,7 @@ void TrollCharacter::scrollLeft()
  IScreen swapScreen;
  int i;
  int yRegion;
+ TrollThingList lst;
 
 
  // Change the background screen with the second temporary screen
@@ -1054,10 +1153,15 @@ void TrollCharacter::scrollLeft()
  screens[TROLL_BACKGROUND_SCREEN] = swapScreen;
 
  // Get the new screen and draw the backgrounds
+ screen->removeKeepThings(lst);
  screen->removeCharacter(this);
  xScreen--;
  screen = game->getScreen(xScreen, yScreen);
  screen->addCharacter(this);
+ for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+ {
+  screen->addCharacterProjectile(*itr);
+ }
  setMapInfo(game->getLevelName(), xScreen, yScreen,
    game->getMapInfo(xScreen, yScreen));
  setupBackgroundScreen();
@@ -1088,6 +1192,10 @@ void TrollCharacter::scrollLeft()
 
   // Draw the troll
   draw(screens[TROLL_TEMPORARY_SCREEN1]);
+  for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+  {
+   (*itr)->draw(screens[TROLL_TEMPORARY_SCREEN1]);
+  }
 
   // Display everything on the real screen
   IScreenCopy(IScreenMain, screens[TROLL_TEMPORARY_SCREEN1]);
@@ -1100,6 +1208,14 @@ void TrollCharacter::scrollLeft()
   if (x + TrollSpriteHandler.getSprite(sprite)->getXSize() > 320)
   {
    x = 320 - TrollSpriteHandler.getSprite(sprite)->getXSize();
+  }
+  for (TrollThingIterator itr = lst.begin(); itr != lst.end(); itr++)
+  {
+   (*itr)->x += TROLL_SQUARE_X / 2;
+   if ((*itr)->x + TrollSpriteHandler.getSprite((*itr)->sprite)->getXSize() > 320)
+   {
+    (*itr)->x = 320 - TrollSpriteHandler.getSprite((*itr)->sprite)->getXSize();
+   }
   }
  }
 }

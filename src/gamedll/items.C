@@ -710,6 +710,90 @@ void TrollShieldProjectile::takeHit(TrollThing *hitBy)
 {
 }
 
+TrollPhoenixProjectile::TrollPhoenixProjectile(TrollScreen *screen,
+  TrollCharacter *trll)
+ : TrollProjectile(screen, 0)
+{
+ keep = true;
+ sprite = TROLL_SPRITE_PHOENIX;
+ facing = trll->getDirection();
+ direction = trll->getDirection();
+ trll->getLocation(x, y);
+ const Sprite *pic = TrollSpriteHandler.getSprite(sprite);
+ trollOffset = (pic->getXSize() - TROLL_SQUARE_X) / 2;
+ x -= trollOffset;
+ shift = 0;
+ frame = 0;
+ troll = trll;
+ secondScreen = false;
+ troll->setControlled(true);
+}
+
+void TrollPhoenixProjectile::react()
+{
+ switch (direction)
+ {
+  case TROLL_UP:
+   if ((secondScreen) && (y == TROLL_BUFFER_Y + TROLL_SCREEN_Y / 2 * TROLL_SQUARE_Y))
+   {
+    dead = 1;
+   }
+   else if (y == TROLL_BUFFER_Y)
+   {
+    troll->setControlled(TROLL_CONTROLLED_SCROLLUP);
+    secondScreen = true;
+   }
+   else
+   {
+    y -= TROLL_SQUARE_Y / 4;
+    troll->setLocation(x + trollOffset, y);
+   }
+   break;
+  case TROLL_DOWN:
+   if ((secondScreen) && (y == TROLL_BUFFER_Y + TROLL_SCREEN_Y / 2 * TROLL_SQUARE_Y))
+   {
+    dead = 1;
+   }
+   else if (y == TROLL_BUFFER_Y + TROLL_SCREEN_Y * TROLL_SQUARE_Y)
+   {
+    troll->setControlled(TROLL_CONTROLLED_SCROLLDOWN);
+    secondScreen = true;
+   }
+   else
+   {
+    y += TROLL_SQUARE_Y / 4;
+    troll->setLocation(x + trollOffset, y);
+   }
+   break;
+  case TROLL_RIGHT:
+   if ((secondScreen) && (x == TROLL_SCREEN_X / 2 * TROLL_SQUARE_X))
+   {
+    dead = 1;
+   }
+   else
+   {
+    dead = 1;
+   }
+   break;
+  case TROLL_LEFT:
+   if ((secondScreen) && (x == TROLL_SCREEN_X / 2 * TROLL_SQUARE_X))
+   {
+    dead = 1;
+   }
+   else
+   {
+    dead = 1;
+   }
+   break;
+ }
+ if (dead)
+  troll->setControlled(0);
+}
+
+void TrollPhoenixProjectile::takeHit(TrollThing *hitBy)
+{
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   TrollEggItem::TrollEggItem - Constructor for the egg.
 
@@ -733,6 +817,7 @@ TrollEggItem::TrollEggItem(IUShort num)
 void TrollEggItem::activate(TrollCharacter *troll, TrollScreen *screen)
 {
  // Creates phoenix if there is a nest
+ screen->addCharacterProjectile(new TrollPhoenixProjectile(screen, troll));
  // Flys the character up two screens
 }
 

@@ -89,5 +89,10 @@
   for (int ii = (y1); ii <= (y2); ii++) \
     memset((screen) + (ii * 320) + (x1), (clr), (x2) - (x1) + 1);
 
+#define TROLL_CONTROLLED_SCROLLUP    2
+#define TROLL_CONTROLLED_SCROLLDOWN  3
+#define TROLL_CONTROLLED_SCROLLLEFT  4
+#define TROLL_CONTROLLED_SCROLLRIGHT 5
+
 #endif
 

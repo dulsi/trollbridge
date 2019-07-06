@@ -129,6 +129,19 @@ class TrollShieldProjectile: public TrollProjectile
   IUShort trollFacing, trollFrame;
 };
 
+class TrollPhoenixProjectile: public TrollProjectile
+{
+ public:
+  TrollPhoenixProjectile(TrollScreen *screen, TrollCharacter *trll);
+  void react();
+  void takeHit(TrollThing *hitBy);
+
+ protected:
+  TrollCharacter *troll;
+  bool secondScreen;
+  IShort trollOffset;
+};
+
 class TrollEggItem: public TrollCarriedItem
 {
  public:

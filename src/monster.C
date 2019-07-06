@@ -37,12 +37,6 @@ void TrollMonster::setFrame(IUShort fr)
  frame = fr;
 }
 
-void TrollMonster::setLocation(IShort xNew, IShort yNew)
-{
- x = xNew;
- y = yNew;
-}
-
 void TrollMonster::setSprite(IUShort sprt, IUShort face)
 {
  facing = face;

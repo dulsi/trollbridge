@@ -164,6 +164,7 @@ class TrollScreen
   IUShort getStandardMonsterNum();
   void getText(char *&msg1, char *&msg2);
   void removeCharacter(TrollCharacter *trll);
+  void removeKeepThings(TrollThingList &lst);
   void setBackground(IUShort x, IUShort y, IUShort sprt, IUByte shft);
   void setPassability(IUShort x, IUShort y, IUShort pass);
   void setSecret(IUShort num);
@@ -267,11 +268,15 @@ class TrollThing
   IUShort getDirection() const;
   void getLocation(IShort &xLoc, IShort &yLoc) const;
   bool isDead() const;
+  bool isKeep() const;
   virtual void react() = 0;
   void setDead(IUByte value);
+  void setLocation(IShort xNew, IShort yNew);
   virtual void takeHit(TrollThing *hitby) = 0;
 
   static bool checkCollision(const TrollThing *a, const TrollThing *b);
+
+  friend class TrollCharacter;
 
  protected:
   TrollThing(TrollScreen *scr, IUShort secrt = 0);
@@ -283,6 +288,7 @@ class TrollThing
   IUByte shift; // color shift
   IShort x, y;
   IUByte dead;
+  bool keep;
   IUShort secret;
 };
 
@@ -294,7 +300,6 @@ class TrollMonster: public TrollThing
   void setDirection(IUShort dir);
   void setFacing(IUShort face);
   void setFrame(IUShort frame);
-  void setLocation(IShort xNew, IShort yNew);
   void setSprite(IUShort sprt, IUShort face);
   void takeHit(TrollThing *hitBy);
 
@@ -400,6 +405,7 @@ class TrollCharacter: public TrollThing
   void react();
   void save();
   void setBackground(IUShort x, IUShort y, IUShort sprt, IUByte shft);
+  void setControlled(IUShort c);
   void setGold(IUShort num);
   void setPause(IUShort num);
   void setMapInfo(const char *levelName, IUShort x, IUShort y, IUByte val);
@@ -407,12 +413,13 @@ class TrollCharacter: public TrollThing
   void setText(char *message1, char *message2);
   void takeHit(TrollThing *hitby);
 
- protected:
-  void reset();
   void scrollUp();
   void scrollDown();
   void scrollRight();
   void scrollLeft();
+
+ protected:
+  void reset();
   void selectNextB();
   void setupBackgroundScreen();
   void setupBackgroundScreen(IScreen s, IUShort frame);
@@ -420,6 +427,7 @@ class TrollCharacter: public TrollThing
 
   TrollGame *game;
   char *name;
+  IUShort controlled;
   nes_controller *control;
   IScreen screens[4];
   IShort hp, thp;

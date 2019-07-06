@@ -46,9 +46,20 @@ bool TrollThing::isDead() const
  return(dead);
 }
 
+bool TrollThing::isKeep() const
+{
+ return(keep);
+}
+
 void TrollThing::setDead(IUByte value)
 {
  dead = value;
+}
+
+void TrollThing::setLocation(IShort xNew, IShort yNew)
+{
+ x = xNew;
+ y = yNew;
 }
 
 bool TrollThing::checkCollision(const TrollThing *a, const TrollThing *b)
@@ -68,5 +79,6 @@ TrollThing::TrollThing(TrollScreen *scr, IUShort secrt /*= 0*/)
  screen = scr;
  secret = secrt;
  dead = 0;
+ keep = false;
 }
 
