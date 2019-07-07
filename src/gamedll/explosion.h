@@ -16,13 +16,14 @@ class TrollExplosion : public TrollMonster
 {
  public:
   TrollExplosion(TrollScreen *scr, IShort xStart, IShort yStart,
-    IUShort shft);
+    IUShort shft, int chance = 3);
 
   void die();
   void react();
 
  protected:
   IUShort time;
+  IUShort rewardChance;
 };
 
 #endif

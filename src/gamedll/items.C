@@ -10,6 +10,7 @@
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include "troll.h"
 #include "dllconst.h"
+#include "explosion.h"
 #include "items.h"
 #include <igrtext.h>
 
@@ -710,87 +711,230 @@ void TrollShieldProjectile::takeHit(TrollThing *hitBy)
 {
 }
 
-TrollPhoenixProjectile::TrollPhoenixProjectile(TrollScreen *screen,
+TrollPhoenixProjectile::TrollPhoenixProjectile(TrollScreen *screen, IShort xStart, IShort yStart,
   TrollCharacter *trll)
  : TrollProjectile(screen, 0)
 {
- keep = true;
+ findTroll = true;
+ delayTime = 4;
  sprite = TROLL_SPRITE_PHOENIX;
- facing = trll->getDirection();
- direction = trll->getDirection();
- trll->getLocation(x, y);
+ facing = TROLL_DOWN;
+ direction = TROLL_DOWN;
  const Sprite *pic = TrollSpriteHandler.getSprite(sprite);
  trollOffset = (pic->getXSize() - TROLL_SQUARE_X) / 2;
+ x = xStart;
+ y = yStart;
  x -= trollOffset;
  shift = 0;
  frame = 0;
  troll = trll;
  secondScreen = false;
- troll->setControlled(true);
 }
 
 void TrollPhoenixProjectile::react()
 {
- switch (direction)
+ if (findTroll)
  {
-  case TROLL_UP:
-   if ((secondScreen) && (y == TROLL_BUFFER_Y + TROLL_SCREEN_Y / 2 * TROLL_SQUARE_Y))
+  IShort xLoc, yLoc;
+  troll->getLocation(xLoc, yLoc);
+  if ((xLoc == x + trollOffset) && (y == yLoc))
+  {
+   findTroll = false;
+   keep = true;
+   direction = facing = troll->getFacing();
+   troll->setControlled(true);
+  }
+  else
+  {
+   if (delayTime)
    {
-    dead = 1;
-   }
-   else if (y == TROLL_BUFFER_Y)
-   {
-    troll->setControlled(TROLL_CONTROLLED_SCROLLUP);
-    secondScreen = true;
-   }
-   else
-   {
-    y -= TROLL_SQUARE_Y / 4;
-    troll->setLocation(x + trollOffset, y);
-   }
-   break;
-  case TROLL_DOWN:
-   if ((secondScreen) && (y == TROLL_BUFFER_Y + TROLL_SCREEN_Y / 2 * TROLL_SQUARE_Y))
-   {
-    dead = 1;
-   }
-   else if (y == TROLL_BUFFER_Y + TROLL_SCREEN_Y * TROLL_SQUARE_Y)
-   {
-    troll->setControlled(TROLL_CONTROLLED_SCROLLDOWN);
-    secondScreen = true;
-   }
-   else
-   {
-    y += TROLL_SQUARE_Y / 4;
-    troll->setLocation(x + trollOffset, y);
-   }
-   break;
-  case TROLL_RIGHT:
-   if ((secondScreen) && (x == TROLL_SCREEN_X / 2 * TROLL_SQUARE_X))
-   {
-    dead = 1;
+    delayTime--;
+    if (x + trollOffset < xLoc)
+    {
+     x += TROLL_SQUARE_X / 4;
+     direction = facing = TROLL_RIGHT;
+    }
+    else if (x + trollOffset > xLoc)
+    {
+     x -= TROLL_SQUARE_X / 4;
+     direction = facing = TROLL_LEFT;
+    }
+    if (y < yLoc)
+    {
+     y += TROLL_SQUARE_Y / 4;
+     direction = facing = TROLL_DOWN;
+    }
+    else if (y> yLoc)
+    {
+     y -= TROLL_SQUARE_Y / 4;
+     direction = facing = TROLL_UP;
+    }
    }
    else
    {
     dead = 1;
+    screen->addMonster(new TrollExplosion(screen, x + trollOffset, y, 10, 0));
    }
-   break;
-  case TROLL_LEFT:
-   if ((secondScreen) && (x == TROLL_SCREEN_X / 2 * TROLL_SQUARE_X))
-   {
-    dead = 1;
-   }
-   else
-   {
-    dead = 1;
-   }
-   break;
+  }
  }
- if (dead)
-  troll->setControlled(0);
+ else
+ {
+  switch (direction)
+  {
+   case TROLL_UP:
+    if ((secondScreen) && (y == TROLL_BUFFER_Y + TROLL_SCREEN_Y / 2 * TROLL_SQUARE_Y))
+    {
+     dead = 1;
+    }
+    else if (y == TROLL_BUFFER_Y)
+    {
+     troll->setControlled(TROLL_CONTROLLED_SCROLLUP);
+     secondScreen = true;
+    }
+    else
+    {
+     y -= TROLL_SQUARE_Y / 4;
+     troll->setLocation(x + trollOffset, y);
+    }
+    break;
+   case TROLL_DOWN:
+    if ((secondScreen) && (y == TROLL_BUFFER_Y + TROLL_SCREEN_Y / 2 * TROLL_SQUARE_Y))
+    {
+     dead = 1;
+    }
+    else if (y == TROLL_BUFFER_Y + (TROLL_SCREEN_Y - 1) * TROLL_SQUARE_Y)
+    {
+     troll->setControlled(TROLL_CONTROLLED_SCROLLDOWN);
+     secondScreen = true;
+    }
+    else
+    {
+     y += TROLL_SQUARE_Y / 4;
+     troll->setLocation(x + trollOffset, y);
+    }
+    break;
+   case TROLL_RIGHT:
+    if ((secondScreen) && (x == 0))
+     x -= trollOffset;
+    if ((secondScreen) && (x + trollOffset == TROLL_SCREEN_X / 2 * TROLL_SQUARE_X))
+    {
+     dead = 1;
+    }
+    else if (x + trollOffset == (TROLL_SCREEN_X - 1) * TROLL_SQUARE_X)
+    {
+     troll->setControlled(TROLL_CONTROLLED_SCROLLRIGHT);
+     secondScreen = true;
+    }
+    else
+    {
+     x += TROLL_SQUARE_X / 4;
+     troll->setLocation(x + trollOffset, y);
+    }
+    break;
+   case TROLL_LEFT:
+    if ((secondScreen) && (x == ((TROLL_SCREEN_X - 1) * TROLL_SQUARE_X) - (trollOffset * 2)))
+     x += trollOffset;
+    if ((secondScreen) && (x + trollOffset == TROLL_SCREEN_X / 2 * TROLL_SQUARE_X))
+    {
+     dead = 1;
+    }
+    else if (x + trollOffset == 0)
+    {
+     troll->setControlled(TROLL_CONTROLLED_SCROLLLEFT);
+     secondScreen = true;
+    }
+    else
+    {
+     x -= TROLL_SQUARE_X / 4;
+     troll->setLocation(x + trollOffset, y);
+    }
+    break;
+  }
+  if (dead)
+   troll->setControlled(0);
+ }
 }
 
 void TrollPhoenixProjectile::takeHit(TrollThing *hitBy)
+{
+}
+
+TrollEggProjectile::TrollEggProjectile(TrollScreen *screen, IShort xStart, IShort yStart,
+  TrollCharacter *trll)
+ : TrollProjectile(screen, 0)
+{
+ sprite = TROLL_SPRITE_EGG;
+ x = xStart;
+ y = yStart;
+ facing = 0;
+ direction = 0;
+ shift = 0;
+ frame = 0;
+ troll = trll;
+ delayTime = 4;
+}
+
+void TrollEggProjectile::react()
+{
+ if (delayTime)
+  delayTime--;
+ else
+ {
+  if (sprite == TROLL_SPRITE_EGG)
+  {
+   IUShort sprt;
+   IUByte shft;
+   // Determine if egg is on a nest
+   IUShort xSquare = x / TROLL_SQUARE_X;
+   IUShort ySquare = (y - TROLL_BUFFER_Y) / TROLL_SQUARE_Y;
+   IUShort xOffset = x % TROLL_SQUARE_X;
+   IUShort yOffset = (y - TROLL_BUFFER_Y) % TROLL_SQUARE_Y;
+   screen->getBackground(xSquare, ySquare, sprt, shft);
+   if (sprt != TROLL_SPRITE_NEST)
+   {
+    if (xOffset != 0)
+    {
+     screen->getBackground(xSquare + 1, ySquare, sprt, shft);
+     if (sprt != TROLL_SPRITE_NEST)
+     {
+      if (yOffset != 0)
+      {
+       screen->getBackground(xSquare + 1, ySquare + 1, sprt, shft);
+       if (sprt != TROLL_SPRITE_NEST)
+       {
+        dead = 1;
+        return;
+       }
+      }
+      else
+      {
+       dead = 1;
+       return;
+      }
+     }
+    }
+    else if (yOffset != 0)
+    {
+     screen->getBackground(xSquare, ySquare + 1, sprt, shft);
+     if (sprt != TROLL_SPRITE_NEST)
+     {
+      dead = 1;
+      return;
+     }
+    }
+    else
+    {
+     dead = 1;
+     return;
+    }
+   }
+   dead = 1;
+   screen->addCharacterProjectile(new TrollPhoenixProjectile(screen, x, y, troll));
+  }
+ }
+}
+
+void TrollEggProjectile::takeHit(TrollThing *hitBy)
 {
 }
 
@@ -817,8 +961,48 @@ TrollEggItem::TrollEggItem(IUShort num)
 void TrollEggItem::activate(TrollCharacter *troll, TrollScreen *screen)
 {
  // Creates phoenix if there is a nest
- screen->addCharacterProjectile(new TrollPhoenixProjectile(screen, troll));
- // Flys the character up two screens
+ IShort xPos, yPos;
+ TrollEggProjectile *egg;
+ troll->getLocation(xPos, yPos);
+ switch (troll->getDirection())
+ {
+  case TROLL_UP:
+   if (yPos > TROLL_BUFFER_Y + TROLL_SQUARE_Y - 1)
+   {
+    egg = new TrollEggProjectile(screen, xPos,
+      yPos - TROLL_SQUARE_Y, troll);
+    screen->addCharacterProjectile(egg);
+    troll->setPause(5);
+   }
+   break;
+  case TROLL_DOWN:
+   if (yPos < 200 - TROLL_SQUARE_Y * 2)
+   {
+    egg = new TrollEggProjectile(screen, xPos,
+      yPos + TROLL_SQUARE_Y, troll);
+    screen->addCharacterProjectile(egg);
+    troll->setPause(5);
+   }
+   break;
+  case TROLL_RIGHT:
+   if (xPos < 320 - TROLL_SQUARE_X * 2)
+   {
+    egg = new TrollEggProjectile(screen, xPos + TROLL_SQUARE_X, yPos, troll);
+    screen->addCharacterProjectile(egg);
+    troll->setPause(5);
+   }
+   break;
+  case TROLL_LEFT:
+   if (xPos > TROLL_SQUARE_X - 1)
+   {
+    egg = new TrollEggProjectile(screen, xPos - TROLL_SQUARE_X, yPos, troll);
+    screen->addCharacterProjectile(egg);
+    troll->setPause(5);
+   }
+   break;
+  default:
+   break;
+ }
 }
 
 TrollLimitedItem::TrollLimitedItem(IUShort num, IUShort slt, IUShort str)

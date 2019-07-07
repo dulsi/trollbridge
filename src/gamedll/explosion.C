@@ -11,7 +11,7 @@
 #include "explosion.h"
 
 TrollExplosion::TrollExplosion(TrollScreen *scr, IShort xStart,
-  IShort yStart, IUShort shft)
+  IShort yStart, IUShort shft, int chance /*= 3*/)
  : TrollMonster(scr)
 {
  x = xStart;
@@ -22,6 +22,7 @@ TrollExplosion::TrollExplosion(TrollScreen *scr, IShort xStart,
  facing = direction = 0;
  frame = 0;
  time = 0;
+ rewardChance = chance;
 }
 
 void TrollExplosion::die()
@@ -30,7 +31,7 @@ void TrollExplosion::die()
  TrollThing *item;
 
  TrollMonster::die();
- if (IRandom(3) == 0)
+ if ((rewardChance) && (IRandom(rewardChance) == 0))
  {
   num = IRandom(10);
   if (num > 8)

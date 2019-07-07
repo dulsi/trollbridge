@@ -132,14 +132,28 @@ class TrollShieldProjectile: public TrollProjectile
 class TrollPhoenixProjectile: public TrollProjectile
 {
  public:
-  TrollPhoenixProjectile(TrollScreen *screen, TrollCharacter *trll);
+  TrollPhoenixProjectile(TrollScreen *screen, IShort xStart, IShort yStart, TrollCharacter *trll);
   void react();
   void takeHit(TrollThing *hitBy);
 
  protected:
   TrollCharacter *troll;
   bool secondScreen;
+  bool findTroll;
   IShort trollOffset;
+  IShort delayTime;
+};
+
+class TrollEggProjectile: public TrollProjectile
+{
+ public:
+  TrollEggProjectile(TrollScreen *screen, IShort xStart, IShort yStart, TrollCharacter *trll);
+  void react();
+  void takeHit(TrollThing *hitBy);
+
+ protected:
+  TrollCharacter *troll;
+  IShort delayTime;
 };
 
 class TrollEggItem: public TrollCarriedItem
