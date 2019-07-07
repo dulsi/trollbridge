@@ -10,7 +10,16 @@
   Includes
 \* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include "file.h"
+#if defined(__MSDOS__) || defined(_WIN32)
+// Cross compiler doesn't have std::filesystem yet
 #include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
+#else
+#include <filesystem>
+
+namespace fs = std::filesystem;
+#endif
 
 void SwapBytes(IUByte *value, int size)
 {
@@ -29,8 +38,8 @@ FileException::FileException()
 
 FileList::FileList(const char *path, const char *extension)
 {
- boost::filesystem::path p(path);
- for (boost::filesystem::directory_iterator itr(p); itr != boost::filesystem::directory_iterator(); itr++)
+ fs::path p(path);
+ for (fs::directory_iterator itr(p); itr != fs::directory_iterator(); itr++)
  {
   if (itr->path().extension() == extension)
    results.push_back(itr->path().string());

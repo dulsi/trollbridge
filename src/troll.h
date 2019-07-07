@@ -115,6 +115,7 @@ class TrollGame
  protected:
   char *buildFullPath(const char *path, const char *file);
   void loadLibrary(const char *filename);
+  void prepareSavePath(char *home, const char *additional = NULL);
   void selectName(char *name);
   void setMusic(const std::string &m);
   bool titleScreen(char *name);

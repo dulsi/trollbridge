@@ -8,17 +8,18 @@
 #include "irandom.h"
 #include <ctime>
 
-base_generator_type IRandom::generator(42u);
+static std::random_device *r;
+static std::default_random_engine *generator;
 
 void IRandom::init()
 {
- generator.seed(static_cast<unsigned int>(std::time(0)));
+ r = new std::random_device;
+ generator = new std::default_random_engine((*r)());
 }
 
 int IRandom::roll(int range)
 {
- boost::uniform_int<> ran_dist(0, range - 1);
- boost::variate_generator<base_generator_type&, boost::uniform_int<> > ran(generator, ran_dist);
- return ran();
+ std::uniform_int_distribution<int> ran_dist(0, range - 1);
+ return ran_dist(*generator);
 }
 

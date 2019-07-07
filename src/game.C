@@ -17,8 +17,14 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <getopt.h>
+#if defined(__MSDOS__) || defined(_WIN32)
+// Cross compiler doesn't have std::filesystem yet
 #include <boost/filesystem.hpp>
+#else
+#include <filesystem>
+#endif
 #include "troll.h"
+#include "irandom.h"
 
 #ifndef STATIC_LIBRARY
 #include <dlfcn.h>
@@ -52,6 +58,7 @@ TrollGame::TrollGame(int argc, char **argv)
   {0, 0, 0, 0}
  };
 
+ IRandom::init();
  xMult = 0;
  yMult = 0;
  fullScreen = IFALSE;
@@ -111,32 +118,47 @@ troll [options]\n\
  IGraphicsStart("Troll Bridge", xMult, yMult, fullScreen, soft);
  Mix_Init(MIX_INIT_OGG);
 
- char *home = getenv("HOME");
- if (home)
+ char *data_home = getenv("XDG_DATA_HOME");
+ if (data_home)
  {
-  int len = strlen(home);
-  savePath = (char *)IMalloc(len + 12);
-  strcpy(savePath, home);
-  if (savePath[len - 1] != '/')
-  {
-   strcat(savePath, "/");
-  }
+  prepareSavePath(data_home);
  }
  else
  {
-  savePath = (char *)IMalloc(12);
-  savePath[0] = 0;
+  char *home = getenv("HOME");
+  if (home)
+  {
+   prepareSavePath(home, ".local/share/");
+  }
+  else
+  {
+   savePath = (char *)IMalloc(12);
+   savePath[0] = 0;
+  }
  }
 #if defined(__MSDOS__) || defined(_WIN32)
  strcat(savePath, "troll.dot");
  boost::filesystem::create_directory(savePath);
 #else
- strcat(savePath, ".troll");
- int err = mkdir(savePath, 0700);
- if ((-1 == err) && (EEXIST != errno))
+ strcat(savePath, "troll");
+ if (std::filesystem::create_directories(savePath))
  {
-  fprintf(stderr, "Error creating directory %s\n", savePath);
-  exit(2);
+  char *home = getenv("HOME");
+  if (home)
+  {
+   char *oldPath = (char *)IMalloc(strlen(home) + 12);
+   strcpy(oldPath, home);
+   if (oldPath[strlen(home) - 1] != '/')
+   {
+    strcat(oldPath, "/");
+   }
+   strcat(oldPath, ".troll");
+   std::filesystem::path p(oldPath);
+   for (std::filesystem::directory_iterator itr(p); itr != std::filesystem::directory_iterator(); itr++)
+   {
+    std::filesystem::copy(itr->path(), savePath);
+   }
+  }
  }
 #endif
  strcat(savePath, "/");
@@ -552,6 +574,26 @@ void TrollGame::loadLibrary(const char *filename)
 #endif
 }
 
+void TrollGame::prepareSavePath(char *home, const char *additional /*= NULL*/)
+{
+ int homelen = strlen(home);
+ int len = homelen;
+ if (additional != NULL)
+ {
+  len += 1 + strlen(additional);
+ }
+ savePath = (char *)IMalloc(len + 12);
+ strcpy(savePath, home);
+ if (savePath[homelen - 1] != '/')
+ {
+  strcat(savePath, "/");
+ }
+ if (additional != NULL)
+ {
+  strcat(savePath, additional);
+ }
+}
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - *\
   TrollGame::selectName - Allows the player to select the character's name.
 
@@ -911,4 +953,3 @@ void TrollGame::turnCleanUp()
   extraScreen = NULL;
  }
 }
-
