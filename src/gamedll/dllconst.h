@@ -42,7 +42,10 @@
 #define TROLL_SPRITE_EXPLOSION    58
 #define TROLL_SPRITE_SPIDER       59
 #define TROLL_SPRITE_PHOENIX      64
+#define TROLL_SPRITE_LAVA         65
 #define TROLL_SPRITE_NEST         66
+#define TROLL_SPRITE_FIREELEMENTAL 67
+#define TROLL_SPRITE_LAVASQUARE   68
 
 #define TROLL_SLOT_SWORD          0
 #define TROLL_SLOT_KEY            1

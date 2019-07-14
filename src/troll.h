@@ -268,6 +268,7 @@ class TrollThing
   virtual void draw(IScreen drawscreen);
   IUShort getDirection() const;
   void getLocation(IShort &xLoc, IShort &yLoc) const;
+  virtual void getSize(IShort &xSize, IShort &ySize) const;
   bool isDead() const;
   bool isKeep() const;
   virtual void react() = 0;

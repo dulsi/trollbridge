@@ -41,6 +41,13 @@ void TrollThing::getLocation(IShort &xLoc, IShort &yLoc) const
  yLoc = y;
 }
 
+void TrollThing::getSize(IShort &xSize, IShort &ySize) const
+{
+ const Sprite *spr = TrollSpriteHandler.getSprite(sprite);
+ xSize = spr->getXSize();
+ ySize = spr->getYSize();
+}
+
 bool TrollThing::isDead() const
 {
  return(dead);
@@ -64,10 +71,13 @@ void TrollThing::setLocation(IShort xNew, IShort yNew)
 
 bool TrollThing::checkCollision(const TrollThing *a, const TrollThing *b)
 {
- if ((a->x + (TrollSpriteHandler.getSprite(a->sprite))->getXSize() > b->x) &&
-   (a->x < b->x + (TrollSpriteHandler.getSprite(b->sprite))->getXSize()) &&
-   (a->y + (TrollSpriteHandler.getSprite(a->sprite))->getYSize() > b->y) &&
-   (a->y < b->y + (TrollSpriteHandler.getSprite(b->sprite))->getYSize()))
+ IShort aXSize, aYSize, bXSize, bYSize;
+ a->getSize(aXSize, aYSize);
+ b->getSize(bXSize, bYSize);
+ if ((a->x + aXSize > b->x) &&
+   (a->x < b->x + bXSize) &&
+   (a->y + aYSize > b->y) &&
+   (a->y < b->y + bYSize))
  {
   return 1;
  }

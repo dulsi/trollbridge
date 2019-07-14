@@ -21,7 +21,7 @@ DLL_OBJ = $(DLL_DIR)/dllmain.o $(DLL_DIR)/items.o $(DLL_DIR)/people.o \
 	$(DLL_DIR)/block.o $(DLL_DIR)/undead.o $(DLL_DIR)/closedoor.o \
 	$(DLL_DIR)/cobra.o $(DLL_DIR)/blast.o $(DLL_DIR)/explosion.o \
 	$(DLL_DIR)/healer.o $(DLL_DIR)/jumper.o $(DLL_DIR)/octoid.o \
-	$(DLL_DIR)/turtle.o $(DLL_DIR)/spider.o
+	$(DLL_DIR)/turtle.o $(DLL_DIR)/spider.o $(DLL_DIR)/fireelemental.o
 TROLL_DLL = troll.so
 
 ifndef prefix

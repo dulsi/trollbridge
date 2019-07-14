@@ -460,6 +460,8 @@ void TrollCharacter::load()
   items[item->getSlot()] = item;
   item->read(f);
  }
+ item = game->getCarriedItem(5);
+ items[item->getSlot()] = item;
  f.readUShort(num);
  for (i = 0; i < num; i++)
  {
