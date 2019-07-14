@@ -110,8 +110,8 @@ TrollFireElemental::TrollFireElemental(TrollScreen *scr, IShort xStart, IShort y
  if ((xStart == TROLL_XYRANDOM) && (yStart == TROLL_XYRANDOM))
  {
   const Sprite *pic = TrollSpriteHandler.getSprite(TROLL_SPRITE_FIREELEMENTAL);
-  x = TROLL_CALCULATE_X_POS(7) - (pic->getXSize() / 2);
-  y = TROLL_CALCULATE_Y_POS(1);
+  x = TROLL_CALCULATE_X_POS(7) + (TROLL_SQUARE_X / 2) - (pic->getXSize() / 2);
+  y = TROLL_CALCULATE_Y_POS(4) - pic->getYSize();
  }
  else
  {
